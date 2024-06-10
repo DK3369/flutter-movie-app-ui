@@ -3,35 +3,35 @@ import 'dart:convert';
 import './ClassMusicParamsModel.dart';
 
 class MusicModel extends ClassMusicParamsModel{
-  int id; //主键
-  int albumId; // 专辑id
-  String songName; // 歌曲名称
-  String authorName; // 歌手名称
-  int authorId; // 歌手id
-  String albumName; // 专辑
-  String version; // 版本
-  String language; // 语言
-  String publishDate; // 发布时间
-  int wideAudioId; // 未使用字段
-  int isPublish; // 是否发布
-  int bigPackId; // 未使用字段
-  int finalId; // 未使用字段
-  int audioId; // 音频id
-  int similarAudioId; // 未使用字段
-  int isHot; // 是否热门
-  int albumAudioId; // 音频专辑id
-  int audioGroupId; // 歌曲组id
-  String cover; // 歌曲图片
-  String playUrl; // 网络播放地址
-  String localPlayUrl; // 本地播放地址
-  String sourceName; // 歌曲来源
-  String sourceUrl; // 来源地址
-  String createTime; // 创建时间
-  String updateTime; // 更新时间
-  String label; // 标签
-  String lyrics; // 歌词
-  int isFavorite; // 是否喜欢
-  int times; //  听过的次数，在获取播放记录的时候才有
+  int? id = 0; //主键
+  int? albumId = 0; // 专辑id
+  String? songName = ""; // 歌曲名称
+  String? authorName = ""; // 歌手名称
+  int? authorId = 0; // 歌手id
+  String? albumName = ""; // 专辑
+  String? version = ""; // 版本
+  String? language = ""; // 语言
+  String? publishDate = ""; // 发布时间
+  int? wideAudioId = 0; // 未使用字段
+  int? isPublish = 0; // 是否发布
+  int? bigPackId = 0; // 未使用字段
+  int? finalId = 0; // 未使用字段
+  int? audioId = 0; // 音频id
+  int? similarAudioId = 0; // 未使用字段
+  int? isHot = 0; // 是否热门
+  int? albumAudioId = 0; // 音频专辑id
+  int? audioGroupId = 0; // 歌曲组id
+  String? cover = ""; // 歌曲图片
+  String? playUrl = ""; // 网络播放地址
+  String? localPlayUrl = ""; // 本地播放地址
+  String? sourceName = ""; // 歌曲来源
+  String? sourceUrl = ""; // 来源地址
+  String? createTime = ""; // 创建时间
+  String? updateTime = ""; // 更新时间
+  String? label = ""; // 标签
+  String? lyrics = ""; // 歌词
+  int? isFavorite = 0; // 是否喜欢
+  int? times = 0; //  听过的次数，在获取播放记录的时候才有
   MusicModel(
       {this.id, //主键
       this.albumId, // 专辑id

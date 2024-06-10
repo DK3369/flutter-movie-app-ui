@@ -1,8 +1,8 @@
 class UserMsgModel{
-  String userAge;//使用天数
-  String favoriteCount;//收藏数
-  String playRecordCount;//观看记录
-  String viewRecordCount;//浏览记录
+  String? userAge = "";//使用天数
+  String? favoriteCount = "";//收藏数
+  String? playRecordCount = "";//观看记录
+  String? viewRecordCount = "";//浏览记录
 
   UserMsgModel({
     this.userAge,

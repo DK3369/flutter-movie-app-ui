@@ -16,7 +16,7 @@ import '../../movie/provider/UserInfoProvider.dart';
 import 'package:provider/provider.dart';
 
 class MusicCirclePage extends StatefulWidget {
-  MusicCirclePage({Key key}) : super(key: key);
+  const MusicCirclePage({super.key});
 
   @override
   _MusicCirclePageState createState() => _MusicCirclePageState();
@@ -30,13 +30,13 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   int total = 0;
   final int pageSize = 10;
   final List<CircleModel> circleList = [];
-  OverlayEntry circleOverlayEntry; // 点赞和评论选项的弹窗
-  OverlayEntry inputOverlayEntry; // 评论输入框的弹窗
-  CircleModel circleModel; // 当前操作的那条点赞和评论框
+  late OverlayEntry circleOverlayEntry; // 点赞和评论选项的弹窗
+  late OverlayEntry inputOverlayEntry; // 评论输入框的弹窗
+  late CircleModel circleModel; // 当前操作的那条点赞和评论框
   TextEditingController inputController =
       new TextEditingController(); // 评论框的控制条
-  CommentModel firstCommentModel;// 一级评论
-  CommentModel replyCommentModel;// 回复的评论
+  late CommentModel firstCommentModel;// 一级评论
+  late CommentModel replyCommentModel;// 回复的评论
   bool loading = false;
   @override
   void initState() {
@@ -48,11 +48,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   void dispose() {
     if (circleOverlayEntry != null) {
       circleOverlayEntry.remove();
-      circleOverlayEntry = null;
+      // circleOverlayEntry = null;
     }
     if (inputOverlayEntry != null) {
       inputOverlayEntry.remove();
-      inputOverlayEntry = null;
+      // inputOverlayEntry = null;
     }
   }
 
@@ -62,8 +62,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   void getCircleWidgetListByType() {
     getCircleListByTypeService('music', pageNum, pageSize).then((res) {
       setState(() {
-        total = res.total;
-        res.data.forEach((item) {
+        total = res.total!;
+        res.data?.forEach((item) {
           circleList.add(CircleModel.fromJson(item));
         });
       });
@@ -86,9 +86,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
       circleOverlayEntry.remove();
     }
     circleOverlayEntry = new OverlayEntry(builder: (context) {
-      RenderBox renderBox = circleModel.key.currentContext?.findRenderObject();
+      RenderObject? renderBox = circleModel.key?.currentContext?.findRenderObject();
       //获取当前屏幕位置
-      Offset offset = renderBox.localToGlobal(Offset.zero);
+      // Offset offset = renderBox!.localToGlobal(Offset.zero);
+      Offset offset = Offset(20,20);
+
       return Positioned(
           top: 0,
           left: 0,
@@ -118,7 +120,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   void buildCommentInputDailog() {
     if (circleOverlayEntry != null) {
       circleOverlayEntry.remove();
-      circleOverlayEntry = null;
+      // circleOverlayEntry = null;
     }
     if (inputOverlayEntry != null) return; // 如果评论框弹窗已经存在，点击其他想回复的评论，不在创建评论框弹窗
     inputOverlayEntry = new OverlayEntry(builder: (BuildContext context) {
@@ -158,30 +160,30 @@ class _MusicCirclePageState extends State<MusicCirclePage>
               SizedBox(width: ThemeSize.containerPadding),
               Container(
                 height: ThemeSize.middleAvater,
-                child: RaisedButton(
-                  color: Theme.of(context).accentColor,
+                child: TextButton(
+                  // color: Theme.of(context).accentColor,
                   onPressed: () {
                     if(loading)return;
                     loading = true;
                     CommentModel mCommentModel = CommentModel(
                         type:"music_circle",
-                        relationId:circleModel.id,
+                        relationId:circleModel.id!,
                         content: inputController.text,
-                        topId:firstCommentModel != null ? firstCommentModel.id : null,
-                        parentId:replyCommentModel != null ? replyCommentModel.id : null
+                        topId:firstCommentModel!.id,
+                        parentId:replyCommentModel!.id
                     );
                     insertCommentService(mCommentModel.toMap()).then((value){
                       loading = false;
                       setState(() {
                         if(firstCommentModel != null){
-                            firstCommentModel.replyList.add(CommentModel.fromJson(value.data));
+                            firstCommentModel.replyList!.add(CommentModel.fromJson(value.data));
 ;                        }else{
-                            circleModel.circleComments.add(CommentModel.fromJson(value.data));
+                            circleModel.circleComments!.add(CommentModel.fromJson(value.data));
                         }
                       });
-                      firstCommentModel = replyCommentModel = null;
+                      firstCommentModel = replyCommentModel ;
                       inputOverlayEntry.remove();
-                      inputOverlayEntry = null;
+                      // inputOverlayEntry = null;
                       inputController.text = "";
                     });
                   },
@@ -193,10 +195,10 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                   ),
 
                   ///圆角
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide.none,
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(ThemeSize.bigRadius))),
+                  // shape: RoundedRectangleBorder(
+                  //     side: BorderSide.none,
+                  //     borderRadius: BorderRadius.all(
+                  //         Radius.circular(ThemeSize.bigRadius))),
                 ),
               )
             ])),
@@ -234,7 +236,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   /// @date: 2024-03-30 10:29
   Widget buildLikeMenu() {
     int circleIndex =
-        circleModel.circleLikes.indexWhere((CircleLikeModel element) {
+        circleModel.circleLikes!.indexWhere((CircleLikeModel element) {
       return element.userId ==
           Provider.of<UserInfoProvider>(context).userInfo.userId;
     });
@@ -250,28 +252,28 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     type: 'music_circle', relationId: circleModel.id);
                 saveLikeService(likeMode).then((res) {
                   setState(() {
-                    circleModel.circleLikes
+                    circleModel.circleLikes!
                         .add(CircleLikeModel.fromJson(res.data));
                   });
                   // 移除点赞和评论的弹窗
                   circleOverlayEntry.remove();
-                  circleOverlayEntry = null;
+                  // circleOverlayEntry = null;
                   loading = false;
                 }).onError((error, stackTrace) {
                   // 移除点赞和评论的弹窗
                   circleOverlayEntry.remove();
-                  circleOverlayEntry = null;
+                  // circleOverlayEntry = null;
                   loading = false;
                 });
               } else {
                 // 如果已经赞过，点击之后取消点赞
-                deleteLikeService(circleModel.id, "music_circle").then((res) {
+                deleteLikeService(circleModel.id!, "music_circle").then((res) {
                   setState(() {
-                    circleModel.circleLikes.removeAt(circleIndex);
+                    circleModel.circleLikes!.removeAt(circleIndex);
                   });
                   // 移除点赞和评论的弹窗
                   circleOverlayEntry.remove();
-                  circleOverlayEntry = null;
+                  // circleOverlayEntry = null;
                   loading = false;
                 }).onError((error, stackTrace) {
                   loading = false;
@@ -351,7 +353,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
             ClipOval(
                 child: Image.network(
               //从全局的provider中获取用户信息
-              HOST + circleModel.useravater,
+              HOST + circleModel.useravater!,
               height: ThemeSize.middleAvater,
               width: ThemeSize.middleAvater,
               fit: BoxFit.cover,
@@ -362,12 +364,12 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(circleModel.username,
+                    Text(circleModel.username!,
                         style: TextStyle(
                             color: ThemeColors.blueColor,
                             fontWeight: FontWeight.bold)),
                     SizedBox(height: ThemeSize.smallMargin),
-                    Text(circleModel.content,
+                    Text(circleModel.content!,
                         softWrap: false,
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis),
@@ -383,7 +385,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                           ClipOval(
                               child: Image.network(
                             //从全局的provider中获取用户信息
-                            HOST + circleModel.musicCover,
+                            HOST + circleModel.musicCover!,
                             height: ThemeSize.middleAvater,
                             width: ThemeSize.middleAvater,
                             fit: BoxFit.cover,
@@ -401,7 +403,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     ),
                     SizedBox(height: ThemeSize.containerPadding),
                     Row(children: [
-                      Text(formatTime(circleModel.createTime),
+                      Text(formatTime(circleModel.createTime!),
                           style: TextStyle(color: ThemeColors.disableColor)),
                       Expanded(child: SizedBox(), flex: 1),
                       InkWell(
@@ -416,7 +418,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                       )
                     ]),
                     SizedBox(
-                        height: circleModel.circleLikes.length > 0
+                        height: circleModel.circleLikes!.length > 0
                             ? ThemeSize.containerPadding
                             : 0),
                     buildCircleLikeAndCommentList(circleModel)
@@ -430,8 +432,8 @@ class _MusicCirclePageState extends State<MusicCirclePage>
 
   // 获取每条音乐圈点赞人员
   Widget buildCircleLikeAndCommentList(CircleModel circleModel) {
-    List<CircleLikeModel> circleLikes = circleModel.circleLikes;
-    List<CommentModel> circleComments = circleModel.circleComments;
+    List<CircleLikeModel> circleLikes = circleModel.circleLikes!;
+    List<CommentModel> circleComments = circleModel.circleComments!;
     if (circleLikes.length > 0 || circleComments.length > 0) {
       return Container(
           padding: ThemeStyle.padding,
@@ -509,7 +511,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
             ClipOval(
                 child: Image.network(
               //从全局的provider中获取用户信息
-              HOST + circleComment.avater,
+              HOST + circleComment.avater!,
               height: replyCommentModel == null
                   ? ThemeSize.middleAvater
                   : ThemeSize.middleAvater / 2,
@@ -524,31 +526,31 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                      circleComment.replyUserName != null
-                          ? '${circleComment.username}▶${circleComment.replyUserName}'
-                          : circleComment.username,
+                      circleComment.replyUserName!.length > 0
+                          ? '${circleComment.username!}▶${circleComment.replyUserName!}'
+                          : circleComment.username!,
                       style: TextStyle(color: ThemeColors.subTitle)),
                   SizedBox(height: ThemeSize.smallMargin),
                   GestureDetector(
-                    child: Text(circleComment.content),
+                    child: Text(circleComment.content!),
                     onTap: () {
                       setState(() {
                         if(circleComment.topId == null){// 如果不是二级评论
                           replyCommentModel = firstCommentModel = circleComment;
                         }else{// 如果是二级评论
                           replyCommentModel = circleComment;
-                          firstCommentModel = circleModel.circleComments.firstWhere((element) => element.id == replyCommentModel.topId);
+                          firstCommentModel = circleModel.circleComments!.firstWhere((element) => element.id == replyCommentModel.topId);
                         }
                         buildCommentInputDailog();
                       });
                     },
                   ),
                   SizedBox(height: ThemeSize.smallMargin),
-                  Text(formatTime(circleComment.createTime),
+                  Text(formatTime(circleComment.createTime!),
                       style: TextStyle(color: ThemeColors.subTitle)),
                   SizedBox(height: ThemeSize.smallMargin),
                   ...buildCircleCommentItems(
-                      circleComment.replyList,
+                      circleComment.replyList!,
                       [])
                 ])
           ]))
@@ -562,7 +564,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
         onTap: () {
           if (circleOverlayEntry != null) {
             circleOverlayEntry.remove();
-            circleOverlayEntry = null;
+            circleOverlayEntry.remove();
           }
         },
         child: Container(
@@ -577,7 +579,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     msg: "已经到底了",
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.CENTER,
-                    timeInSecForIos: 1,
+                    // timeInSecForIos: 1,
                     backgroundColor: Colors.blue,
                     textColor: Colors.white,
                     fontSize: ThemeSize.middleFontSize);

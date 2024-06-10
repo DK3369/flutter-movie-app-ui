@@ -17,7 +17,7 @@ import '../../utils/LocalStroageUtils.dart';
 import '../../router/index.dart';
 
 class MusicHomePage extends StatefulWidget {
-  MusicHomePage({Key key}) : super(key: key);
+  const MusicHomePage({super.key});
 
   @override
   _MusicHomePageState createState() => _MusicHomePageState();
@@ -31,13 +31,13 @@ class _MusicHomePageState extends State<MusicHomePage>
   List<MusicClassifyModel> currentClassifiesList = [];
   List<MusicClassifyModel> allClassifies = [];
   bool playing = false;
-  MusicModel currentPlayingMusicModel;
+  late MusicModel currentPlayingMusicModel;
 
   @override
   void initState() {
     super.initState();
     getMusicClassifyService().then((res) {
-      allClassifies = res.data.map((item) {
+      allClassifies = res.data!.map((item) {
         return MusicClassifyModel.fromJson(item);
       }).toList();
       setState(() {
@@ -83,7 +83,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                         msg: "已经到底了",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
-                        timeInSecForIos: 1,
+                        // timeInSecForIos: 1,
                         backgroundColor: Colors.blue,
                         textColor: Colors.white,
                         fontSize: ThemeSize.middleFontSize);
@@ -248,14 +248,14 @@ class _MusicHomePageState extends State<MusicHomePage>
                 Image.asset("lib/assets/images/icon-down.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
                 SizedBox(width: ThemeSize.smallMargin),
-                Text(musicClassifyModel.classifyName),
+                Text(musicClassifyModel.classifyName!),
                 Expanded(child: SizedBox(), flex: 1),
                 Text("更多")
               ],
             ),
             musicClassifyModel.classifyName == "推荐歌手"
                 ? buildSingerListWidget()
-                : buildMusicListByClassifyId(musicClassifyModel.id)
+                : buildMusicListByClassifyId(musicClassifyModel.id!)
           ],
         ));
   }
@@ -271,7 +271,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             List<MusicModel> musicModelList = [];
             List<Widget> musicWidgetList = [];
             int index = 0;
-            snapshot.data.data.forEach((element) {
+            snapshot.data!.data!.forEach((element) {
               element['classifyId'] = classifyId;
               element['pageNum'] = 1;
               element['pageSize'] = 20;
@@ -287,7 +287,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                       ClipOval(
                         child: Image.network(
                           //从全局的provider中获取用户信息
-                          HOST + musicItem.cover,
+                          HOST + musicItem.cover!,
                           height: ThemeSize.bigAvater,
                           width: ThemeSize.bigAvater,
                           fit: BoxFit.cover,
@@ -298,7 +298,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(musicItem.songName,
+                            Text(musicItem.songName!,
                                 style:
                                     TextStyle(fontSize: ThemeSize.bigFontSize)),
                             SizedBox(height: ThemeSize.smallMargin),
@@ -378,12 +378,12 @@ class _MusicHomePageState extends State<MusicHomePage>
   // 获取歌手列表
   Widget buildSingerListWidget() {
     return FutureBuilder(
-        future: getSingerListService(null,1, 5),
+        future: getSingerListService("",1, 5),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();
           } else {
-            List authorsList = snapshot.data.data as List;
+            List authorsList = snapshot.data!.data as List;
             // 动态计算歌手头像大小
             double size = (MediaQuery.of(context).size.width -
                     (authorsList.length + 3) * ThemeSize.containerPadding) /
@@ -403,9 +403,9 @@ class _MusicHomePageState extends State<MusicHomePage>
                             child: authorModel.avatar != null && authorModel.avatar != ""
                                 ? Image.network(
                               //从全局的provider中获取用户信息
-                              authorModel.avatar.indexOf("http") != -1
-                                  ? authorModel.avatar.replaceAll("{size}", "480")
-                                  : HOST + authorModel.avatar,
+                              authorModel.avatar!.indexOf("http") != -1
+                                  ? authorModel.avatar!.replaceAll("{size}", "480")
+                                  : HOST + authorModel.avatar!,
                               height: size,
                               width: size,
                               fit: BoxFit.cover,
@@ -416,7 +416,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                                 fit: BoxFit.cover),
                           ),
                           SizedBox(height: ThemeSize.containerPadding),
-                          Text(authorModel.authorName)
+                          Text(authorModel.authorName!)
                         ],
                       ));
                 }).toList())

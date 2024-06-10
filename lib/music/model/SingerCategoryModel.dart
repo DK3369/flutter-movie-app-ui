@@ -1,5 +1,5 @@
 class SingerCategoryModel{
-  String category;// 分类名称
+  String? category;// 分类名称
 
   SingerCategoryModel({
     this.category,

@@ -10,14 +10,13 @@ import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 
 class EditPage extends StatefulWidget {
-  final String title; //编辑的标题
-  final String type; //编辑框的类型
-  final String value; //输入框的值
-  final String field; //对应的userInfo字段
-  final bool isAllowEmpty; //是否允许为空
-
+  final String? title = ""; //编辑的标题
+  final String? type = ""; //编辑框的类型
+  final String? value = ""; //输入框的值
+  final String? field = ""; //对应的userInfo字段
+  final bool? isAllowEmpty = false; //是否允许为空
   EditPage(
-      {Key key,
+      {super.key,
       this.type,
       this.title,
       this.value,

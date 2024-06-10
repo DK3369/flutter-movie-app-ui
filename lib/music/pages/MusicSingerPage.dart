@@ -10,7 +10,7 @@ import '../model/MusicAuthorModel.dart';
 import '../../config/common.dart';
 
 class MusicSingerPage extends StatefulWidget {
-  MusicSingerPage({Key key}) : super(key: key);
+  const MusicSingerPage({super.key});
 
   @override
   _MusicSingerPageState createState() => _MusicSingerPageState();
@@ -32,7 +32,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
     super.initState();
     getSingerCategoryService().then((res) {
       setState(() {
-        res.data.forEach((item) {
+        res.data?.forEach((item) {
           singerCategoryList.add(SingerCategoryModel.fromJson(item));
         });
       });
@@ -45,11 +45,11 @@ class _MusicSingerPageState extends State<MusicSingerPage>
   ///@date: 2024-02-28 22:20
   useSingerList() {
     getSingerListService(
-            singerCategoryList[activeIndex].category, pageNum, pageSize)
+            singerCategoryList[activeIndex].category!, pageNum, pageSize)
         .then((value) {
       setState(() {
-        total = value.total;
-        value.data.forEach((item) {
+        total = value.total!;
+        value.data?.forEach((item) {
           musicAuthorList.add(MusicAuthorModel.fromJson(item));
         });
       });
@@ -131,7 +131,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
             ),
             child: Center(
                 child: Text(
-              singerCategoryList[i].category,
+              singerCategoryList[i].category!,
               style: TextStyle(
                   color: singerCategoryList[activeIndex].category ==
                           singerCategoryList[i].category
@@ -180,9 +180,9 @@ class _MusicSingerPageState extends State<MusicSingerPage>
                     child: item.avatar != null && item.avatar != ""
                         ? Image.network(
                             //从全局的provider中获取用户信息
-                            item.avatar.indexOf("http") != -1
-                                ? item.avatar.replaceAll("{size}", "480")
-                                : HOST + item.avatar,
+                            item.avatar!.indexOf("http") != -1
+                                ? item.avatar!.replaceAll("{size}", "480")
+                                : HOST + item.avatar!,
                             height: ThemeSize.middleAvater,
                             width: ThemeSize.middleAvater,
                             fit: BoxFit.cover,
@@ -196,7 +196,7 @@ class _MusicSingerPageState extends State<MusicSingerPage>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item.authorName),
+                      Text(item.authorName!),
                       SizedBox(height: ThemeSize.miniMargin),
                       Text(
                         "${item.total.toString()}首",

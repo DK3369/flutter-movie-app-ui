@@ -1,12 +1,12 @@
 class MuiscMySingerModel{
-  int id;//主键
-  String authorId;// 歌手id
-  String authorName;// 歌单名称
-  String userId;// 用户id
-  String avatar;// 歌手头像
-  int total;// 歌单里面的歌曲总数
-  String createTime;// 创建时间
-  String updateTime;// 更新时间
+  int? id;//主键
+  String? authorId;// 歌手id
+  String? authorName;// 歌单名称
+  String? userId;// 用户id
+  String? avatar;// 歌手头像
+  int? total;// 歌单里面的歌曲总数
+  String? createTime;// 创建时间
+  String? updateTime;// 更新时间
 
   MuiscMySingerModel({
     this.id,

@@ -1,13 +1,13 @@
 class MovieUrlModel{
-  int id;//主键
-  String movieName;//电影名称
-  int movieId;//对应的电影的id
-  String href;//源地址
-  String label;//集数
-  String createTime;//创建时间
-  String updateTime;//更新时间
-  String url;//播放地址
-  String playGroup;//播放分组，1, 2
+  int? id = 0;//主键
+  String? movieName = "";//电影名称
+  int? movieId = 0;//对应的电影的id
+  String? href = "";//源地址
+  String? label = "";//集数
+  String? createTime = "";//创建时间
+  String? updateTime = "";//更新时间
+  String? url = "";//播放地址
+  String? playGroup = "";//播放分组，1, 2
   MovieUrlModel({
     this.id,
     this.movieName,

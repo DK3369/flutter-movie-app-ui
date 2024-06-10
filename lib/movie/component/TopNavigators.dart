@@ -6,7 +6,7 @@ import '../../theme/ThemeStyle.dart';
 
 /*-----------------------分类图标------------------------*/
 class TopNavigators extends StatelessWidget {
-  const TopNavigators({Key key}) : super(key: key);
+  const TopNavigators({required Key key}) : super(key: key);
 
   List<Widget> _items(BuildContext context) {
     List listData = [

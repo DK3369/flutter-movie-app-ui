@@ -19,7 +19,8 @@ import 'package:audioplayers/audioplayers.dart';
 class MusicSearchPage extends StatefulWidget {
   final String keyword;
 
-  MusicSearchPage({Key key, this.keyword}) : super(key: key);
+  // MusicSearchPage({Key key, this.keyword}) : super(key: key);
+  const MusicSearchPage({super.key, required this.keyword});
 
   @override
   _SearchMusicPageState createState() => _SearchMusicPageState();
@@ -36,7 +37,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
   List<Widget> myHistoryLabels = [];
   List<String> myHistoryLabelsName = [];
   TextEditingController keywordController = TextEditingController();
-  MusicModel currentPlayingMusicModel;
+  late MusicModel currentPlayingMusicModel;
   bool playing = false;
   EasyRefreshController easyRefreshController = EasyRefreshController();
 
@@ -60,7 +61,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
 
   getHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String historyLabels = prefs.getString('historyMusicLabels');
+    String? historyLabels = prefs.getString('historyMusicLabels');
     if (historyLabels != null && historyLabels != '') {
       setState(() {
         myHistoryLabelsName = historyLabels.split(",");
@@ -82,8 +83,8 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
         .then((res) {
       setState(() {
         loading = false;
-        total = res.total;
-        res.data.forEach((item) {
+        total = res.total!;
+        res.data?.forEach((item) {
           searchResult.add(MusicModel.fromJson(item));
         }); // 顶部轮播组件数
       });
@@ -118,7 +119,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                       msg: "已经到底了",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
+                      // timeInSecForIos: 1,
                       backgroundColor: Colors.blue,
                       textColor: Colors.white,
                       fontSize: ThemeSize.middleFontSize);
@@ -195,8 +196,8 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
           SizedBox(width: ThemeSize.smallMargin),
           Container(
               height: ThemeSize.buttonHeight,
-              child: RaisedButton(
-                color: Theme.of(context).accentColor,
+              child: ElevatedButton(
+                // color: Theme.of(context).accentColor,
                 onPressed: () async {
                   if (this.loading) return;
                   if (keywordController.text == "")
@@ -229,10 +230,10 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                 ),
 
                 ///圆角
-                shape: RoundedRectangleBorder(
-                    side: BorderSide.none,
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
+                // shape: RoundedRectangleBorder(
+                //     side: BorderSide.none,
+                //     borderRadius:
+                //         BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
               ))
         ],
       ),
@@ -240,10 +241,10 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
   }
 
   Widget Label(String text) {
-    return FlatButton(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      color: Color.fromARGB(255, 230, 230, 230),
+    return TextButton(
+      // splashColor: Colors.transparent,
+      // highlightColor: Colors.transparent,
+      // color: Color.fromARGB(255, 230, 230, 230),
       onPressed: () {
         setState(() {
           keywordController.text = text;
@@ -259,9 +260,9 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
       ),
 
       ///圆角
-      shape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(50))),
+      // shape: RoundedRectangleBorder(
+      //     side: BorderSide.none,
+      //     borderRadius: BorderRadius.all(Radius.circular(50))),
     );
   }
 
@@ -313,7 +314,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                       ClipOval(
                           child: Image.network(
                             //从全局的provider中获取用户信息
-                            HOST + musicItem.cover,
+                            HOST + musicItem.cover!,
                             height: ThemeSize.middleAvater,
                             width: ThemeSize.middleAvater,
                             fit: BoxFit.cover,
@@ -323,12 +324,12 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(musicItem.songName,
+                            Text(musicItem.songName!,
                                 softWrap: false,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis),
                             SizedBox(height: ThemeSize.smallMargin),
-                            Text(musicItem.authorName,
+                            Text(musicItem.authorName!,
                                 style:
                                 TextStyle(color: ThemeColors.disableColor)),
                           ],
@@ -359,15 +360,15 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           height: ThemeSize.smallIcon),onTap: (){
                         if(musicItem.isFavorite == 0){
                           insertMusicFavoriteService(musicItem).then((res) => {
-                            if(res.data > 0){
+                            if(res.data! > 0){
                               setState(() {
                                 musicItem.isFavorite = 1;
                               })
                             }
                           });
                         }else{
-                          deleteMusicFavoriteService(musicItem.id).then((res) => {
-                            if(res.data > 0){
+                          deleteMusicFavoriteService(musicItem.id!).then((res) => {
+                            if(res.data! > 0){
                               setState(() {
                                 musicItem.isFavorite = 0;
                               })

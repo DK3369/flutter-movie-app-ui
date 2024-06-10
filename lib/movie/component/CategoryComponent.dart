@@ -7,10 +7,11 @@ import 'TitleComponent.dart';
 
 /*-----------------------分类电影------------------------*/
 class CategoryComponent extends StatelessWidget {
-  final String category, classify;
+  String category, classify;
 
-  const CategoryComponent({Key key, this.category, this.classify})
-      : super(key: key);
+  // const CategoryComponent({Key key, this.category, this.classify})
+  //     : super(key: key);
+  CategoryComponent({super.key, required this.category, required this.classify});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class CategoryComponent extends StatelessWidget {
           var result = snapshot.data;
           List<MovieDetailModel> categoryList = [];
           if (result != null && result.data != null) {
-            result.data.forEach((item) {
+            result.data!.forEach((item) {
               categoryList.add(MovieDetailModel.fromJson(item));
             });
           }

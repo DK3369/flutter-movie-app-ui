@@ -12,7 +12,7 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentIndex = 0;
-  List<Widget> pages = [null, null, null, null];
+  List<Widget> pages = [];
 
   @override
   void dispose() {

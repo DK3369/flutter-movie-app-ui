@@ -13,13 +13,14 @@ import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key key}) : super(key: key);
+  // const LoginPage({Key key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
-    String userId = userInfo.userId;
+    String userId = userInfo.userId!;
     TextEditingController userController =
         new TextEditingController(text: userInfo.userId);
     TextEditingController pwdController =

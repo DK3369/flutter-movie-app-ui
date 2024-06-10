@@ -1,6 +1,6 @@
 class CategoryModel {
-  String category; //小分类
-  String classify; //大分类
+  String? category = ""; //小分类
+  String? classify = ""; //大分类
 
   CategoryModel({
     this.category,

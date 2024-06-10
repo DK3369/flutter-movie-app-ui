@@ -26,7 +26,7 @@ class LocalStroageUtils {
 
   static Future getPlayMusic() async {
     final SharedPreferences prefs = await _prefs;
-    String playMusic = prefs.getString('playMusic') ?? null;
+    String? playMusic = prefs.getString('playMusic') ?? null;
     if (playMusic != null) {
       return json.decode(playMusic);
     } else {
@@ -39,7 +39,7 @@ class LocalStroageUtils {
   ///  @author wuwenqiang
   static Future getClassMusicParams() async {
     final SharedPreferences prefs = await _prefs;
-    String classMusicParams = prefs.getString('classMusicParams') ?? null;
+    String? classMusicParams = prefs.getString('classMusicParams') ?? null;
     if (classMusicParams != null) {
       return ClassMusicParamsModel.fromJson(json.decode(classMusicParams));
     } else {

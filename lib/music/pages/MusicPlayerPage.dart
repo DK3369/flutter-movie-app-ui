@@ -21,7 +21,7 @@ import '../../utils/HttpUtil .dart';
 import '../../movie/model/CommentModel.dart';
 
 class MusicPlayerPage extends StatefulWidget {
-  MusicPlayerPage({Key key}) : super(key: key);
+  const MusicPlayerPage({super.key});
 
   @override
   _MusicPlayerPageState createState() => _MusicPlayerPageState();
@@ -35,13 +35,13 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   int duration = 0; // 已经播放额时间
   int totalSec = 0; // 总时间
   bool playState = false;
-  MusicModel musicModel;
-  AudioPlayer player;
+  MusicModel musicModel = MusicModel();
+  AudioPlayer player = AudioPlayer();
   int currentPlayIndex = -1; // 当前播放音乐的下标
-  List<MusicModel> playMusicModelList; // 播放的列表
-  LyricController _lyricController; //歌词控制器
-  AnimationController _repeatController; // 会重复播放的控制器
-  Animation<double> _curveAnimation; // 非线性动画
+  late List<MusicModel> playMusicModelList; // 播放的列表
+  late LyricController _lyricController; //歌词控制器
+  late AnimationController _repeatController; // 会重复播放的控制器
+  late Animation<double> _curveAnimation; // 非线性动画
   int commentTotal = 0;
   // 在父组件中创建 GlobalKey
   @override
@@ -85,7 +85,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           ImageFiltered(
             imageFilter: ImageFilter.blur(
                 sigmaX: 50, sigmaY: 50, tileMode: TileMode.mirror),
-            child: Image.network(HOST + musicModel.cover,
+            child: Image.network(HOST + musicModel.cover!,
                 fit: BoxFit.cover,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width),
@@ -97,7 +97,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: ThemeSize.containerPadding * 2),
-                Text(musicModel.songName,
+                Text(musicModel.songName!,
                     style: TextStyle(
                         color: ThemeColors.colorWhite,
                         fontSize: ThemeSize.bigFontSize,
@@ -156,7 +156,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
                   child: ClipOval(
                       child: Image.network(
-                    HOST + musicModel.cover,
+                    HOST + musicModel.cover!,
                     height: playerWidth -
                         ThemeSize.smallMargin -
                         ThemeSize.containerPadding * 3,
@@ -183,7 +183,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                         color: ThemeColors.colorWhite,
                         fontSize: ThemeSize.middleFontSize),
                     size: Size(double.infinity, double.infinity),
-                    lyrics: LyricUtil.formatLyric(musicModel.lyrics),
+                    lyrics: LyricUtil.formatLyric(musicModel.lyrics!),
                     controller: _lyricController,
                   ),
                   onTap: () {
@@ -205,7 +205,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       children: [
         Expanded(
           child: Center(
-              child: Text(musicModel.authorName,
+              child: Text(musicModel.authorName!,
                   style: TextStyle(
                       decoration: TextDecoration.underline,
                       color: ThemeColors.colorWhite))),
@@ -256,8 +256,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               onTap: () async {
                 print(musicModel);
                 ResponseModel<List> res = await getTopCommentListService(
-                    musicModel.id, CommentEnum.MUSIC, 1, 20);
-                commentTotal = res.total != null ? res.total : 0;
+                    musicModel.id!, CommentEnum.MUSIC, 1, 20);
+                commentTotal = (res.total != null ? res.total : 0)!;
                 showModalBottomSheet(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
@@ -270,7 +270,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                           height: MediaQuery.of(context).size.height * 0.7,
                           child: CommentComponent(
                             type: CommentEnum.MUSIC,
-                            relationId: musicModel.id,
+                            relationId: musicModel.id!,
                           ));
                     });
               }),
@@ -424,30 +424,30 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   /// 播放音乐
   void usePlay(MusicModel musicModel) async {
-    final result = await player.play(HOST + musicModel.localPlayUrl);
-    if (result == 1) {
-      setState(() {
-        // 默认开始播放
-        playState = true;
-      });
-      player.onDurationChanged.listen((event) {
-        if (totalSec == 0) {
-          setState(() {
-            totalSec = event.inSeconds;
-          });
-        }
-      });
-      player.onAudioPositionChanged.listen((event) {
-        _lyricController.progress = Duration(seconds: event.inSeconds);
-        setState(() {
-          duration = event.inSeconds;
-          sliderValue = (duration / totalSec) * 100;
-        });
-      });
-      player.onPlayerCompletion.listen((event) {
-        useNextMusic(); // 切换下一首
-      });
-    }
+    final result = await player.play((HOST + musicModel.localPlayUrl!) as Source);
+    // if (result == 1) {
+    //   setState(() {
+    //     // 默认开始播放
+    //     playState = true;
+    //   });
+    //   player.onDurationChanged.listen((event) {
+    //     if (totalSec == 0) {
+    //       setState(() {
+    //         totalSec = event.inSeconds;
+    //       });
+    //     }
+    //   });
+    //   player.onAudioPositionChanged.listen((event) {
+    //     _lyricController.progress = Duration(seconds: event.inSeconds);
+    //     setState(() {
+    //       duration = event.inSeconds;
+    //       sliderValue = (duration / totalSec) * 100;
+    //     });
+    //   });
+    //   player.onPlayerCompletion.listen((event) {
+    //     useNextMusic(); // 切换下一首
+    //   });
+    // }
   }
 
   void useNextMusic() {

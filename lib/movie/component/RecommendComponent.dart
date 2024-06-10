@@ -11,7 +11,7 @@ class RecommendComponent extends StatelessWidget {
   final String direction;
   final String title;
 
-  const RecommendComponent({Key key, this.classify, this.direction, this.title})
+  const RecommendComponent({required Key key, required this.classify, required this.direction, required this.title})
       : super(key: key);
 
   @override
@@ -23,7 +23,7 @@ class RecommendComponent extends StatelessWidget {
             return Container();
           } else {
             List<MovieDetailModel> movieList = [];
-            snapshot.data.data.forEach((item) {
+            snapshot.data!.data?.forEach((item) {
               movieList.add(MovieDetailModel.fromJson(item));
             });
             return Container(
@@ -33,8 +33,8 @@ class RecommendComponent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TitleComponent(title: title),
-                  MovieListComponent(movieList: movieList, direction: direction)
+                  // TitleComponent(title: title),
+                  // MovieListComponent(movieList: movieList, direction: direction, key: key,)
                 ],
               ),
             );

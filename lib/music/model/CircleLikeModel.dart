@@ -1,11 +1,11 @@
 class CircleLikeModel{
-  int id;
-  int relationId;// 朋友圈id
-  String type;// 类型
-  String userId;// 用户id
-  String username;// 用户名称
-  String createTime;// 创建时间
-  String updateTime;// 更新时间
+  int? id;
+  int? relationId;// 朋友圈id
+  String? type;// 类型
+  String? userId;// 用户id
+  String? username;// 用户名称
+  String? createTime;// 创建时间
+  String? updateTime;// 更新时间
 
   CircleLikeModel({
     this.id,

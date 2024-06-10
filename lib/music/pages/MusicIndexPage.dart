@@ -16,7 +16,7 @@ import '../../config/common.dart';
 import '../service/serverMethod.dart';
 
 class MusicIndexPage extends StatefulWidget {
-  MusicIndexPage({Key key}) : super(key: key);
+  const MusicIndexPage({super.key});
 
   @override
   _MusicIndexPageState createState() => _MusicIndexPageState();
@@ -28,13 +28,13 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   bool get wantKeepAlive => true;
 
   /// 会重复播放的控制器
-  AnimationController _repeatController;
+  late AnimationController _repeatController;
   bool playing = false;
 
   /// 非线性动画
-  Animation<double> _curveAnimation;
+  late Animation<double> _curveAnimation;
   int _currentIndex = 0;
-  List<Widget> pages = [null, null, null, null];
+  List<Widget> pages = [];
   List<String> normalImgUrls = [
     "lib/assets/images/icon-home.png",
     "lib/assets/images/icon-recomment.png",
@@ -48,7 +48,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     "lib/assets/images/icon-user-active.png"
   ];
   List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
-  MusicModel musicModel;
+  MusicModel musicModel = MusicModel();
   @override
   void dispose() {
     super.dispose();
@@ -157,21 +157,21 @@ class _MusicIndexPageState extends State<MusicIndexPage>
         await LocalStroageUtils.getClassMusicParams();
     if (classMusicParamsModel != null) {
       getMusicListByClassifyIdService(
-              classMusicParamsModel.classifyId,
-              classMusicParamsModel.pageNum,
-              classMusicParamsModel.pageSize,
-              classMusicParamsModel.isRedis)
+              classMusicParamsModel.classifyId!,
+              classMusicParamsModel.pageNum!,
+              classMusicParamsModel.pageSize!,
+              classMusicParamsModel.isRedis!)
           .then((res) {
-        List<MusicModel> musicModelList =
-            res.data.map((item) {
-          item = {
-            ...item,
-            ...ClassMusicParamsModel.toMap(classMusicParamsModel)
-          };
-          return MusicModel.fromJson(item);
-        });
-        Provider.of<PlayerMusicProvider>(context)
-            .setPlayMusicList(musicModelList);
+        // List<MusicModel>? musicModelList =
+        //     res.data!.map((item) {
+        //   item = {
+        //     ...item,
+        //     ...ClassMusicParamsModel.toMap(classMusicParamsModel)
+        //   };
+        //   return MusicModel.fromJson(item);
+        // }).cast<MusicModel>();
+        // Provider.of<PlayerMusicProvider>(context)
+        //     .setPlayMusicList(musicModelList);
       });
     }
   }
@@ -205,7 +205,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
                         turns: _curveAnimation,
                         child: ClipOval(
                             child: Image.network(
-                              HOST + musicModel.cover,
+                              HOST + musicModel.cover!,
                               width: ThemeSize.minPlayIcon,
                               height: ThemeSize.minPlayIcon,
                             ))),

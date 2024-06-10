@@ -1,18 +1,18 @@
 class UserInfoModel{
-  String avater;
-  String birthday;
-  String createDate;
-  String email;
-  String role;
-  String sex;
-  String telephone;
-  String updateDate;
-  String userId;
-  String username;
-  String sign;
-  String region;
-  int disabled;
-  int permission;
+  String? avater = "";
+  String? birthday = "";
+  String? createDate = "";
+  String? email = "";
+  String? role = "";
+  String? sex = "";
+  String? telephone = "";
+  String? updateDate = "";
+  String? userId = "";
+  String? username = "";
+  String? sign = "";
+  String? region = "";
+  int? disabled = 0;
+  int? permission = 0;
   UserInfoModel({
     this.avater,
     this.birthday,

@@ -1,11 +1,11 @@
 class MuiscPlayMenuModel{
-  int id;//主键
-  String name;// 歌单名称
-  String userId;// 用户id
-  int total;// 歌单里面的歌曲总数
-  String cover;// 歌单封面
-  String createTime;// 创建时间
-  String updateTime;// 更新时间
+  int? id;//主键
+  String? name;// 歌单名称
+  String? userId;// 用户id
+  int? total;// 歌单里面的歌曲总数
+  String? cover;// 歌单封面
+  String? createTime;// 创建时间
+  String? updateTime;// 更新时间
 
   MuiscPlayMenuModel({
     this.id,

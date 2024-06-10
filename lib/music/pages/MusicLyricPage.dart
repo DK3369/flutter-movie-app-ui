@@ -12,7 +12,7 @@ import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
 
 class MusicLyricPage extends StatefulWidget {
-  MusicLyricPage({Key key}) : super(key: key);
+  const MusicLyricPage({super.key});
 
   @override
   _MusicLyricPageState createState() => _MusicLyricPageState();
@@ -24,8 +24,8 @@ class _MusicLyricPageState extends State<MusicLyricPage>
   bool get wantKeepAlive => true;
 
   //歌词控制器
-  LyricController _lyricController;
-  AudioPlayer player;
+  LyricController _lyricController = LyricController();
+  AudioPlayer player = AudioPlayer();
 
   @override
   void dispose() {
@@ -37,9 +37,9 @@ class _MusicLyricPageState extends State<MusicLyricPage>
     super.initState();
     _lyricController = LyricController(vsync: this);
     player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
-    player.onAudioPositionChanged.listen((event) {
-      _lyricController.progress = Duration(seconds: event.inSeconds);
-    });
+    // player.onAudioPositionChanged.listen((event) {
+    //   _lyricController.progress = Duration(seconds: event.inSeconds);
+    // });
   }
 
   @override
@@ -53,7 +53,7 @@ class _MusicLyricPageState extends State<MusicLyricPage>
           ImageFiltered(
             imageFilter: ImageFilter.blur(
                 sigmaX: 50, sigmaY: 50, tileMode: TileMode.mirror),
-            child: Image.network(HOST + musicModel.cover,
+            child: Image.network(HOST + musicModel.cover!,
                 fit: BoxFit.cover,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width),
@@ -70,7 +70,7 @@ class _MusicLyricPageState extends State<MusicLyricPage>
                           color: ThemeColors.colorWhite,
                           fontSize: ThemeSize.middleFontSize),
                       size: Size(double.infinity, double.infinity),
-                      lyrics: LyricUtil.formatLyric(musicModel.lyrics),
+                      lyrics: LyricUtil.formatLyric(musicModel.lyrics!),
                       controller: _lyricController,
                     ))
             ),

@@ -5,7 +5,7 @@ import 'CategoryComponent.dart';
 class AllCategoryListComponent extends StatefulWidget {
   final List<Map> categoryList;
 
-  AllCategoryListComponent({Key key, this.categoryList}) : super(key: key);
+  AllCategoryListComponent({required Key key, required this.categoryList}) : super(key: key);
 
   @override
   _AllCategoryListComponentState createState() => _AllCategoryListComponentState();

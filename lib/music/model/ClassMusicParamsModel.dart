@@ -1,8 +1,8 @@
 class ClassMusicParamsModel {
-  int classifyId; // 分类id
-  int pageNum; // 第几页，从1开始
-  int pageSize; // 每页显示条数
-  int isRedis; // 是否从redis中获取
+  int? classifyId; // 分类id
+  int? pageNum; // 第几页，从1开始
+  int? pageSize; // 每页显示条数
+  int? isRedis; // 是否从redis中获取
 
   ClassMusicParamsModel(
       {this.classifyId, this.pageNum, this.pageSize, this.isRedis});

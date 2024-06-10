@@ -3,17 +3,17 @@ import '../config/common.dart';
 import 'package:dio/dio.dart';
 
 class ResponseModel<T> {
-  final String status;
-  final String msg;
-  final int total;
-  final String token;
-  final T data;
+   String? status = "";
+   String? msg = "";
+   int? total = 0;
+   String? token = "";
+   T? data ;
   ResponseModel({
     this.status,
-    this.msg,
-    this.total,
-    this.token,
-    this.data
+     this.msg,
+     this.total,
+     this.token,
+     this.data
   });
 
   //工厂模式-用这种模式可以省略New关键字
@@ -31,7 +31,7 @@ class ResponseModel<T> {
 
 // 网络请求工具类
 class HttpUtil {
-  static HttpUtil instance;
+  static HttpUtil instance = HttpUtil();
   Dio dio;
   BaseOptions options;
   String token;
@@ -41,19 +41,21 @@ class HttpUtil {
   }
 
   static HttpUtil getInstance(){
-    if (null == instance) instance = new HttpUtil();
+    if (null == instance) instance = HttpUtil();
     return instance;
   }
 
   HttpUtil(){
+    // HttpUtil instance = HttpUtil();
+
     //BaseOptions、Options、RequestOptions 都可以配置参数，优先级别依次递增，且可以根据优先级别覆盖参数
     options = new BaseOptions(
       //请求基地址,可以包含子路径
       baseUrl: HOST,
       //连接服务器超时时间，单位是毫秒.
-      connectTimeout: 10000,
+      connectTimeout: Duration(seconds: 50),
       //响应流上前后两次接受到数据的间隔，单位为毫秒。
-      receiveTimeout: 5000,
+      receiveTimeout: Duration(seconds: 5),
       //Http请求头.
       headers: {
         //do something

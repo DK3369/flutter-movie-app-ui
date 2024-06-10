@@ -9,9 +9,10 @@ class MovieListComponent extends StatelessWidget {
   final List<MovieDetailModel> movieList;
   final String direction;
 
-  const MovieListComponent(
-      {Key key, this.movieList, this.direction})
-      : super(key: key);
+  // const MovieListComponent(
+  //     {required Key key, required this.movieList, required this.direction})
+  //     : super(key: key);
+  const MovieListComponent({super.key , required this.movieList, required this.direction});
 
   List<Widget> _items(BuildContext context) {
     int index = -1;
@@ -47,12 +48,12 @@ class MovieListComponent extends StatelessWidget {
                   width: 150,
                   height: 200,
                   fit: BoxFit.fill,
-                  image: NetworkImage(item.localImg != null
-                      ? HOST + item.localImg
-                      : item.img))),
+                  image: NetworkImage(item.localImg!.length > 0
+                      ? HOST + item.localImg!
+                      : item.img!))),
           SizedBox(height: 10),
           Text(
-            item.movieName,
+            item.movieName!,
             softWrap: true,
             textAlign: TextAlign.left,
             overflow: TextOverflow.ellipsis,

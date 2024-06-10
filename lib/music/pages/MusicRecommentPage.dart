@@ -14,7 +14,7 @@ import '../../theme/ThemeColors.dart';
 import '../../config/common.dart';
 
 class MusicRecommentPage extends StatefulWidget {
-  MusicRecommentPage({Key key}) : super(key: key);
+  const MusicRecommentPage({super.key});
 
   @override
   _MusicRecommentPageState createState() => _MusicRecommentPageState();
@@ -33,8 +33,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
     "lib/assets/images/icon-no2.png",
     "lib/assets/images/icon-no3.png"
   ];
-  MusicModel currentPlayingMusicModel;
-  bool playing;
+  MusicModel currentPlayingMusicModel = MusicModel();
+  bool playing = false;
 
   @override
   void initState() {
@@ -57,8 +57,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   void getRecommendMusicList(int pageNum, pageSize) {
     getMusicListByClassifyIdService(1, pageNum, pageSize, 0).then((res) {
       setState(() {
-        total = res.total;
-        res.data.forEach((item) {
+        total = res.total!;
+        res.data!.forEach((item) {
           item['classifyId'] = 1;
           item['pageNum'] = pageNum;
           item['pageSize'] = pageSize;
@@ -93,7 +93,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
           ClipOval(
               child: Image.network(
             //从全局的provider中获取用户信息
-            HOST + musicModel.cover,
+            HOST + musicModel.cover!,
             height: ThemeSize.middleAvater,
             width: ThemeSize.middleAvater,
             fit: BoxFit.cover,
@@ -103,12 +103,12 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(musicModel.songName,
+                Text(musicModel.songName!,
                     softWrap: false,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis),
                 SizedBox(height: ThemeSize.smallMargin),
-                Text(musicModel.authorName,
+                Text(musicModel.authorName!,
                     style: TextStyle(color: ThemeColors.disableColor)),
               ],
             ),
@@ -133,15 +133,15 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               height: ThemeSize.smallIcon),onTap: (){
             if(musicModel.isFavorite == 0){
               insertMusicFavoriteService(musicModel).then((res) => {
-                if(res.data > 0){
+                if(res.data! > 0){
                   setState(() {
                     musicModel.isFavorite = 1;
                   })
                 }
               });
             }else{
-              deleteMusicFavoriteService(musicModel.id).then((res) => {
-                if(res.data > 0){
+              deleteMusicFavoriteService(musicModel.id!).then((res) => {
+                if(res.data! > 0){
                   setState(() {
                     musicModel.isFavorite = 0;
                   })
@@ -181,7 +181,7 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
                 msg: "已经到底了",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.CENTER,
-                timeInSecForIos: 1,
+                // timeInSecForIos: 1,
                 backgroundColor: Colors.blue,
                 textColor: Colors.white,
                 fontSize: ThemeSize.middleFontSize);

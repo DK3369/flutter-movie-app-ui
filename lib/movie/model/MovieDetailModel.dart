@@ -1,31 +1,31 @@
 class MovieDetailModel {
-  int id; //主键
-  int movieId; //电影id
-  String movieName; //电影名称
-  String director; //导演
-  String star; //主演
-  String type; //类型
-  String countryLanguage; //国家/语言
-  String viewingState; //观看状态
-  String releaseTime; //上映时间
-  String plot; //剧情
-  String updateTime; //更新时间
-  String isRecommend; //是否推荐，0:不推荐，1:推荐
-  String img; //电影海报
-  String classify; //分类 电影,电视剧,动漫,综艺,新片库,福利,午夜,恐怖,其他
-  String sourceName; //来源名称，本地，骑士影院，爱奇艺
-  String sourceUrl; //来源地址
-  String createTime; //创建时间
-  String localImg; //本地图片
-  String label; //标签
-  String description; //简单描述
-  String useStatus; //0代表未使用，1表示正在使用，是banner和carousel图的才有
-  double score; //评分
-  String category; //类目，值为banner首屏，carousel：滚动轮播
-  String ranks; //排名
-  String doubanUrl; //对应豆瓣网的地址
-  String duration;// 时长
-  String privilegeId;// 权限
+  int? id = 0; //主键
+  int? movieId = 0; //电影id
+  String? movieName = ""; //电影名称
+  String? director = ""; //导演
+  String? star = ""; //主演
+  String? type = ""; //类型
+  String? countryLanguage = ""; //国家/语言
+  String? viewingState = ""; //观看状态
+  String? releaseTime = ""; //上映时间
+  String? plot = ""; //剧情
+  String? updateTime = ""; //更新时间
+  String? isRecommend = ""; //是否推荐，0:不推荐，1:推荐
+  String? img = ""; //电影海报
+  String? classify = ""; //分类 电影,电视剧,动漫,综艺,新片库,福利,午夜,恐怖,其他
+  String? sourceName = ""; //来源名称，本地，骑士影院，爱奇艺
+  String? sourceUrl = ""; //来源地址
+  String? createTime = ""; //创建时间
+  String? localImg = ""; //本地图片
+  String? label = ""; //标签
+  String? description = ""; //简单描述
+  String? useStatus = ""; //0代表未使用，1表示正在使用，是banner和carousel图的才有
+  double? score = 0.0; //评分
+  String? category = ""; //类目，值为banner首屏，carousel：滚动轮播
+  String? ranks = ""; //排名
+  String? doubanUrl = ""; //对应豆瓣网的地址
+  String? duration = "";// 时长
+  String? privilegeId = "";// 权限
   MovieDetailModel(
       {this.id,
       this.movieId,

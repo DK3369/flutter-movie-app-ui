@@ -10,7 +10,8 @@ import '../../movie/service/serverMethod.dart';
 class CommentComponent extends StatefulWidget {
   final int relationId;
   final CommentEnum type;
-  CommentComponent({Key key,this.relationId,this.type}) : super(key: key);
+  // CommentComponent({Key key,this.relationId,this.type}) : super(key: key);
+  CommentComponent({super.key, required this.relationId, required this.type});
 
   @override
   _CommentComponentState createState() => _CommentComponentState();
@@ -18,8 +19,8 @@ class CommentComponent extends StatefulWidget {
 
 class _CommentComponentState extends State<CommentComponent>{
   List<CommentModel>commentList = [];
-  CommentModel replyCommentModel;
-  CommentModel firstCommentModel;
+  CommentModel replyCommentModel = CommentModel();
+  CommentModel firstCommentModel = CommentModel();
   bool disabledSend = false;
   bool loading = false;
   int commentTotal = 0;
@@ -30,10 +31,10 @@ class _CommentComponentState extends State<CommentComponent>{
     super.initState();
     getTopCommentListService(widget.relationId, CommentEnum.MOVIE, 1,20).then((res) {
       setState(() {
-        res.data.forEach((element) {
+        res.data!.forEach((element) {
           commentList.add(CommentModel.fromJson(element));
         });
-        commentTotal = res.total;
+        commentTotal = res.total ?? 0;
       });
     });
   }
@@ -131,8 +132,8 @@ class _CommentComponentState extends State<CommentComponent>{
           SizedBox(width: ThemeSize.containerPadding),
           Container(
             height: ThemeSize.middleAvater,
-            child: RaisedButton(
-              color: Theme.of(context).accentColor,
+            child: TextButton(
+              // color: Theme.of(context).accentColor,
               onPressed: () {
                 if(loading)return;
                 loading = true;
@@ -140,8 +141,8 @@ class _CommentComponentState extends State<CommentComponent>{
                     type:widget.type.toString().split('.').last,
                     relationId:widget.relationId,
                     content: inputController.text,
-                    topId:firstCommentModel != null ? firstCommentModel.id : null,
-                    parentId:replyCommentModel != null ? replyCommentModel.id : null
+                    topId:firstCommentModel.id!,
+                    parentId:replyCommentModel.id!
                 );
                 insertCommentService(mCommentModel.toMap()).then((value){
                   loading = false;
@@ -153,7 +154,7 @@ class _CommentComponentState extends State<CommentComponent>{
                       commentList.add(CommentModel.fromJson(value.data));
                     }
                   });
-                  firstCommentModel = replyCommentModel = null;
+                  firstCommentModel = replyCommentModel;
                   inputController.text = "";
                 });
               },
@@ -165,10 +166,10 @@ class _CommentComponentState extends State<CommentComponent>{
               ),
 
               ///圆角
-              shape: RoundedRectangleBorder(
-                  side: BorderSide.none,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(ThemeSize.bigRadius))),
+              // shape: RoundedRectangleBorder(
+              //     side: BorderSide.none,
+              //     borderRadius: BorderRadius.all(
+              //         Radius.circular(ThemeSize.bigRadius))),
             ),
           )
         ]));

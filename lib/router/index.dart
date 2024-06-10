@@ -46,5 +46,6 @@ class Routes {
     router.define('/MusicSingerPage', handler: Handler(handlerFunc: (BuildContext context, params) {
       return MusicSingerPage();
     }));
+
   }
 }

@@ -60,7 +60,7 @@ class PlayerMusicProvider with ChangeNotifier {
       _playIndex = playIndex;
       insertMusicRecordService(_musicModel);
       LocalStroageUtils.setPlayMusic(_musicModel);
-      _player.play(HOST + _musicModel.localPlayUrl);
+      _player.play((HOST + _musicModel.localPlayUrl!) as Source);
       notifyListeners();
     }
   }

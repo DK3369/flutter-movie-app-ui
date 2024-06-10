@@ -3,7 +3,8 @@ import '../../theme/ThemeStyle.dart';
 
 class TitleComponent extends StatelessWidget {
   final String title;
-  const TitleComponent({Key key,this.title}) : super(key: key);
+  // const TitleComponent({required Key key, required this.title}) : super(key: key);
+  const TitleComponent({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

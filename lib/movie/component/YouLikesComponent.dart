@@ -9,7 +9,7 @@ import '../../theme/ThemeStyle.dart';
 class YouLikesComponent extends StatelessWidget {
   final String label;
 
-  const YouLikesComponent({Key key, this.label}) : super(key: key);
+  const YouLikesComponent({required Key key, required this.label}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class YouLikesComponent extends StatelessWidget {
             return Container();
           } else {
             List<MovieDetailModel> movieList = [];
-            snapshot.data.data.forEach((item) {
+            snapshot.data!.data!.forEach((item) {
               movieList.add(MovieDetailModel.fromJson(item));
             });
             return Container(
@@ -28,11 +28,11 @@ class YouLikesComponent extends StatelessWidget {
                 margin: ThemeStyle.margin,
                 child: Column(
                   children: <Widget>[
-                    TitleComponent(title: "猜你想看"),
-                    MovieListComponent(
-                      movieList: movieList,
-                      direction: "horizontal",
-                    )
+                    // TitleComponent(title: "猜你想看", key: key,),
+                    // MovieListComponent(
+                    //   movieList: movieList,
+                    //   direction: "horizontal", key: key,
+                    // )
                   ],
                 ));
           }

@@ -1,21 +1,21 @@
 class CommentModel{
-  int id;//主键
-  String type;// 类型
-  String content;//评论内容
-  int parentId;//父节点id
-  int topId;//顶级节点id
-  int relationId;//影片id
-  String createTime;//创建时间
-  String updateTime;//更新时间
-  int replyCount;//回复数量
-  String userId;//用户id
-  String username;//用户名
-  String avater;//用户头像
-  String replyUserId;//被回复者id
-  String replyUserName;//被回复者名称
-  String showCommentCount;//显示的回复数量
-  int replyPageNum;
-  List<CommentModel>replyList;
+  int? id = 0;//主键
+  String? type = "";// 类型
+  String? content = "";//评论内容
+  int? parentId = 0;//父节点id
+  int? topId = 0;//顶级节点id
+  int? relationId = 0;//影片id
+  String? createTime = "";//创建时间
+  String? updateTime = "";//更新时间
+  int? replyCount;//回复数量
+  String? userId = "";//用户id
+  String? username = "";//用户名
+  String? avater = "";//用户头像
+  String? replyUserId = "";//被回复者id
+  String? replyUserName = "";//被回复者名称
+  String? showCommentCount = "";//显示的回复数量
+  int? replyPageNum = 0;
+  List<CommentModel>? replyList = [];
   CommentModel({
     this.id,
     this.type,

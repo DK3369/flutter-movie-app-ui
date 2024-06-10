@@ -13,7 +13,7 @@ void main() {
       providers: [
         ChangeNotifierProvider.value(value: TokenProvider("")), //初始化默认值
         ChangeNotifierProvider.value(value: UserInfoProvider(UserInfoModel.fromJson({}))), //初始化默认值
-        ChangeNotifierProvider.value(value: PlayerMusicProvider(null)), //初始化默认值
+        // ChangeNotifierProvider.value(value: PlayerMusicProvider()), //初始化默认值
       ],
       child: MyApp(),
     ),

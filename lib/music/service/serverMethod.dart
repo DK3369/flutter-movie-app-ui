@@ -11,11 +11,11 @@ import '../../utils/HttpUtil .dart';
 /// @date: 2023-05-18 23:32
 Future<ResponseModel<dynamic>> getKeyWordMusicService() async {
   try {
-    Response response = await dio.get(servicePath['getKeywordMusic']);
+    Response response = await dio.get(servicePath['getKeywordMusic']!);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -24,11 +24,11 @@ Future<ResponseModel<dynamic>> getKeyWordMusicService() async {
 /// @date: 2023-05-29 22:57
 Future<ResponseModel<List>> getMusicClassifyService() async {
   try {
-    Response response = await dio.get(servicePath['getMusicClassify']);
+    Response response = await dio.get(servicePath['getMusicClassify']!);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -44,7 +44,7 @@ Future<ResponseModel<List>> getMusicListByClassifyIdService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -59,7 +59,7 @@ Future<ResponseModel<List>> getSingerListService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -74,7 +74,7 @@ Future<ResponseModel<List>> getCircleListByTypeService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -83,11 +83,11 @@ Future<ResponseModel<List>> getCircleListByTypeService(
 /// @date: 2023-07-08 18:45
 Future<ResponseModel<List>> getMusicPlayMenuService() async {
   try {
-    Response response = await dio.get(servicePath['getMusicPlayMenu']);
+    Response response = await dio.get(servicePath['getMusicPlayMenu']!);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -102,7 +102,7 @@ Future<ResponseModel<List>> getMySingerService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -117,7 +117,7 @@ Future<ResponseModel<List>> getMusicRecordService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -127,12 +127,12 @@ Future<ResponseModel<List>> getMusicRecordService(
 Future<ResponseModel<int>> insertMusicRecordService(
     MusicModel musicModel) async {
   try {
-    Response response = await dio.post(servicePath['insertMusicRecord'],
+    Response response = await dio.post(servicePath['insertMusicRecord']!,
         data: MusicModel.toMap(musicModel));
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -142,12 +142,12 @@ Future<ResponseModel<int>> insertMusicRecordService(
 Future<ResponseModel<int>> insertMusicFavoriteService(
     MusicModel musicModel) async {
   try {
-    Response response = await dio.post(servicePath['insertMusicFavorite'],
+    Response response = await dio.post(servicePath['insertMusicFavorite']!,
         data: MusicModel.toMap(musicModel));
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -157,11 +157,11 @@ Future<ResponseModel<int>> insertMusicFavoriteService(
 Future<ResponseModel<int>> deleteMusicFavoriteService(int id) async {
   try {
     Response response =
-        await dio.delete(servicePath['deleteMusicFavorite'] + id.toString());
+        await (dio.delete(servicePath['deleteMusicFavorite']! + id.toString()));
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -176,7 +176,7 @@ Future<ResponseModel<List>> queryMusicFavoriteService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -191,7 +191,7 @@ Future<ResponseModel<List>> searchMusicService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -200,11 +200,11 @@ Future<ResponseModel<List>> searchMusicService(
 /// @date: 2024-02-27 22:51
 Future<ResponseModel<List>> getSingerCategoryService() async {
   try {
-    Response response = await dio.get(servicePath['getSingerCategory']);
+    Response response = await dio.get(servicePath['getSingerCategory']!);
     return ResponseModel<List>.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -214,11 +214,11 @@ Future<ResponseModel<List>> getSingerCategoryService() async {
 Future<ResponseModel> saveLikeService(CircleLikeModel circleLikeModel) async {
   try {
     Response response =
-        await dio.post(servicePath['saveLike'], data: circleLikeModel.toMap());
+        await dio.post(servicePath['saveLike']!, data: circleLikeModel.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -233,6 +233,6 @@ Future<ResponseModel<int>> deleteLikeService(
     return ResponseModel<int>.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }

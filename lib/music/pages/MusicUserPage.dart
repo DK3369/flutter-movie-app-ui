@@ -12,7 +12,7 @@ import '../model/MuiscMySingerModel.dart';
 import '../model/MusicModel.dart';
 
 class MusicUserPage extends StatefulWidget {
-  MusicUserPage({Key key}) : super(key: key);
+  const MusicUserPage({super.key});
 
   @override
   _MusicUserPageState createState() => _MusicUserPageState();
@@ -24,8 +24,8 @@ class _MusicUserPageState extends State<MusicUserPage>
   bool get wantKeepAlive => true;
   List playRecordList = []; // 播放记录列表
   // 创建一个从0到360弧度的补间动画 v * 2 * π
-  AnimationController _repeatController; // 会重复播放的控制器
-  Animation<double> _curveAnimation;
+  late AnimationController _repeatController; // 会重复播放的控制器
+  late Animation<double> _curveAnimation;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _MusicUserPageState extends State<MusicUserPage>
 
     getMusicRecordService(1, 10).then((value) {
       this.setState(() {
-        playRecordList = value.data;
+        playRecordList = value.data!;
       });
     });
   }
@@ -77,7 +77,7 @@ class _MusicUserPageState extends State<MusicUserPage>
           ClipOval(
               child: Image.network(
             //从全局的provider中获取用户信息
-            HOST + userInfo.avater,
+            HOST + userInfo.avater!,
             height: ThemeSize.bigAvater,
             width: ThemeSize.bigAvater,
             fit: BoxFit.cover,
@@ -88,10 +88,10 @@ class _MusicUserPageState extends State<MusicUserPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(userInfo.username,
+                  Text(userInfo.username!,
                       style: TextStyle(fontSize: ThemeSize.bigFontSize)),
                   SizedBox(height: ThemeSize.smallMargin),
-                  Text(userInfo.sign,
+                  Text(userInfo.sign!,
                       style: TextStyle(color: ThemeColors.subTitle))
                 ],
               )),
@@ -188,7 +188,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                     return Container();
                   } else {
                     List<Widget> playMenuList = [];
-                    snapshot.data.data.forEach((item) {
+                    snapshot.data?.data?.forEach((item) {
                       MuiscPlayMenuModel muiscPlayMenuModel =
                           MuiscPlayMenuModel.fromJson(item);
                       playMenuList.add(buildPlayMenuItem(muiscPlayMenuModel));
@@ -213,7 +213,7 @@ class _MusicUserPageState extends State<MusicUserPage>
           muiscPlayMenuModel.cover != null
               ? ClipOval(
                   child: Image.network(
-                  HOST + muiscPlayMenuModel.cover,
+                  HOST + muiscPlayMenuModel.cover!,
                   width: ThemeSize.bigAvater,
                   height: ThemeSize.bigAvater,
                 ))
@@ -228,7 +228,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                   ),
                   child: Center(
                       child: Text(
-                    muiscPlayMenuModel.name.substring(0, 1),
+                    muiscPlayMenuModel.name!.substring(0, 1),
                     style: TextStyle(fontSize: ThemeSize.bigFontSize),
                   ))),
           SizedBox(width: ThemeSize.containerPadding),
@@ -236,7 +236,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(muiscPlayMenuModel.name),
+                Text(muiscPlayMenuModel.name!),
                 SizedBox(height: ThemeSize.smallMargin),
                 Text(muiscPlayMenuModel.total.toString() + "首",
                     style: TextStyle(color: ThemeColors.subTitle))
@@ -291,7 +291,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                     return Container();
                   } else {
                     List<Widget> playMenuList = [];
-                    snapshot.data.data.forEach((item) {
+                    snapshot.data?.data?.forEach((item) {
                       MuiscMySingerModel mySingerModel =
                           MuiscMySingerModel.fromJson(item);
                       playMenuList.add(buildMySingerItem(mySingerModel));
@@ -315,9 +315,9 @@ class _MusicUserPageState extends State<MusicUserPage>
           mySingerModel.avatar != null
               ? ClipOval(
                   child: Image.network(
-                  mySingerModel.avatar.indexOf("http") != -1
-                      ? mySingerModel.avatar.replaceAll("{size}", "240")
-                      : HOST + mySingerModel.avatar,
+                  mySingerModel.avatar!.indexOf("http") != -1
+                      ? mySingerModel.avatar!.replaceAll("{size}", "240")
+                      : HOST + mySingerModel.avatar!,
                   width: ThemeSize.bigAvater,
                   height: ThemeSize.bigAvater,
                 ))
@@ -332,7 +332,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                   ),
                   child: Center(
                       child: Text(
-                    mySingerModel.authorName.substring(0, 1),
+                    mySingerModel.authorName!.substring(0, 1),
                     style: TextStyle(fontSize: ThemeSize.bigFontSize),
                   ))),
           SizedBox(width: ThemeSize.containerPadding),
@@ -340,7 +340,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(mySingerModel.authorName),
+                Text(mySingerModel.authorName!),
                 SizedBox(height: ThemeSize.smallMargin),
                 Text(mySingerModel.total.toString() + "首",
                     style: TextStyle(color: ThemeColors.subTitle))
@@ -403,7 +403,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                             _repeatController.stop(canceled: false);
                           });
                           this.setState(() {
-                            playRecordList = value.data;
+                            playRecordList = value.data!;
                           });
                         });
 
@@ -445,7 +445,7 @@ class _MusicUserPageState extends State<MusicUserPage>
           children: [
             ClipOval(
                 child: Image.network(
-              HOST + musicModel.cover,
+              HOST + musicModel.cover!,
               width: ThemeSize.bigAvater,
               height: ThemeSize.bigAvater,
             )),
@@ -454,7 +454,7 @@ class _MusicUserPageState extends State<MusicUserPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(musicModel.songName),
+                  Text(musicModel.songName!),
                   SizedBox(height: ThemeSize.smallMargin),
                   Text("听过" + musicModel.times.toString() + "次",
                       style: TextStyle(color: ThemeColors.subTitle))

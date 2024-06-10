@@ -1,18 +1,18 @@
 class MusicAuthorModel {
-  int id;//主键
-  int authorId;// 歌手id
-  String authorName;// 歌手名称
-  String language;// 语言
-  int isPublish;// 是否发布
-  String avatar;// 头像
-  int type;// 类型
-  String country;// 国家
-  String birthday;// 生日
-  int identity;// 身份
-  int rank;// 排名
-  String createTime;// 创建时间
-  String updateTime;// 更新时间
-  int total;// 歌曲总数
+  int? id;//主键
+  int? authorId;// 歌手id
+  String? authorName;// 歌手名称
+  String? language;// 语言
+  int? isPublish;// 是否发布
+  String? avatar;// 头像
+  int? type;// 类型
+  String? country;// 国家
+  String? birthday;// 生日
+  int? identity;// 身份
+  int? rank;// 排名
+  String? createTime;// 创建时间
+  String? updateTime;// 更新时间
+  int? total;// 歌曲总数
 
   MusicAuthorModel(
       {this.id,

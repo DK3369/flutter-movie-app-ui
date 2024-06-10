@@ -9,7 +9,7 @@ import '../../theme/ThemeSize.dart';
 class SearchCommponent extends StatelessWidget {
   final String classify;
 
-  const SearchCommponent({Key key, this.classify}) : super(key: key);
+  const SearchCommponent({required Key key, required this.classify}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class SearchCommponent extends StatelessWidget {
           var result = snapshot.data;
           String keyword = "";
           if (result != null && result.data != null) {
-            keyword = MovieDetailModel.fromJson(result.data).movieName;
+            keyword = MovieDetailModel.fromJson(result.data).movieName!;
           }
           return InkWell(
               onTap: () {
