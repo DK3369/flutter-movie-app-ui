@@ -9,7 +9,7 @@ import '../../theme/ThemeStyle.dart';
 class YouLikesComponent extends StatelessWidget {
   final String label;
 
-  const YouLikesComponent({required Key key, required this.label}) : super(key: key);
+  const YouLikesComponent({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {

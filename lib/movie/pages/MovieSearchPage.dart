@@ -15,7 +15,7 @@ import '../../theme/ThemeSize.dart';
 class MovieSearchPage extends StatefulWidget {
   final String keyword;
 
-  MovieSearchPage({Key key, this.keyword}) : super(key: key);
+  MovieSearchPage({super.key, required this.keyword});
 
   @override
   _MovieSearchPageState createState() => _MovieSearchPageState();
@@ -103,9 +103,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                         child: Image(
                             fit: BoxFit.fill,
                             image: NetworkImage(
-                                searchResult[index].localImg != null
-                                    ? HOST + searchResult[index].localImg
-                                    : searchResult[index].img))),
+                                searchResult[index].localImg ?? searchResult[index].img!))),
                   ),
                   Expanded(
                       flex: 1,
@@ -117,7 +115,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              searchResult[index].movieName,
+                              searchResult[index].movieName ?? "",
                               style: TextStyle(fontSize: ThemeSize.bigFontSize),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -125,7 +123,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].star != null
-                                    ? "主演：" + searchResult[index].star
+                                    ? "主演：" + (searchResult[index].star ?? "")
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -134,7 +132,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].director != null
-                                    ? "导演：" + searchResult[index].director
+                                    ? "导演：" + (searchResult[index].director ?? "")
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -143,7 +141,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].type != null
-                                    ? "类型：" + searchResult[index].type
+                                    ? "类型：" + (searchResult[index].type ?? "")
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -152,14 +150,14 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                             SizedBox(height: ThemeSize.smallMargin),
                             Text(
                                 searchResult[index].releaseTime != null
-                                    ? "上映时间：" + searchResult[index].releaseTime
+                                    ? "上映时间：" + (searchResult[index].releaseTime ?? "")
                                     : "",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontSize: ThemeSize.smallFontSize)),
                             SizedBox(height: ThemeSize.smallMargin),
-                            ScoreComponent(score: searchResult[index].score),
+                            ScoreComponent(score: searchResult[index].score ?? 0.0),
                             SizedBox(height: ThemeSize.smallMargin),
                           ],
                         ),
@@ -227,8 +225,8 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
           SizedBox(width: ThemeSize.smallMargin),
           Container(
               height: ThemeSize.buttonHeight,
-              child: RaisedButton(
-                color: Theme.of(context).accentColor,
+              child: TextButton(
+                // color: Theme.of(context).accentColor,
                 onPressed: () async {
                   if (keywordController.text == "")
                     keywordController.text = widget.keyword;
@@ -257,10 +255,10 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                 ),
 
                 ///圆角
-                shape: RoundedRectangleBorder(
-                    side: BorderSide.none,
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
+                // shape: RoundedRectangleBorder(
+                //     side: BorderSide.none,
+                //     borderRadius:
+                //         BorderRadius.all(Radius.circular(ThemeSize.bigRadius))),
               ))
         ],
       ),
@@ -274,7 +272,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
       setState(() {
         searching = true;
         // 顶部轮播组件数
-        res.data.forEach((element) {
+        res.data!.forEach((element) {
           searchResult.add(MovieDetailModel.fromJson(element));
         });
       });
@@ -286,10 +284,10 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
   }
 
   Widget Label(String text) {
-    return FlatButton(
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      color: Color.fromARGB(255, 230, 230, 230),
+    return TextButton(
+      // splashColor: Colors.transparent,
+      // highlightColor: Colors.transparent,
+      // color: Color.fromARGB(255, 230, 230, 230),
       onPressed: () {
         setState(() {
           keywordController.text = text;
@@ -304,15 +302,15 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
       ),
 
       ///圆角
-      shape: RoundedRectangleBorder(
-          side: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(50))),
+      // shape: RoundedRectangleBorder(
+      //     side: BorderSide.none,
+      //     borderRadius: BorderRadius.all(Radius.circular(50))),
     );
   }
 
   getHistory() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String historyLabels = prefs.getString('historyMovieLabels');
+    String? historyLabels = prefs.getString('historyMovieLabels');
     if (historyLabels != null && historyLabels != '') {
       setState(() {
         myHistoryLabelsName = historyLabels.split(",");

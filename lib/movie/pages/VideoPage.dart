@@ -12,8 +12,7 @@ import '../../theme/ThemeSize.dart';
 import '../model/CategoryModel.dart';
 
 class VideoPage extends StatefulWidget {
-  VideoPage({Key key}) : super(key: key);
-
+  VideoPage({super.key});
   @override
   _VideoPageState createState() => _VideoPageState();
 }
@@ -33,14 +32,14 @@ class _VideoPageState extends State<VideoPage>
   void initState() {
     super.initState();
     getAllCategoryByClassifyService("电视剧").then((res) {
-      allCategoryLists = res.data.map((element) {
-        return CategoryModel.fromJson(element);
-      }); // 顶部轮播组件数
+      // allCategoryLists = res.data?.map((element) {
+      //   return CategoryModel.fromJson(element);
+      // }); // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((item) {
           categoryList.add(CategoryComponent(
-            category: item.category,
-            classify: item.classify,
+            category: item.category ?? "",
+            classify: item.classify ?? "",
           ));
         });
       });
@@ -52,8 +51,8 @@ class _VideoPageState extends State<VideoPage>
       setState(() {
         var item = allCategoryLists[pageNum];
         categoryList.add(CategoryComponent(
-          category: item.category,
-          classify: item.classify,
+          category: item.category ?? "",
+          classify: item.classify ?? "",
         ));
       });
     }
@@ -97,7 +96,7 @@ class _VideoPageState extends State<VideoPage>
                       msg: "已经到底了",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
+                      // timeInSecForIos: 1,
                       backgroundColor: Colors.blue,
                       textColor: Colors.white,
                       fontSize: ThemeSize.middleFontSize);

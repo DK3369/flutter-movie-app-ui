@@ -12,7 +12,7 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentIndex = 0;
-  List<Widget> pages = [];
+  List<Widget> pages = [MovieHomePage(),MoviePage(),VideoPage(),MovieMyPage()];
 
   @override
   void dispose() {
@@ -77,17 +77,17 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   var _pageController = PageController();
 
   Widget _getPage() {
-    if (pages[_currentIndex] == null) {
-      if (_currentIndex == 0) {
-        pages[_currentIndex] = MovieHomePage();
-      } else if (_currentIndex == 1) {
-        pages[_currentIndex] = MoviePage();
-      } else if (_currentIndex == 2) {
-        pages[_currentIndex] = VideoPage();
-      } else if (_currentIndex == 3) {
-        pages[_currentIndex] = MovieMyPage();
-      }
-    }
+    // if (pages[_currentIndex] == null) {
+    //   if (_currentIndex == 0) {
+    //     pages[_currentIndex] = MovieHomePage();
+    //   } else if (_currentIndex == 1) {
+    //     pages[_currentIndex] = MoviePage();
+    //   } else if (_currentIndex == 2) {
+    //     pages[_currentIndex] = VideoPage();
+    //   } else if (_currentIndex == 3) {
+    //     pages[_currentIndex] = MovieMyPage();
+    //   }
+    // }
     return pages[_currentIndex];
   }
 

@@ -9,7 +9,7 @@ import '../../theme/ThemeSize.dart';
 class SearchCommponent extends StatelessWidget {
   final String classify;
 
-  const SearchCommponent({required Key key, required this.classify}) : super(key: key);
+  const SearchCommponent({super.key, required this.classify});
 
   @override
   Widget build(BuildContext context) {

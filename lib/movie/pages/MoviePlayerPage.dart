@@ -20,7 +20,9 @@ import '../../music/component/CommentComponent.dart';
 class MoviePlayerPage extends StatefulWidget {
   final MovieDetailModel movieItem;
 
-  MoviePlayerPage({Key key, this.movieItem}) : super(key: key);
+  MoviePlayerPage({super.key, required this.movieItem});
+
+  // MoviePlayerPage({Key key, this.movieItem}) : super(key: key);
 
   @override
   _MoviePlayerPageState createState() => _MoviePlayerPageState();
@@ -35,8 +37,8 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
   bool showComment = false;
   List<CommentModel> commentList = [];
   int pageNum = 1;
-  CommentModel replyTopCommentItem;
-  CommentModel replyCommentItem;
+  CommentModel replyTopCommentItem = CommentModel();
+  CommentModel replyCommentItem = CommentModel();
   bool disabledSend = true;
   TextEditingController keywordController = TextEditingController();
   String hintText = '';
@@ -50,18 +52,18 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
         disabledSend = keywordController.text == "";
       });
     });
-    getCommentCountService(widget.movieItem.id, CommentEnum.MOVIE).then((res) {
+    getCommentCountService(widget.movieItem.id! , CommentEnum.MOVIE).then((res) {
       setState(() {
-        commentTotal = res.data;
+        commentTotal = res.data!;
       });
     });
     savePlayRecordService(widget.movieItem);
   }
 
   void isFavorite() {
-    isFavoriteService(widget.movieItem.movieId).then((res) {
+    isFavoriteService(widget.movieItem.movieId!).then((res) {
       setState(() {
-        isFavoriteFlag = res.data > 0;
+        isFavoriteFlag = res.data! > 0;
       });
     });
   }
@@ -85,10 +87,10 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                       Column(
                         children: <Widget>[
                           widget.movieItem.label != null
-                              ? YouLikesComponent(label: widget.movieItem.label)
+                              ? YouLikesComponent(label: widget.movieItem.label ?? "")
                               : SizedBox(),
                           RecommendComponent(
-                            classify: widget.movieItem.classify,
+                            classify: widget.movieItem.classify!,
                             direction: "horizontal",
                             title: "推荐",
                           )
@@ -111,7 +113,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             return Container();
           } else {
             List<MovieUrlModel> playList = [];
-            snapshot.data.data.forEach((item) {
+            snapshot.data!.data!.forEach((item) {
               playList.add(MovieUrlModel.fromJson(item));
             });
             if (playList.length == 0) {
@@ -120,7 +122,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             List<List<MovieUrlModel>> movieUrlGroup = [];
             for (int i = 0; i < playList.length; i++) {
               if (i == 0) {
-                url = playList[0].url;
+                url = playList[0].url ?? "";
               }
               int index = movieUrlGroup.indexWhere((element) {
                 return element[0].playGroup == playList[i].playGroup;
@@ -196,15 +198,16 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                                 color: currentIndex == index
                                     ? ThemeColors.colorWhite
                                     : ThemeColors.borderColor))),
-                    child: Text(
-                        RegExp("^[0-9]+\$")
-                                .hasMatch(movieUrlGroup[index][0].playGroup)
-                            ? movieUrlGroup[index][0].playGroup
-                            : '线路${movieUrlGroup[index][0].playGroup}',
-                        style: TextStyle(
-                            color: currentIndex == index
-                                ? Colors.orange
-                                : Colors.black))));
+                    // child: Text(
+                    //     RegExp("^[0-9]+\$")
+                    //             .hasMatch(movieUrlGroup[index][0].playGroup)
+                    //         ? movieUrlGroup[index][0].playGroup
+                    //         : '线路${movieUrlGroup[index][0].playGroup}',
+                    //     style: TextStyle(
+                    //         color: currentIndex == index
+                    //             ? Colors.orange
+                    //             : Colors.black))
+                ));
           }),
     );
   }
@@ -222,7 +225,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             borderRadius:
                 BorderRadius.all(Radius.circular(ThemeSize.middleRadius))),
         child: Center(
-          child: Text(movieUrlGroup[0][i].label,
+          child: Text(movieUrlGroup[0][i].label ?? "",
               style: TextStyle(
                   color: url == movieUrlGroup[currentIndex][i].url
                       ? Colors.orange
@@ -292,7 +295,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                             height: MediaQuery.of(context).size.height * 0.8,
                             child:  CommentComponent(
                               type: CommentEnum.MOVIE,
-                              relationId: widget.movieItem.id,
+                              relationId: widget.movieItem.id ?? 0,
                             ));
                       });
                 });
@@ -302,8 +305,8 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             onTap: () {
               if (isFavoriteFlag) {
                 //如果已经收藏过了，点击之后取消收藏
-                deleteFavoriteService(widget.movieItem.movieId).then((res) {
-                  if (res.data > 0) {
+                deleteFavoriteService(widget.movieItem.movieId ?? 0).then((res) {
+                  if (res.data! > 0) {
                     setState(() {
                       isFavoriteFlag = false;
                     });
@@ -311,8 +314,8 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
                 });
               } else {
                 //如果没有收藏过，点击之后添加收藏
-                saveFavoriteService(widget.movieItem.id).then((res) {
-                  if (res.data > 0) {
+                saveFavoriteService(widget.movieItem.id ?? 0).then((res) {
+                  if (res.data! > 0) {
                     setState(() {
                       isFavoriteFlag = true;
                     });
@@ -344,17 +347,17 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                widget.movieItem.movieName,
+                widget.movieItem.movieName ?? "",
                 style: ThemeStyle.mainTitleStyle,
               ),
               SizedBox(height: ThemeSize.smallMargin),
               Text(
-                widget.movieItem.star,
+                widget.movieItem.star ?? "" ,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: ThemeSize.smallMargin),
-              ScoreComponent(score: widget.movieItem.score),
+              ScoreComponent(score: widget.movieItem.score! ),
             ]));
   }
 }

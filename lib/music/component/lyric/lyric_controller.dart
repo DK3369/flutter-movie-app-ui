@@ -14,10 +14,10 @@ class LyricController extends ChangeNotifier {
   Duration get progress => _progress;
 
   //滑动保持器
-  Timer draggingTimer;
+  Timer? draggingTimer;
 
   //滑动保持时间
-  Duration draggingTimerDuration;
+  Duration? draggingTimerDuration;
 
   bool _isDragging = false;
 
@@ -28,17 +28,17 @@ class LyricController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Duration draggingProgress;
+  Duration? draggingProgress;
 
-  Function draggingComplete;
+  Function? draggingComplete;
 
-  double draggingOffset;
+  double draggingOffset = 0.0;
 
   //启用动画
-  TickerProvider vsync;
+  TickerProvider? vsync;
 
   //动画控制器
-  AnimationController animationController;
+  AnimationController? animationController;
 
   //动画 存放上一次偏移量
   double previousRowOffset = 0;

@@ -15,7 +15,8 @@ import '../../theme/ThemeSize.dart';
 class MovieDetailPage extends StatefulWidget {
   final MovieDetailModel movieItem;
 
-  MovieDetailPage({Key key, this.movieItem}) : super(key: key);
+  // MovieDetailPage({Key key, this.movieItem}) : super(key: key);
+  const MovieDetailPage({super.key, required this.movieItem});
 
   @override
   _MovieDetailPageState createState() => _MovieDetailPageState();
@@ -41,13 +42,13 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     child: Column(
                   children: <Widget>[
                     buildMovieInfoComponent(widget.movieItem, context),
-                    buildPlotComponent(widget.movieItem.plot),
-                    buildStarComponent(widget.movieItem.id),
+                    buildPlotComponent(widget.movieItem.plot ?? ""),
+                    buildStarComponent(widget.movieItem.id ?? 0),
                     widget.movieItem.label != null
-                        ? YouLikesComponent(label: widget.movieItem.label)
+                        ? YouLikesComponent(label: widget.movieItem.label ?? "")
                         : SizedBox(),
                     RecommendComponent(
-                      classify: widget.movieItem.classify,
+                      classify: widget.movieItem.classify ?? "",
                       direction: "horizontal",
                       title: "推荐",
                     )
@@ -85,7 +86,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         borderRadius:
                             BorderRadius.circular(ThemeSize.middleRadius),
                         image: DecorationImage(
-                          image: NetworkImage(movieInfo.img),
+                          image: NetworkImage(movieInfo.img ?? ""),
                           fit: BoxFit.cover,
                         )))),
             Expanded(
@@ -97,7 +98,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      movieInfo.movieName,
+                      movieInfo.movieName ?? "",
                       style: TextStyle(
                           fontSize: 20,
                           color: Colors.black,
@@ -106,7 +107,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     SizedBox(height: 10),
                     movieInfo.description != null
                         ? Text(
-                            movieInfo.description.replaceAll('\n\s', ''),
+                            movieInfo.description!.replaceAll('\n\s', ''),
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Color.fromRGBO(187, 187, 187, 1)),
@@ -114,14 +115,14 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                         : SizedBox(),
                     movieInfo.star != null
                         ? Text(
-                            movieInfo.star,
+                            movieInfo.star ?? "",
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Color.fromRGBO(187, 187, 187, 1)),
                           )
                         : SizedBox(),
                     SizedBox(height: 10),
-                    ScoreComponent(score: movieInfo.score)
+                    ScoreComponent(score: movieInfo.score ?? 0.0)
                   ],
                 ),
               ),
@@ -179,7 +180,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             );
           } else {
             List<MovieStarModel> stars = [];
-            snapshot.data.data.forEach((item) {
+            snapshot.data?.data?.forEach((item) {
               stars.add(MovieStarModel.fromJson(item));
             });
             if (stars.length > 0) {
@@ -223,18 +224,18 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                                                     BorderRadius.circular(15),
                                                 image: DecorationImage(
                                                   image: NetworkImage(
-                                                      stars[index].img),
+                                                      stars[index].img ?? ""),
                                                   fit: BoxFit.cover,
                                                 ))),
                                         SizedBox(height: 5),
                                         Text(
-                                          stars[index].starName,
+                                          stars[index].starName ?? "",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         SizedBox(height: 5),
                                         Text(
-                                          stars[index].role,
+                                          stars[index].role ?? "",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(

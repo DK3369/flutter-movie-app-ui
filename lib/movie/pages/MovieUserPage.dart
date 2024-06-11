@@ -20,7 +20,7 @@ class MovieUserPage extends StatefulWidget {
 }
 
 class _MovieUserPageState extends State<MovieUserPage> {
-  UserInfoModel userInfo;
+  late UserInfoModel userInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       ClipOval(
                                         child: Image.network(
                                           //从全局的provider中获取用户信息
-                                          HOST + userInfo.avater,
+                                          HOST + (userInfo.avater ?? ""),
                                           height: ThemeSize.bigAvater,
                                           width: ThemeSize.bigAvater,
                                           fit: BoxFit.cover,
@@ -93,7 +93,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     child: Text("昵称"),
                                     flex: 1,
                                   ),
-                                  Text(userInfo.username),
+                                  Text(userInfo.username ?? ""),
                                   SizedBox(width: ThemeSize.smallMargin),
                                   Image.asset(
                                       "lib/assets/images/icon-arrow.png",
@@ -127,7 +127,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                         child: Text("电话"),
                                         flex: 1,
                                       ),
-                                      Text(userInfo.telephone),
+                                      Text(userInfo.telephone ?? ""),
                                       SizedBox(width: ThemeSize.smallMargin),
                                       Image.asset(
                                           "lib/assets/images/icon-arrow.png",
@@ -159,7 +159,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     child: Text("邮箱"),
                                     flex: 1,
                                   ),
-                                  Text(userInfo.email),
+                                  Text(userInfo.email ?? ""),
                                   SizedBox(width: ThemeSize.smallMargin),
                                   Image.asset(
                                       "lib/assets/images/icon-arrow.png",
@@ -193,7 +193,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("出生年月日"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.birthday),
+                                    Text(userInfo.birthday ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon-arrow.png",
@@ -226,7 +226,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("性别"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.sex),
+                                    Text(userInfo.sex ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon-arrow.png",
@@ -259,9 +259,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("个性签名"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.sign != null
-                                        ? userInfo.sign
-                                        : ""),
+                                    Text( userInfo.sign ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon-arrow.png",
@@ -296,9 +294,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       child: Text("地区"),
                                       flex: 1,
                                     ),
-                                    Text(userInfo.region != null
-                                        ? userInfo.region
-                                        : ""),
+                                    Text(userInfo.region ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
                                         "lib/assets/images/icon-arrow.png",
@@ -319,7 +315,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                             Radius.circular(ThemeSize.superRadius)),
                       ),
                       width: double.infinity,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () {
                           _showDialog(context);
                         },
@@ -332,8 +328,8 @@ class _MovieUserPageState extends State<MovieUserPage> {
   }
 
   Future getImage(ImageSource source, int type) async {
-    File image = await ImagePicker.pickImage(source: source);
-    List<int> imageBytes = await image.readAsBytes();
+    XFile? image = await ImagePicker().pickImage(source: source);
+    List<int> imageBytes = await image!.readAsBytes();
     String base64Str = "data:image/png;base64," + base64Encode(imageBytes);
     Map avaterMap = {"img": base64Str};
     updateAvaterService(avaterMap).then((res) {

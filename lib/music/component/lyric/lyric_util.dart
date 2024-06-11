@@ -8,7 +8,7 @@ class LyricUtil {
 
     var matches = reg.allMatches(lyricStr);
     var lyrics = matches.map((m) {
-      var matchStr = m.group(0).replaceAll("\n", "");
+      var matchStr = m.group(0)!.replaceAll("\n", "");
       var symbolIndex = matchStr.indexOf("]");
       var time = matchStr.substring(0, symbolIndex);
       var lyric = matchStr.substring(symbolIndex + 1);
@@ -16,7 +16,7 @@ class LyricUtil {
       return Lyric(lyric, startTime: duration);
     }).toList();
     //移除所有空歌词
-    lyrics.removeWhere((lyric) => lyric.lyric.trim().isEmpty);
+    lyrics.removeWhere((lyric) => lyric.lyric!.trim().isEmpty);
     for (int i = 0; i < lyrics.length - 1; i++) {
       lyrics[i].endTime = lyrics[i + 1].startTime;
     }

@@ -10,7 +10,8 @@ import '../../theme/ThemeSize.dart';
 /*-----------------------轮播组件------------------------*/
 class SwiperComponent extends StatelessWidget {
   final String classify;
-  const SwiperComponent({required Key key, required this.classify}) : super(key: key);
+
+  const SwiperComponent({super.key, required this.classify});
 
   @override
   Widget build(BuildContext context) {

@@ -12,35 +12,35 @@ Future<ResponseModel<dynamic>> getUserDataService() async {
   try {
     String token = await LocalStroageUtils.getToken(); //从缓存中获取
     HttpUtil.getInstance().setToken(token);
-    Response response = await dio.get(servicePath["getUserData"]);
+    Response response = await dio.get(servicePath["getUserData"] ?? "");
     HttpUtil.getInstance().setToken(response.data['token']);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
 Future<ResponseModel<List>> getCategoryListService(
     String category, String classify) async {
   try {
-    Response response = await dio.get(servicePath['getCategoryList'],
+    Response response = await dio.get(servicePath['getCategoryList'] ?? "",
         queryParameters: {"category": category, "classify": classify});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
 Future<ResponseModel<dynamic>> getKeyWordService(String classify) async {
   try {
-    Response response = await dio.get(servicePath['getKeyWord'],
+    Response response = await dio.get(servicePath['getKeyWord'] ?? "",
         queryParameters: {"classify": classify});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -48,13 +48,13 @@ Future<ResponseModel<dynamic>> getKeyWordService(String classify) async {
 Future<ResponseModel<List<Map>>> getAllCategoryByClassifyService(
     String classify) async {
   try {
-    Response response = await dio.get(servicePath['getAllCategoryByClassify'],
+    Response response = await dio.get(servicePath['getAllCategoryByClassify'] ?? "",
         queryParameters: {"classify": classify});
     print(response.data.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -63,23 +63,23 @@ Future<ResponseModel<List>> getAllCategoryListByPageNameService(
     String pageName) async {
   try {
     Response response = await dio.get(
-        servicePath['getAllCategoryListByPageName'],
+        servicePath['getAllCategoryListByPageName'] ?? "",
         queryParameters: {"pageName": pageName});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
 //按classify大类查询所有catory小类
 Future<ResponseModel<dynamic>> getUserMsgService() async {
   try {
-    Response response = await dio.get(servicePath['getUserMsg']);
+    Response response = await dio.get(servicePath['getUserMsg'] ?? "");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -87,7 +87,7 @@ Future<ResponseModel<dynamic>> getUserMsgService() async {
 Future<ResponseModel<List>> getSearchResultService(String keyword,
     {int pageSize = 20, int pageNum = 1}) async {
   try {
-    Response response = await dio.get(servicePath['getSearchResult'],
+    Response response = await dio.get(servicePath['getSearchResult'] ?? "",
         queryParameters: {
           "keyword": keyword,
           "pageSize": pageSize,
@@ -96,7 +96,7 @@ Future<ResponseModel<List>> getSearchResultService(String keyword,
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -107,22 +107,22 @@ Future<ResponseModel<dynamic>> loginService(
     var map = {};
     map['userId'] = userId;
     map['password'] = password;
-    Response response = await dio.post(servicePath['login'], data: map);
+    Response response = await dio.post(servicePath['login'] ?? "", data: map);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
 //获取演员列表
 Future<ResponseModel<List>> getStarService(int id) async {
   try {
-    Response response = await dio.get(servicePath['getStar'] + id.toString());
+    Response response = await dio.get(servicePath['getStar'] ?? "" + id.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -130,13 +130,13 @@ Future<ResponseModel<List>> getStarService(int id) async {
 Future<ResponseModel<List>> getMovieUrlService(int movieId) async {
   try {
     Response response =
-        await dio.get(servicePath['getMovieUrl'], queryParameters: {
+        await dio.get(servicePath['getMovieUrl'] ?? "", queryParameters: {
       "movieId": movieId.toString(),
     });
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -146,12 +146,12 @@ Future<ResponseModel<List>> getMovieUrlService(int movieId) async {
 Future<ResponseModel<int>> savePlayRecordService(
     MovieDetailModel movieEntity) async {
   try {
-    Response response = await dio.post(servicePath['savePlayRecord'],
+    Response response = await dio.post(servicePath['savePlayRecord'] ?? "",
         queryParameters: movieEntity.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -164,7 +164,7 @@ Future<ResponseModel<List>> getPlayRecordService(int pageNum,int pageSize) async
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -177,7 +177,7 @@ Future<ResponseModel<List>> getViewRecordService(int pageNum,int pageSize) async
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -192,7 +192,7 @@ Future<ResponseModel<int>> saveFavoriteService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -205,7 +205,7 @@ Future<ResponseModel<List>> getFavoriteService(int pageNum,int pageSize) async {
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -218,7 +218,7 @@ Future<ResponseModel<int>> deleteFavoriteService(int movieId) async {
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -227,12 +227,12 @@ Future<ResponseModel<int>> deleteFavoriteService(int movieId) async {
 /// @date: 2021-03-04 23:08
 Future<ResponseModel<int>> isFavoriteService(int movieId) async {
   try {
-    Response response = await dio.get(servicePath['isFavorite'],
+    Response response = await dio.get(servicePath['isFavorite'] ?? "",
         queryParameters: {"movieId": movieId.toString()});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -242,11 +242,11 @@ Future<ResponseModel<int>> isFavoriteService(int movieId) async {
 Future<ResponseModel<List>> getYourLikesService(String labels) async {
   try {
     Response response = await dio
-        .get(servicePath['getYourLikes'], queryParameters: {"labels": labels});
+        .get(servicePath['getYourLikes'] ?? "", queryParameters: {"labels": labels});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -255,12 +255,12 @@ Future<ResponseModel<List>> getYourLikesService(String labels) async {
 /// @date: 2021-03-04 23:08
 Future<ResponseModel<List>> getRecommendSerivce(String classify) async {
   try {
-    Response response = await dio.get(servicePath['getRecommend'],
+    Response response = await dio.get(servicePath['getRecommend'] ?? "",
         queryParameters: {"classify": classify});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -269,11 +269,11 @@ Future<ResponseModel<List>> getRecommendSerivce(String classify) async {
 /// @date: 2021-04-20 23:57
 Future<ResponseModel<int>> updateUserData(Map map) async {
   try {
-    Response response = await dio.put(servicePath['updateUser'], data: map);
+    Response response = await dio.put(servicePath['updateUser'] ?? "", data: map);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -282,11 +282,11 @@ Future<ResponseModel<int>> updateUserData(Map map) async {
 /// @date: 2021-04-20 23:57
 Future<ResponseModel<int>> updatePasswordService(Map map) async {
   try {
-    Response response = await dio.put(servicePath['updatePassword'], data: map);
+    Response response = await dio.put(servicePath['updatePassword'] ?? "", data: map);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -296,12 +296,12 @@ Future<ResponseModel<int>> updatePasswordService(Map map) async {
 Future<ResponseModel<int>> getCommentCountService(
     int relationId, CommentEnum type) async {
   try {
-    Response response = await dio.get(servicePath['getCommentCount'],
+    Response response = await dio.get(servicePath['getCommentCount'] ?? "",
         queryParameters: {"relationId": relationId, "type": type.toString().split('.').last});
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -311,7 +311,7 @@ Future<ResponseModel<int>> getCommentCountService(
 Future<ResponseModel<List>> getTopCommentListService(
     int relationId, CommentEnum type, int pageNum,int pageSize) async {
   try {
-    Response response = await dio.get(servicePath['getTopCommentList'],
+    Response response = await dio.get(servicePath['getTopCommentList'] ?? "",
         queryParameters: {
           "relationId": relationId,
           "type": type.toString().split('.').last,
@@ -321,7 +321,7 @@ Future<ResponseModel<List>> getTopCommentListService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -331,7 +331,7 @@ Future<ResponseModel<List>> getTopCommentListService(
 Future<ResponseModel<List>> getReplyCommentListService(
     int topId, int pageSize, int pageNum) async {
   try {
-    Response response = await dio.get(servicePath['getReplyCommentList'],
+    Response response = await dio.get(servicePath['getReplyCommentList'] ?? "",
         queryParameters: {
           "topId": topId,
           "pageSize": pageSize,
@@ -340,7 +340,7 @@ Future<ResponseModel<List>> getReplyCommentListService(
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -350,11 +350,11 @@ Future<ResponseModel<List>> getReplyCommentListService(
 Future<ResponseModel<dynamic>> insertCommentService(Map commentMap) async {
   try {
     Response response =
-        await dio.post(servicePath['insertCommentService'], data: commentMap);
+        await dio.post(servicePath['insertCommentService'] ?? "", data: commentMap);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }
 
@@ -364,10 +364,10 @@ Future<ResponseModel<dynamic>> insertCommentService(Map commentMap) async {
 Future<ResponseModel<String>> updateAvaterService(Map avaterMap) async {
   try {
     Response response =
-        await dio.put(servicePath['updateAvaterService'], data: avaterMap);
+        await dio.put(servicePath['updateAvaterService'] ?? "", data: avaterMap);
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }

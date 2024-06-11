@@ -15,7 +15,7 @@ import '../model/MovieDetailModel.dart';
 import 'WebViewPage.dart';
 
 class MovieMyPage extends StatefulWidget {
-  MovieMyPage({Key key}) : super(key: key);
+   MovieMyPage({super.key});
 
   @override
   _MovieMyPageState createState() => _MovieMyPageState();
@@ -51,13 +51,13 @@ class _MovieMyPageState extends State<MovieMyPage>
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Text(userInfoModel.username,
+                          Text(userInfoModel.username ?? "",
                               style: TextStyle(
                                   color: ThemeColors.mainTitle,
                                   fontSize: ThemeSize.bigFontSize,
                                   fontWeight: FontWeight.bold)),
                           Text(
-                            userInfoModel.sign,
+                            userInfoModel.sign ?? "",
                             style: TextStyle(color: ThemeColors.subTitle),
                           )
                         ])),
@@ -86,7 +86,7 @@ class _MovieMyPageState extends State<MovieMyPage>
           if (snapshot.data == null) {
             return Container();
           } else {
-            UserMsgModel userMsg = UserMsgModel.fromJson(snapshot.data.data);
+            UserMsgModel userMsg = UserMsgModel.fromJson(snapshot.data!.data);
             return Container(
                 decoration: ThemeStyle.boxDecoration,
                 padding: ThemeStyle.padding,
@@ -176,7 +176,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                     return SizedBox();
                   } else {
                     List<MovieDetailModel> movieList = [];
-                    snapshot.data.data.forEach((item) {
+                    snapshot.data!.data!.forEach((item) {
                       movieList.add(MovieDetailModel.fromJson(item));
                     });
                     if (movieList.length == 0) {
@@ -242,7 +242,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                     return SizedBox();
                   } else {
                     List<MovieDetailModel> movieList = [];
-                    snapshot.data.data.forEach((item) {
+                    snapshot.data!.data!.forEach((item) {
                       movieList.add(MovieDetailModel.fromJson(item));
                     });
                     if (movieList.length == 0) {
@@ -309,7 +309,7 @@ class _MovieMyPageState extends State<MovieMyPage>
                     return SizedBox();
                   } else {
                     List<MovieDetailModel> movieList = [];
-                    snapshot.data.data.forEach((item) {
+                    snapshot.data!.data!.forEach((item) {
                       movieList.add(MovieDetailModel.fromJson(item));
                     });
                     if (movieList.length == 0) {

@@ -20,7 +20,7 @@ import '../model/CategoryModel.dart';
 
 /*-----------------------首页------------------------*/
 class MovieHomePage extends StatefulWidget {
-  MovieHomePage({Key key}) : super(key: key);
+  const MovieHomePage({super.key});
 
   @override
   _MovieHomePageState createState() => _MovieHomePageState();
@@ -43,8 +43,8 @@ class _MovieHomePageState extends State<MovieHomePage>
         CategoryModel item = allCategoryLists[pageNum];
         categoryList.add(CategoryComponent(
           key: GlobalKey(),
-          category: item.category,
-          classify: item.classify,
+          category: item.category ?? "",
+          classify: item.classify ?? "",
         ));
       });
     }
@@ -53,14 +53,14 @@ class _MovieHomePageState extends State<MovieHomePage>
   @override
   void initState() {
     getAllCategoryListByPageNameService("首页").then((res) {
-      res.data.forEach((element) {
+      res.data?.forEach((element) {
         allCategoryLists.add(CategoryModel.fromJson(element));
       }); // 顶部轮播组件数
       setState(() {
         allCategoryLists.sublist(0, 2).forEach((CategoryModel item) {
           categoryList.add(CategoryComponent(
-            category: item.category,
-            classify: item.classify
+            category: item.category ?? "",
+            classify: item.classify ?? "",
           ));
         });
       });
@@ -110,7 +110,7 @@ class _MovieHomePageState extends State<MovieHomePage>
                           msg: "已经到底了",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
-                          timeInSecForIos: 1,
+                          // timeInSecForIos: 1,
                           backgroundColor: Colors.blue,
                           textColor: Colors.white,
                           fontSize: ThemeSize.middleFontSize);
@@ -147,12 +147,12 @@ class _MovieHomePageState extends State<MovieHomePage>
                 child: CircularProgressIndicator(),
               );
             }
-            var userInfo = snapshot.data.data;
-            var token = snapshot.data.token;
-            LocalStroageUtils.setToken(token);
+            var userInfo = snapshot.data?.data;
+            var token = snapshot.data?.token;
+            LocalStroageUtils.setToken(token ?? "");
             Provider.of<UserInfoProvider>(context, listen: false)
                 .setUserInfo(UserInfoModel.fromJson(userInfo));
-            Provider.of<TokenProvider>(context).setToken(token);
+            Provider.of<TokenProvider>(context).setToken(token ?? "");
             return init(context);
           });
     } else {

@@ -10,19 +10,18 @@ import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
 
 class EditPage extends StatefulWidget {
-  final String? title = ""; //编辑的标题
-  final String? type = ""; //编辑框的类型
-  final String? value = ""; //输入框的值
-  final String? field = ""; //对应的userInfo字段
-  final bool? isAllowEmpty = false; //是否允许为空
+   String? title = ""; //编辑的标题
+   String? type = ""; //编辑框的类型
+   String? value = ""; //输入框的值
+   String? field = ""; //对应的userInfo字段
+   bool? isAllowEmpty = false; //是否允许为空
   EditPage(
       {super.key,
       this.type,
       this.title,
       this.value,
       this.field,
-      this.isAllowEmpty})
-      : super(key: key);
+      this.isAllowEmpty});
 
   @override
   _EditPageState createState() => _EditPageState();
@@ -35,7 +34,7 @@ class _EditPageState extends State<EditPage> {
   String checkValue = "";
 
   void initState() {
-    checkValue = myController.text = widget.value;
+    checkValue = myController.text = widget.value ?? "";
     myController.addListener(() {
       setState(() {
         hasChange = myController.text != widget.value ? true : false;
@@ -69,12 +68,14 @@ class _EditPageState extends State<EditPage> {
                     SizedBox(width: 70 - ThemeSize.smallIcon),
                     Expanded(
                       flex: 1,
-                      child: Center(child: Text(widget.title)),
+                      child: Center(child: Text(widget.title ?? "?????????")),
                     ),
                     InkWell(
                         onTap: () async {
                           if (!hasChange) return;
-                          if (!widget.isAllowEmpty && myController.text == "") {
+                          // if (!widget.isAllowEmpty && myController.text == "") {
+                          if ( myController.text == "") {
+
                             Fluttertoast.showToast(
                                 msg: "${widget.title}不能为空",
                                 toastLength: Toast.LENGTH_SHORT,
@@ -179,7 +180,7 @@ class _EditPageState extends State<EditPage> {
     } else if (widget.field == "birthday") {
       int year = 0, month = 0, day = 0;
       List patter = widget.value != null && widget.value != ""
-          ? widget.value.split("-")
+          ? widget.value!.split("-")
           : [];
       if (patter.length > 0) {
         year = int.parse(patter[0]);
@@ -223,17 +224,18 @@ class _EditPageState extends State<EditPage> {
             initialDatePickerMode: DatePickerMode.day,
             // 日期选择模式，默认为天数选择
             useRootNavigator: true, // 是否为根导航器
-          ).then((DateTime date) {
-            if (date == null) return;
-            setState(() {
-              hasChange = true;
-              myController.text = checkValue = date.year.toString() +
-                  "-" +
-                  date.month.toString() +
-                  "-" +
-                  date.day.toString();
-            });
-          });
+          // ).then((DateTime date) {
+          //   // if (date == null) return;
+          //   // setState(() {
+          //   //   hasChange = true;
+          //   //   myController.text = checkValue = date.year.toString() +
+          //   //       "-" +
+          //   //       date.month.toString() +
+          //   //       "-" +
+          //   //       date.day.toString();
+          //   // });
+          // }
+          );
         },
         child: Padding(
           padding: EdgeInsets.all(20),

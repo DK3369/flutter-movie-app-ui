@@ -1,8 +1,8 @@
 class Lyric {
-  String lyric;
-  Duration startTime;
-  Duration endTime;
-  bool isRemark;
+  String? lyric;
+  Duration? startTime;
+  Duration? endTime;
+  bool? isRemark;
 
   Lyric(this.lyric, {this.startTime, this.endTime, this.isRemark = false});
 

@@ -11,8 +11,10 @@ class RecommendComponent extends StatelessWidget {
   final String direction;
   final String title;
 
-  const RecommendComponent({required Key key, required this.classify, required this.direction, required this.title})
-      : super(key: key);
+  const RecommendComponent({super.key, required this.classify, required this.direction, required this.title});
+
+  // const RecommendComponent({required Key key, required this.classify, required this.direction, required this.title})
+  //     : super(key: key);
 
   @override
   Widget build(BuildContext context) {

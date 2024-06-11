@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key key}) : super(key: key);
+   RegisterPage({super.key});
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -185,14 +185,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     Radio(
                         value: 0,
                         groupValue: groupValue,
+                      onChanged: (int? value) {
+                        _handleRadioValueChanged(value!);
+                      },
                         // title: Text("男"),
-                        onChanged: _handleRadioValueChanged),
+                        // onChanged: _handleRadioValueChanged
+                       ),
                     SizedBox(width: 20),
                     Text("女"),
                     Radio(
                         value: 1,
                         groupValue: groupValue,
-                        onChanged: _handleRadioValueChanged),
+                          onChanged: (int? value) {
+                            _handleRadioValueChanged(value!);
+                          },
+                        // onChanged: _handleRadioValueChanged
+                    ),
                   ],
                 ),
               )
@@ -200,7 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
           Container(
             width: double.infinity,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {},
               child: Text("注册",
                   style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1))),

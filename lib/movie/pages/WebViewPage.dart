@@ -8,7 +8,8 @@ class WebViewPage extends StatefulWidget {
   final url;
   final title;
 
-  WebViewPage({Key key, this.url, this.title}) : super(key: key);
+  WebViewPage({super.key, this.url, this.title});
+
 
   @override
   createState() => _WebViewPageState(this.url, this.title);
@@ -30,30 +31,31 @@ class _WebViewPageState extends State<WebViewPage> {
         body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: WebView(
-              key: _key,
-              javascriptMode: JavascriptMode.unrestricted,
-              initialUrl: _url,
-              javascriptChannels: <JavascriptChannel>[
-                _jsCallNativeGetUserData(context),
-                _jsCallNativeGetToken(context)
-              ].toSet()
-            )));
+            // child: WebView(
+            //   key: _key,
+            //   javascriptMode: JavascriptMode.unrestricted,
+            //   initialUrl: _url,
+            //   javascriptChannels: <JavascriptChannel>[
+            //     _jsCallNativeGetUserData(context),
+            //     _jsCallNativeGetToken(context)
+            //   ].toSet()
+            // )
+        ));
   }
 
-  _jsCallNativeGetUserData(BuildContext context) {
-    return JavascriptChannel(
-        name: "plus.getUserData",
-        onMessageReceived: (JavascriptMessage message) {
-          return convert.jsonEncode(Provider.of<UserInfoProvider>(context).userInfo.toMap());
-        });
-  }
+  // _jsCallNativeGetUserData(BuildContext context) {
+  //   return JavascriptChannel(
+  //       name: "plus.getUserData",
+  //       onMessageReceived: (JavascriptMessage message) {
+  //         return convert.jsonEncode(Provider.of<UserInfoProvider>(context).userInfo.toMap());
+  //       });
+  // }
 
-  _jsCallNativeGetToken(BuildContext context) {
-    return JavascriptChannel(
-        name: "plus.getToken",
-        onMessageReceived: (JavascriptMessage message) {
-          return convert.jsonEncode(Provider.of<TokenProvider>(context).token);
-        });
-  }
+  // _jsCallNativeGetToken(BuildContext context) {
+  //   return JavascriptChannel(
+  //       name: "plus.getToken",
+  //       onMessageReceived: (JavascriptMessage message) {
+  //         return convert.jsonEncode(Provider.of<TokenProvider>(context).token);
+  //       });
+  // }
 }

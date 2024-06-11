@@ -3,7 +3,8 @@ import '../model/MovieDetailModel.dart';
 import '../component/RecommendComponent.dart';
 class NewMoviePage extends StatefulWidget {
   final MovieDetailModel movieItem;
-  NewMoviePage({Key key, this.movieItem}) : super(key: key);
+
+  NewMoviePage({super.key,  required this.movieItem});
 
   @override
   _NewMoviePageState createState() => _NewMoviePageState();

@@ -7,7 +7,10 @@ import 'package:provider/provider.dart';
 /*-----------------------头像组件------------------------*/
 class AvaterComponent extends StatelessWidget {
   final double size;
-  const AvaterComponent({required Key key, required this.size}) : super(key: key);
+
+  const AvaterComponent({super.key, required this.size});
+
+  // const AvaterComponent({required Key key, required this.size}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

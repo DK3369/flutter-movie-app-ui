@@ -59,7 +59,7 @@ class _CommentComponentState extends State<CommentComponent>{
         ClipOval(
             child: Image.network(
               //从全局的provider中获取用户信息
-              HOST + commentModel.avater,
+              HOST + (commentModel.avater ?? ""),
               height: commentModel.topId != null ? ThemeSize.smallAvater : ThemeSize.middleAvater,
               width: commentModel.topId != null ? ThemeSize.smallAvater : ThemeSize.middleAvater,
               fit: BoxFit.cover,
@@ -70,12 +70,11 @@ class _CommentComponentState extends State<CommentComponent>{
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                  commentModel.replyUserName != null ? '${commentModel.username}▶${commentModel.replyUserName}'
-                      : commentModel.username,
+                  commentModel.replyUserName ?? (commentModel.username ?? ""),
                   style: TextStyle(color: ThemeColors.subTitle)),
               SizedBox(height: ThemeSize.smallMargin),
               GestureDetector(
-                child: Text(commentModel.content),
+                child: Text(commentModel.content ?? ""),
                 onTap: () {
                   setState(() {
                     if(commentModel.topId == null){// 如果不是二级评论
@@ -88,10 +87,10 @@ class _CommentComponentState extends State<CommentComponent>{
                 },
               ),
               SizedBox(height: ThemeSize.smallMargin),
-              Text(formatTime(commentModel.createTime),
+              Text(formatTime(commentModel.createTime ?? ""),
                   style: TextStyle(color: ThemeColors.subTitle)),
               SizedBox(height: ThemeSize.smallMargin),
-              buildCommentList(commentModel.replyList)
+              buildCommentList(commentModel.replyList ?? [])
             ])
       ]);
     }).toList());
@@ -149,7 +148,7 @@ class _CommentComponentState extends State<CommentComponent>{
                   inputController.text = "";
                   setState(() {
                     if(firstCommentModel != null){
-                      firstCommentModel.replyList.add(CommentModel.fromJson(value.data));
+                      firstCommentModel.replyList?.add(CommentModel.fromJson(value.data));
                     }else{
                       commentList.add(CommentModel.fromJson(value.data));
                     }

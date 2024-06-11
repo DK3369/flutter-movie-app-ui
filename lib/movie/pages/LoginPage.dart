@@ -66,7 +66,7 @@ class LoginPage extends StatelessWidget {
                                       msg: "请输入用户名",
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.CENTER,
-                                      timeInSecForIos: 1,
+                                      // timeInSecForIos: 1,
                                       backgroundColor: ThemeColors.disableColor,
                                       fontSize: ThemeSize.middleFontSize);
                                 }
@@ -101,7 +101,7 @@ class LoginPage extends StatelessWidget {
                                       msg: "请输入用户名",
                                       toastLength: Toast.LENGTH_SHORT,
                                       gravity: ToastGravity.CENTER,
-                                      timeInSecForIos: 1,
+                                      // timeInSecForIos: 1,
                                       backgroundColor: ThemeColors.disableColor,
                                       fontSize: ThemeSize.middleFontSize);
                                 }
@@ -135,13 +135,13 @@ class LoginPage extends StatelessWidget {
                             Radius.circular(ThemeSize.superRadius)),
                       ),
                       width: double.infinity,
-                      child: FlatButton(
+                      child: TextButton(
                           onPressed: () {
-                            if (_formKey.currentState.validate()) {
+                            if (_formKey.currentState!.validate()) {
                               loginService(userId, generateMd5(password))
                                   .then((res) async {
                                 if (res != null && res.data != null) {
-                                  await LocalStroageUtils.setToken(res.token);
+                                  await LocalStroageUtils.setToken(res.token!);
                                   await Fluttertoast.showToast(
                                       msg: "登录成功",
                                       toastLength: Toast.LENGTH_SHORT,
@@ -176,7 +176,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(height: ThemeSize.containerPadding),
                     Container(
                       width: double.infinity,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () {
                           Navigator.push(
                               context,

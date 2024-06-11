@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class ScoreComponent extends StatelessWidget {
   final double score;
-  const ScoreComponent({required Key key, required this.score}) : super(key: key);
+  const ScoreComponent({super.key, required this.score});
+
+  // const ScoreComponent({required Key key, required this.score}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
