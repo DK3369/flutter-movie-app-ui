@@ -3,16 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import '../service/serverMethod.dart';
-import '../provider/UserInfoProvider.dart';
-import '../provider/TokenProvider.dart';
-import '../../utils/LocalStroageUtils.dart';
 import '../component/SearchCommponent.dart';
 import '../component/AvaterComponent.dart';
 import '../component/CategoryComponent.dart';
 import '../component/SwiperComponent.dart';
-import '../model/UserInfoModel.dart';
 import '../component/TopNavigators.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeStyle.dart';
@@ -69,9 +64,14 @@ class _MovieHomePageState extends State<MovieHomePage>
   }
 
   Widget init(BuildContext context) {
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
         width:
-            MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
+        MediaQuery.of(context).size.width - ThemeSize.containerPadding * 2,
         padding: ThemeStyle.paddingBox,
         child: Column(children: <Widget>[
           Row(
@@ -91,7 +91,7 @@ class _MovieHomePageState extends State<MovieHomePage>
                           flex: 1,
                           child: Padding(
                               padding:
-                                  EdgeInsets.only(left: ThemeSize.smallMargin),
+                              EdgeInsets.only(left: ThemeSize.smallMargin),
                               child: SearchCommponent(classify: "电影")))
                     ],
                   ),
@@ -133,6 +133,7 @@ class _MovieHomePageState extends State<MovieHomePage>
                   )))
         ]));
   }
+<<<<<<< HEAD
 
   @override
   Widget build(BuildContext context) {
@@ -160,5 +161,7 @@ class _MovieHomePageState extends State<MovieHomePage>
       return init(context);
     }
   }
+=======
+>>>>>>> main
 }
 /*-----------------------首页------------------------*/

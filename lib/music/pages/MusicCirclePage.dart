@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../../common/config.dart';
 import '../model/CircleModel.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../../utils/common.dart';
 import '../model/CircleLikeModel.dart';
 import '../../movie/model/CommentModel.dart';
@@ -60,7 +61,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
   ///@description: 获取朋友圈动态
   /// @date: 2024-03-27 00:35
   void getCircleWidgetListByType() {
-    getCircleListByTypeService('music', pageNum, pageSize).then((res) {
+    getCircleListByTypeService(CircleEnum.MUSIC, pageNum, pageSize).then((res) {
       setState(() {
         total = res.total!;
         res.data?.forEach((item) {
@@ -166,8 +167,13 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     if(loading)return;
                     loading = true;
                     CommentModel mCommentModel = CommentModel(
+<<<<<<< HEAD
                         type:"music_circle",
                         relationId:circleModel.id!,
+=======
+                        type:CommentEnum.MUSIC_CIRCLE.toString().split('.').last,
+                        relationId:circleModel.id,
+>>>>>>> main
                         content: inputController.text,
                         topId:firstCommentModel!.id,
                         parentId:replyCommentModel!.id
@@ -249,7 +255,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
               if (circleIndex == -1) {
                 // 如果已经赞过，点击之后取消点赞
                 CircleLikeModel likeMode = CircleLikeModel(
-                    type: 'music_circle', relationId: circleModel.id);
+                    type: CommentEnum.MUSIC_CIRCLE.toString().split('.').last, relationId: circleModel.id);
                 saveLikeService(likeMode).then((res) {
                   setState(() {
                     circleModel.circleLikes!
@@ -267,7 +273,11 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 });
               } else {
                 // 如果已经赞过，点击之后取消点赞
+<<<<<<< HEAD
                 deleteLikeService(circleModel.id!, "music_circle").then((res) {
+=======
+                deleteLikeService(circleModel.id, CommentEnum.MUSIC_CIRCLE).then((res) {
+>>>>>>> main
                   setState(() {
                     circleModel.circleLikes!.removeAt(circleIndex);
                   });
@@ -394,7 +404,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                           Text(
                               '${circleModel.musicSongName} - ${circleModel.musicAuthorName}'),
                           Expanded(flex: 1, child: SizedBox()),
-                          Image.asset("lib/assets/images/icon-music-play.png",
+                          Image.asset("lib/assets/images/icon_music_play.png",
                               width: ThemeSize.smallIcon,
                               height: ThemeSize.smallIcon),
                           SizedBox(width: ThemeSize.containerPadding),
@@ -409,7 +419,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                       InkWell(
                         key: circleModel.key,
                         child: Image.asset(
-                            "lib/assets/images/icon-music-menu.png",
+                            "lib/assets/images/icon_music_menu.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon),
                         onTap: () {
@@ -455,7 +465,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Image.asset("lib/assets/images/icon-music-like.png",
+        Image.asset("lib/assets/images/icon_music_like.png",
             width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
         SizedBox(width: ThemeSize.smallMargin),
         Expanded(

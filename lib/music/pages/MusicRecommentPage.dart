@@ -11,7 +11,7 @@ import '../service/serverMethod.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 
 class MusicRecommentPage extends StatefulWidget {
   const MusicRecommentPage({super.key});
@@ -29,9 +29,9 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
   int total = 0;
   List<MusicModel> musicModelList = [];
   List<String> iconList = [
-    "lib/assets/images/icon-no1.png",
-    "lib/assets/images/icon-no2.png",
-    "lib/assets/images/icon-no3.png"
+    "lib/assets/images/icon_no1.png",
+    "lib/assets/images/icon_no2.png",
+    "lib/assets/images/icon_no3.png"
   ];
   MusicModel currentPlayingMusicModel = MusicModel();
   bool playing = false;
@@ -117,8 +117,8 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
           InkWell(
               child: Image.asset(
                   playing && musicModel.id == currentPlayingMusicModel.id
-                      ? "lib/assets/images/icon-music-playing-grey.png"
-                      : "lib/assets/images/icon-music-play.png",
+                      ? "lib/assets/images/icon_music_playing_grey.png"
+                      : "lib/assets/images/icon_music_play.png",
                   width: ThemeSize.smallIcon,
                   height: ThemeSize.smallIcon),
               onTap: () {
@@ -128,29 +128,40 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               }),
           SizedBox(width: ThemeSize.containerPadding),
           InkWell(child: Image.asset(
-              "lib/assets/images/icon-like${musicModel.isFavorite == 1 ? "-active" : ""}.png",
+              "lib/assets/images/icon_like${musicModel.isLike == 1 ? "_active" : ""}.png",
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon),onTap: (){
+<<<<<<< HEAD
             if(musicModel.isFavorite == 0){
               insertMusicFavoriteService(musicModel).then((res) => {
                 if(res.data! > 0){
+=======
+            if(musicModel.isLike == 0){
+              insertMusicLikeService(musicModel.id).then((res) => {
+                if(res.data > 0){
+>>>>>>> main
                   setState(() {
-                    musicModel.isFavorite = 1;
+                    musicModel.isLike = 1;
                   })
                 }
               });
             }else{
+<<<<<<< HEAD
               deleteMusicFavoriteService(musicModel.id!).then((res) => {
                 if(res.data! > 0){
+=======
+              deleteMusicLikeService(musicModel.id).then((res) => {
+                if(res.data > 0){
+>>>>>>> main
                   setState(() {
-                    musicModel.isFavorite = 0;
+                    musicModel.isLike = 0;
                   })
                 }
               });
             }
           }),
           SizedBox(width: ThemeSize.containerPadding),
-          Image.asset("lib/assets/images/icon-music-menu.png",
+          Image.asset("lib/assets/images/icon_music_menu.png",
               width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
         ]));
   }

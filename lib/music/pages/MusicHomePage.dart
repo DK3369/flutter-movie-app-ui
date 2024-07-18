@@ -12,7 +12,7 @@ import '../../movie/provider/UserInfoProvider.dart';
 import '../../theme/ThemeStyle.dart';
 import '../../theme/ThemeSize.dart';
 import '../../theme/ThemeColors.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../../utils/LocalStroageUtils.dart';
 import '../../router/index.dart';
 
@@ -44,6 +44,11 @@ class _MusicHomePageState extends State<MusicHomePage>
         currentClassifiesList.addAll(allClassifies.sublist(0, 4));
       });
     });
+  }
+
+  @override
+  deactivate(){
+    super.deactivate();
   }
 
   void _getCategoryItem() {
@@ -183,7 +188,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             child: InkWell(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("lib/assets/images/icon-music-singer.png",
+                Image.asset("lib/assets/images/icon_music_singer.png",
                     width: ThemeSize.bigAvater, height: ThemeSize.bigAvater),
                 SizedBox(height: ThemeSize.smallMargin),
                 Text("歌手")
@@ -197,7 +202,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("lib/assets/images/icon-music-classify.png",
+                Image.asset("lib/assets/images/icon_music_classify.png",
                     width: ThemeSize.bigAvater, height: ThemeSize.bigAvater),
                 SizedBox(height: ThemeSize.smallMargin),
                 Text("分类歌曲")
@@ -209,7 +214,7 @@ class _MusicHomePageState extends State<MusicHomePage>
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("lib/assets/images/icon-music-rank.png",
+              Image.asset("lib/assets/images/icon_music_rank.png",
                   width: ThemeSize.bigAvater, height: ThemeSize.bigAvater),
               SizedBox(height: ThemeSize.smallMargin),
               Text("排行榜")
@@ -219,7 +224,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset("lib/assets/images/icon-music-classics.png",
+                Image.asset("lib/assets/images/icon_music_classics.png",
                     width: ThemeSize.bigAvater, height: ThemeSize.bigAvater),
                 SizedBox(height: ThemeSize.smallMargin),
                 Text("经典老歌")
@@ -245,7 +250,7 @@ class _MusicHomePageState extends State<MusicHomePage>
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset("lib/assets/images/icon-down.png",
+                Image.asset("lib/assets/images/icon_down.png",
                     width: ThemeSize.smallIcon, height: ThemeSize.smallIcon),
                 SizedBox(width: ThemeSize.smallMargin),
                 Text(musicClassifyModel.classifyName!),
@@ -341,28 +346,30 @@ class _MusicHomePageState extends State<MusicHomePage>
                           child: Image.asset(
                             playing &&
                                     musicItem.id == currentPlayingMusicModel.id
-                                ? "lib/assets/images/icon-music-playing-grey.png"
-                                : "lib/assets/images/icon-music-play.png",
+                                ? "lib/assets/images/icon_music_playing_grey.png"
+                                : "lib/assets/images/icon_music_play.png",
                             width: ThemeSize.smallIcon,
                             height: ThemeSize.smallIcon,
                           ),
                           onTap: () {
+                            getMusicListByClassifyIdService(classifyId, 1, 500, 1).then((value){
+                              List<MusicModel> playMusicModelList = [] ;
+                              value.data.forEach((element) => playMusicModelList.add(MusicModel.fromJson(element)));
+                              Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusicList(playMusicModelList);
+                            });
                             LocalStroageUtils.setPlayMusic(musicItem);
-                            Provider.of<PlayerMusicProvider>(context,
-                                    listen: false)
-                                .setPlayMusic(
-                                    musicModelList, musicItem, index, true);
+                            Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusic([], musicItem, index, true);
                             Routes.router.navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
                       Image.asset(
-                        "lib/assets/images/icon-music-add.png",
+                        "lib/assets/images/icon_music_add.png",
                         width: ThemeSize.smallIcon,
                         height: ThemeSize.smallIcon,
                       ),
                       SizedBox(width: ThemeSize.containerPadding),
                       Image.asset(
-                        "lib/assets/images/icon-music-menu.png",
+                        "lib/assets/images/icon_music_menu.png",
                         width: ThemeSize.smallIcon,
                         height: ThemeSize.smallIcon,
                       )
@@ -410,7 +417,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                               width: size,
                               fit: BoxFit.cover,
                             )
-                                : Image.asset("lib/assets/images/default-avater.png",
+                                : Image.asset("lib/assets/images/default_avater.png",
                                 height: size,
                                 width: size,
                                 fit: BoxFit.cover),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/MovieDetailPage.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../model/MovieDetailModel.dart';
 import '../../theme/ThemeSize.dart';
 
@@ -43,10 +43,10 @@ class MovieListComponent extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(ThemeSize.middleRadius),
               child: Image(
-                  width: 150,
-                  height: 200,
+                  width: ThemeSize.movieWidth,
+                  height: ThemeSize.movieHeight,
                   fit: BoxFit.fill,
                   image: NetworkImage(item.localImg!.length > 0
                       ? HOST + item.localImg!

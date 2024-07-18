@@ -1,9 +1,10 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:movie/theme/ThemeStyle.dart';
+import 'package:movie/utils/LocalStroageUtils.dart';
+import '../../main.dart';
 import '../../movie/service/serverMethod.dart';
 import 'package:movie/router/index.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/material_footer.dart';
 import 'dart:ui';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -11,14 +12,16 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 import '../provider/PlayerMusicProvider.dart';
 import '../model/MusicModel.dart';
-import '../../config/common.dart';
+import '../../common/config.dart';
+import '../../common/constant.dart';
 import '../../utils/common.dart';
 import '../component/lyric/lyric_controller.dart';
 import '../component/lyric/lyric_util.dart';
 import '../component/lyric/lyric_widget.dart';
 import '../component/CommentComponent.dart';
+import '../component/FavoriteComponent.dart';
 import '../../utils/HttpUtil .dart';
-import '../../movie/model/CommentModel.dart';
+import '../service/serverMethod.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   const MusicPlayerPage({super.key});
@@ -28,7 +31,7 @@ class MusicPlayerPage extends StatefulWidget {
 }
 
 class _MusicPlayerPageState extends State<MusicPlayerPage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin, RouteAware {
   @override
   bool get wantKeepAlive => true;
   double sliderValue = 0;
@@ -43,14 +46,26 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   late AnimationController _repeatController; // 会重复播放的控制器
   late Animation<double> _curveAnimation; // 非线性动画
   int commentTotal = 0;
-  // 在父组件中创建 GlobalKey
+  Map<LoopModeEnum, String> loopMode = {
+    LoopModeEnum.ORDER: "lib/assets/images/icon_music_order.png",
+    LoopModeEnum.REPEAT: "lib/assets/images/icon_music_loop.png",
+    LoopModeEnum.RANDOM: "lib/assets/images/icon_music_random.png"
+  };
+  LoopModeEnum loopModeEnum;
+  StreamSubscription onDurationChangedListener;// 监听总时长
+  StreamSubscription onAudioPositionChangedListener;// 监听播放进度
+  StreamSubscription onPlayerCompletionListener;// 监听播放完成
+  bool loading = false;
+  bool isFavorite = false;// 是否已经收藏
+
   @override
   void initState() {
     super.initState();
     _lyricController = LyricController(vsync: this);
-    player = Provider.of<PlayerMusicProvider>(context, listen: false).player;
-    musicModel =
-        Provider.of<PlayerMusicProvider>(context, listen: false).musicModel;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    loopModeEnum =provider.loopMode;
+    player = provider.player;
+    musicModel = provider.musicModel;
     usePlay(musicModel);
     _repeatController = AnimationController(
       duration: const Duration(seconds: 10),
@@ -58,21 +73,40 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     )..repeat();
 
     // 创建一个从0到360弧度的补间动画 v * 2 * π
-    _curveAnimation =
-        Tween<double>(begin: 0, end: 1).animate(_repeatController);
+    _curveAnimation = Tween<double>(begin: 0, end: 1).animate(_repeatController);
 
     // 获取当前正在播放的音乐下标
-    currentPlayIndex =
-        Provider.of<PlayerMusicProvider>(context, listen: false).playIndex;
+    currentPlayIndex = provider.playIndex;
 
-    playMusicModelList =
-        Provider.of<PlayerMusicProvider>(context, listen: false)
-            .playMusicModelList;
+    playMusicModelList = provider.playMusicList;
+
+    useIsMusicFavorite(musicModel.id);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 添加监听订阅
+    MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 退出当前页面，返回上一级页面
+  ///@date: 2024-06-18 21:57
+  @override
+  void didPop() {
+    super.didPop();
+    onDurationChangedListener.cancel();// 取消监听音乐播放时长
+    onAudioPositionChangedListener.cancel();// 取消监听音乐播放进度
   }
 
   @override
   void dispose() {
     super.dispose();
+    // 移除监听订阅
+    onDurationChangedListener.cancel();// 取消监听音乐播放时长
+    onAudioPositionChangedListener.cancel();// 取消监听音乐播放进度
+    MyApp.routeObserver.unsubscribe(this);
     _repeatController.dispose();
   }
 
@@ -81,18 +115,31 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Scaffold(
         backgroundColor: ThemeColors.colorBg,
         body: Stack(children: [
+
           /// 图片在Stack最底层
           ImageFiltered(
             imageFilter: ImageFilter.blur(
                 sigmaX: 50, sigmaY: 50, tileMode: TileMode.mirror),
             child: Image.network(HOST + musicModel.cover!,
                 fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width),
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width),
           ),
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -123,7 +170,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   Widget buildPlayCircle() {
     double playerWidth =
-        MediaQuery.of(context).size.width - ThemeSize.containerPadding * 6;
+        MediaQuery
+            .of(context)
+            .size
+            .width - ThemeSize.containerPadding * 6;
     return Container(
         width: playerWidth,
         height: playerWidth,
@@ -156,6 +206,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
                   child: ClipOval(
                       child: Image.network(
+<<<<<<< HEAD
                     HOST + musicModel.cover!,
                     height: playerWidth -
                         ThemeSize.smallMargin -
@@ -165,6 +216,17 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                         ThemeSize.containerPadding * 3,
                     fit: BoxFit.cover,
                   )))),
+=======
+                        HOST + musicModel.cover,
+                        height: playerWidth -
+                            ThemeSize.smallMargin -
+                            ThemeSize.containerPadding * 3,
+                        width: playerWidth -
+                            ThemeSize.smallMargin -
+                            ThemeSize.containerPadding * 3,
+                        fit: BoxFit.cover,
+                      )))),
+>>>>>>> main
         ));
   }
 
@@ -175,6 +237,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       child: Center(
           child: musicModel.lyrics != null && musicModel.lyrics != ''
               ? InkWell(
+<<<<<<< HEAD
                   child: LyricWidget(
                     lyricStyle: TextStyle(
                         color: ThemeColors.opcityWhiteColor,
@@ -190,10 +253,27 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                     Routes.router.navigateTo(context, '/MusicLyricPage');
                   },
                 )
+=======
+            child: LyricWidget(
+              lyricStyle: TextStyle(
+                  color: ThemeColors.opcityWhiteColor,
+                  fontSize: ThemeSize.middleFontSize),
+              currLyricStyle: TextStyle(
+                  color: ThemeColors.colorWhite,
+                  fontSize: ThemeSize.middleFontSize),
+              size: Size(double.infinity, double.infinity),
+              lyrics: LyricUtil.formatLyric(musicModel.lyrics),
+              controller: _lyricController,
+            ),
+            onTap: () {
+              Routes.router.navigateTo(context, '/MusicLyricPage');
+            },
+          )
+>>>>>>> main
               : Text('暂无歌词',
-                  style: TextStyle(
-                      color: ThemeColors.opcityWhiteColor,
-                      fontSize: ThemeSize.middleFontSize))),
+              style: TextStyle(
+                  color: ThemeColors.opcityWhiteColor,
+                  fontSize: ThemeSize.middleFontSize))),
     );
   }
 
@@ -227,35 +307,100 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     );
   }
 
+  ///@author: wuwenqiang
+  ///@description: 创建底部弹窗
+  /// @date: 2024-06-23 22:29
+  void buildModalBottomSheet(Widget component){
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(ThemeSize.middleRadius),
+                topRight: Radius.circular(ThemeSize.middleRadius))),
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.7,
+              child: component
+          );
+        });
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 音乐播放操作
+  /// @date: 2024-06-23 22:29
   Widget buildPlayMenu() {
     return Row(
       children: [
         Expanded(
-          child: Image.asset(
-            "lib/assets/images/icon-music-collect.png",
-            width: ThemeSize.playIcon,
-            height: ThemeSize.playIcon,
-          ),
-          flex: 1,
-        ),
-        Expanded(
-          child: Image.asset(
-            "lib/assets/images/icon-music-down.png",
-            width: ThemeSize.playIcon,
-            height: ThemeSize.playIcon,
+          child: InkWell(
+            child: Image.asset(
+              musicModel.isLike == 0
+                  ? "lib/assets/images/icon_music_collect.png"
+                  : "lib/assets/images/icon_collection_active.png",
+              width: ThemeSize.playIcon,
+              height: ThemeSize.playIcon,
+            ),
+            onTap: () {
+              if (loading) return;
+              loading = true;
+              PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+              if (musicModel.isLike == 0) {
+                insertMusicLikeService(musicModel.id).then((res) {
+                  loading = false;
+                  if (res.data > 0) {
+                    provider.setFavorite(1);
+                    setState(() {
+                      musicModel.isLike = 1;
+                    });
+                  }
+                }).catchError(() {
+                  loading = false;
+                });
+              } else {
+                deleteMusicLikeService(musicModel.id).then((res) {
+                  loading = false;
+                  if (res.data > 0) {
+                    provider.setFavorite(0);
+                    setState(() {
+                      musicModel.isLike = 0;
+                    });
+                  }
+                }).catchError(() {
+                  loading = false;
+                });
+              }
+            },
           ),
           flex: 1,
         ),
         Expanded(
           child: InkWell(
               child: Image.asset(
-                "lib/assets/images/icon-music-comments.png",
+              "lib/assets/images/icon_share_music.png",
+              width: ThemeSize.playIcon,
+              height: ThemeSize.playIcon,
+            ),
+            onTap: (){
+              Routes.router.navigateTo(context, '/MusicSharePage?musicItem=${Uri.encodeComponent(MusicModel.stringify(musicModel))}');
+            },
+          ),
+          flex: 1,
+        ),
+        Expanded(
+          child: InkWell(
+              child: Image.asset(
+                "lib/assets/images/icon_music_comments.png",
                 width: ThemeSize.playIcon,
                 height: ThemeSize.playIcon,
               ),
               onTap: () async {
                 print(musicModel);
                 ResponseModel<List> res = await getTopCommentListService(
+<<<<<<< HEAD
                     musicModel.id!, CommentEnum.MUSIC, 1, 20);
                 commentTotal = (res.total != null ? res.total : 0)!;
                 showModalBottomSheet(
@@ -273,14 +418,32 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                             relationId: musicModel.id!,
                           ));
                     });
+=======
+                    musicModel.id, CommentEnum.MUSIC, 1, 20);
+                commentTotal = res.total != null ? res.total : 0;
+                buildModalBottomSheet(CommentComponent(
+                  type: CommentEnum.MUSIC,
+                  relationId: musicModel.id,
+                ));
+>>>>>>> main
               }),
           flex: 1,
         ),
         Expanded(
-          child: Image.asset(
-            "lib/assets/images/icon-music-white-menu.png",
-            width: ThemeSize.playIcon,
-            height: ThemeSize.playIcon,
+          child: InkWell(
+            child: Image.asset(
+              isFavorite ? "lib/assets/images/icon_full_star.png" : "lib/assets/images/icon_favorite.png",
+              width: ThemeSize.playIcon,
+              height: ThemeSize.playIcon,
+            ),
+            onTap: (){
+              buildModalBottomSheet(FavoriteComponent(musicId: musicModel.id,isFavorite:isFavorite,onFavorite: (bool isMusicFavorite){
+                Navigator.pop(context);
+                setState(() {
+                  isFavorite = isMusicFavorite;
+                });
+              },));
+            },
           ),
           flex: 1,
         ),
@@ -298,6 +461,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           child: Slider(
             value: sliderValue,
             onChanged: (data) {
+              player.seek(Duration(seconds:totalSec*data~/100));
               setState(() {
                 sliderValue = data;
               });
@@ -323,37 +487,78 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   }
 
   Widget buildPlayBtn() {
-    List<MusicModel> playMusicModelList =
-        Provider.of<PlayerMusicProvider>(context, listen: false)
-            .playMusicModelList;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
     return Row(
       children: [
         Expanded(
-            child: Image.asset(
-              "lib/assets/images/icon-music-order.png",
-              width: ThemeSize.playIcon,
-              height: ThemeSize.playIcon,
-            ),
+            child:
+            PopupMenuButton<LoopModeEnum>(
+              color: ThemeColors.popupMenuColor,
+              initialValue: loopModeEnum,
+              child: Image.asset(
+                loopMode[loopModeEnum],
+                width: ThemeSize.playIcon,
+                height: ThemeSize.playIcon,
+              ),
+              onSelected: (LoopModeEnum loopMode) {
+                provider.setLoopMode(loopMode);
+                LocalStroageUtils.setLoopMode(loopMode);
+                setState(() {
+                  loopModeEnum = loopMode;
+                });
+              },
+              itemBuilder: (context) {
+                return <PopupMenuEntry<LoopModeEnum>>[
+                  PopupMenuItem<LoopModeEnum>(
+                      value: LoopModeEnum.ORDER,
+                      child: Row(
+                          children: <Widget>[
+                            Image.asset(
+                                "lib/assets/images/icon_music_order.png",
+                                width: ThemeSize.smallIcon,
+                                height: ThemeSize.smallIcon),
+                            SizedBox(width: ThemeSize.smallMargin),
+                            Text(
+                                '顺序播放', style: TextStyle(color: ThemeColors.colorWhite))
+                          ])
+                  ),
+                  PopupMenuItem<LoopModeEnum>(
+                    value: LoopModeEnum.REPEAT,
+                    child: Row(
+                        children: <Widget>[
+                          Image.asset('lib/assets/images/icon_music_loop.png',
+                              width: ThemeSize.smallIcon,
+                              height: ThemeSize.smallIcon),
+                          SizedBox(width: ThemeSize.smallMargin),
+                          Text('单曲循环',
+                              style: TextStyle(color: ThemeColors.colorWhite))
+                        ]),
+                  ),
+                  PopupMenuItem<LoopModeEnum>(
+                    value: LoopModeEnum.RANDOM,
+                    child: Row(
+                        children: <Widget>[
+                          Image.asset('lib/assets/images/icon_music_random.png',
+                              width: ThemeSize.smallIcon,
+                              height: ThemeSize.smallIcon),
+                          SizedBox(width: ThemeSize.smallMargin),
+                          Text('随机播放',
+                              style: TextStyle(color: ThemeColors.colorWhite))
+                        ]),
+                  )
+                ];
+              },
+            )
+            ,
             flex: 1),
         Expanded(
             child: InkWell(
-                child: Opacity(
-                    opacity: currentPlayIndex == 0 ? 0.5 : 1,
-                    child: Image.asset(
-                      "lib/assets/images/icon-music-prev.png",
-                      width: ThemeSize.playIcon,
-                      height: ThemeSize.playIcon,
-                    )),
-                onTap: () {
-                  if (currentPlayIndex > 0) {
-                    Provider.of<PlayerMusicProvider>(context, listen: false)
-                        .setPlayIndex(currentPlayIndex);
-                    setState(() {
-                      currentPlayIndex--;
-                      musicModel = playMusicModelList[currentPlayIndex];
-                    });
-                  }
-                }),
+                child: Image.asset(
+                  "lib/assets/images/icon_music_prev.png",
+                  width: ThemeSize.playIcon,
+                  height: ThemeSize.playIcon,
+                ),
+                onTap: usePrevMusic),
             flex: 1),
         Expanded(
             child: Row(
@@ -365,15 +570,15 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       height: ThemeSize.bigAvater,
                       decoration: BoxDecoration(
                         borderRadius:
-                            BorderRadius.circular(ThemeSize.bigAvater),
+                        BorderRadius.circular(ThemeSize.bigAvater),
                         border:
-                            Border.all(color: ThemeColors.colorWhite, width: 2),
+                        Border.all(color: ThemeColors.colorWhite, width: 2),
                       ),
                       child: Center(
                         child: Image.asset(
                           playState
-                              ? "lib/assets/images/icon-music-playing.png"
-                              : "lib/assets/images/icon-music-play-white.png",
+                              ? "lib/assets/images/icon_music_playing.png"
+                              : "lib/assets/images/icon_music_play_white.png",
                           width: ThemeSize.playIcon,
                           height: ThemeSize.playIcon,
                         ),
@@ -400,20 +605,16 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             flex: 2),
         Expanded(
             child: InkWell(
-                child: Opacity(
-                    opacity: currentPlayIndex == playMusicModelList.length - 1
-                        ? 0.5
-                        : 1,
-                    child: Image.asset(
-                      "lib/assets/images/icon-music-next.png",
-                      width: ThemeSize.playIcon,
-                      height: ThemeSize.playIcon,
-                    )),
+                child: Image.asset(
+                  "lib/assets/images/icon_music_next.png",
+                  width: ThemeSize.playIcon,
+                  height: ThemeSize.playIcon,
+                ),
                 onTap: useNextMusic),
             flex: 1),
         Expanded(
             child: Image.asset(
-              "lib/assets/images/icon-music-play-menu.png",
+              "lib/assets/images/icon_music_play_menu.png",
               width: ThemeSize.playIcon,
               height: ThemeSize.playIcon,
             ),
@@ -424,6 +625,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   /// 播放音乐
   void usePlay(MusicModel musicModel) async {
+<<<<<<< HEAD
     final result = await player.play((HOST + musicModel.localPlayUrl!) as Source);
     // if (result == 1) {
     //   setState(() {
@@ -448,16 +650,91 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     //     useNextMusic(); // 切换下一首
     //   });
     // }
+=======
+    final result = await player.play(HOST + musicModel.localPlayUrl);
+    if (result == 1) {
+      setState(() {
+        // 默认开始播放
+        playState = true;
+      });
+      onDurationChangedListener?.cancel();// 恢复监听音乐播放时长
+      onAudioPositionChangedListener?.cancel();// 恢复监听音乐播放进度
+      onDurationChangedListener = player.onDurationChanged.listen((event) {
+        setState(() {
+          totalSec = event.inSeconds;
+        });
+      });
+      onAudioPositionChangedListener = player.onAudioPositionChanged.listen((event) {
+        _lyricController.progress = Duration(seconds: event.inSeconds);
+        setState(() {
+          duration = event.inSeconds;
+          sliderValue = (duration / totalSec) * 100;
+        });
+      });
+      onPlayerCompletionListener?.cancel();
+      onPlayerCompletionListener = player.onPlayerCompletion.listen((event) {
+        useNextMusic(); // 切换下一首
+      });
+    }
+>>>>>>> main
   }
 
-  void useNextMusic() {
-    if (currentPlayIndex < playMusicModelList.length - 1) {
-      setState(() {
-        currentPlayIndex++;
-        musicModel = playMusicModelList[currentPlayIndex];
-      });
-      Provider.of<PlayerMusicProvider>(context, listen: false)
-          .setPlayIndex(currentPlayIndex);
+  ///@author: wuwenqiang
+  ///@description: 切换上一首
+  /// @date: 2024-06-21 23:12
+  usePrevMusic(){
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    if(loopModeEnum == LoopModeEnum.RANDOM){// 随机播放
+      if(provider.playMusicList.length > 1){ // 如果已经播放的音乐两首以上，回退上一首
+        MusicModel prevMusic = provider.playMusicList[provider.playMusicList.length - 2];
+        provider.playMusicList.removeAt(provider.playMusicList.length - 1);
+        currentPlayIndex = provider.musicList.indexWhere((item)=>item.id == prevMusic.id);
+      }else if(currentPlayIndex == 0){// 如果已经播放的歌曲只有一首，切换上一首
+        currentPlayIndex = provider.musicList.length - 1;
+      }else{
+        currentPlayIndex -= 1;
+      }
+    }else{
+      if (currentPlayIndex > 0) {
+        currentPlayIndex--;
+      } else {
+        currentPlayIndex = provider.musicList.length - 1;
+      }
     }
+    useIsMusicFavorite(provider.musicList[currentPlayIndex].id);
+    setState(() {
+      musicModel = provider.musicList[currentPlayIndex];
+    });
+    provider.setPlayIndex(currentPlayIndex);
+  }
+
+  void useIsMusicFavorite(musicId){
+    isMusicFavoriteService(musicId).then((value){
+      setState(() {
+        isFavorite = value.data > 0;
+      });
+    });
+  }
+
+  ///@author: wuwenqiang
+  ///@description: 切换下一首歌曲
+  /// @date: 2024-06-14 00:15
+  void useNextMusic() {
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+    if(loopModeEnum == LoopModeEnum.RANDOM){
+      int index = Random().nextInt(provider.unPlayMusicList.length - 1);
+      currentPlayIndex = provider.musicList.indexWhere((item) => item.id == provider.unPlayMusicList[index].id);
+    }else{
+      if (currentPlayIndex < provider.musicList.length - 1) {
+        currentPlayIndex++;
+      } else {
+        currentPlayIndex = 0;
+      }
+    }
+    this.useIsMusicFavorite(provider.musicList[currentPlayIndex].id);
+    setState(() {
+      musicModel = provider.musicList[currentPlayIndex];
+    });
+    provider.setPlayIndex(currentPlayIndex);
   }
 }

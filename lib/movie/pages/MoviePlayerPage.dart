@@ -5,7 +5,7 @@ import 'package:movie/theme/ThemeStyle.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../component/ScoreComponent.dart';
-import '../../config/common.dart';
+import '../../common/config.dart';
 import '../service/serverMethod.dart';
 import '../component/RecommendComponent.dart';
 import '../component/YouLikesComponent.dart';
@@ -273,7 +273,7 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
               child: Row(
                 children: <Widget>[
                   Image.asset(
-                    "lib/assets/images/icon-comment.png",
+                    "lib/assets/images/icon_comment.png",
                     width: ThemeSize.middleIcon,
                     height: ThemeSize.middleIcon,
                   ),
@@ -325,13 +325,13 @@ class _MoviePlayerPageState extends State<MoviePlayerPage> {
             },
             child: Image.asset(
                 isFavoriteFlag
-                    ? "lib/assets/images/icon-collection-active.png"
-                    : "lib/assets/images/icon-collection.png",
+                    ? "lib/assets/images/icon_collection_active.png"
+                    : "lib/assets/images/icon_collection.png",
                 width: ThemeSize.middleIcon,
                 height: ThemeSize.middleIcon),
           ),
           SizedBox(width: ThemeSize.smallMargin),
-          Image.asset("lib/assets/images/icon-share.png",
+          Image.asset("lib/assets/images/icon_share.png",
               width: ThemeSize.middleIcon, height: ThemeSize.middleIcon)
         ],
       ),

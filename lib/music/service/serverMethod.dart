@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:movie/movie/model/CommentModel.dart';
-import 'package:movie/music/model/CircleLikeModel.dart';
+import '../model/CircleModel.dart';
+import '../../common/config.dart';
+import '../model/CircleLikeModel.dart';
+import '../model/FavoriteDirectoryModel.dart';
 import '../model/MusicModel.dart';
 import '../api/api.dart';
 import '../../utils/HttpUtil .dart';
@@ -67,9 +69,10 @@ Future<ResponseModel<List>> getSingerListService(
 ///@description: 获取分类音乐列表
 /// @date: 2023-05-25 22:45
 Future<ResponseModel<List>> getCircleListByTypeService(
-    String type, int pageNum, int pageSize) async {
+    CircleEnum type, int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
+<<<<<<< HEAD
         "${servicePath['getCircleListByType']}?type=${type}&pageNum=${pageNum}&pageSize=${pageSize}");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
@@ -84,6 +87,9 @@ Future<ResponseModel<List>> getCircleListByTypeService(
 Future<ResponseModel<List>> getMusicPlayMenuService() async {
   try {
     Response response = await dio.get(servicePath['getMusicPlayMenu']!);
+=======
+        "${servicePath['getCircleListByType']}?type=${type.toString().split('.').last}&pageNum=${pageNum}&pageSize=${pageSize}");
+>>>>>>> main
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -139,11 +145,14 @@ Future<ResponseModel<int>> insertMusicRecordService(
 ///@author: wuwenqiang
 ///@description: 插入收藏
 /// @date: 2024-01-05 22:26
-Future<ResponseModel<int>> insertMusicFavoriteService(
-    MusicModel musicModel) async {
+Future<ResponseModel<int>> insertMusicLikeService(int musicId) async {
   try {
+<<<<<<< HEAD
     Response response = await dio.post(servicePath['insertMusicFavorite']!,
         data: MusicModel.toMap(musicModel));
+=======
+    Response response = await dio.post(servicePath['insertMusicLike'] + musicId.toString());
+>>>>>>> main
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -154,10 +163,14 @@ Future<ResponseModel<int>> insertMusicFavoriteService(
 ///@author: wuwenqiang
 ///@description: 删除收藏
 /// @date: 2024-01-05 23:44
-Future<ResponseModel<int>> deleteMusicFavoriteService(int id) async {
+Future<ResponseModel<int>> deleteMusicLikeService(int musicId) async {
   try {
     Response response =
+<<<<<<< HEAD
         await (dio.delete(servicePath['deleteMusicFavorite']! + id.toString()));
+=======
+        await dio.delete(servicePath['deleteMusicLike'] + musicId.toString());
+>>>>>>> main
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -168,11 +181,11 @@ Future<ResponseModel<int>> deleteMusicFavoriteService(int id) async {
 ///@author: wuwenqiang
 ///@description: 删除收藏
 /// @date: 2024-01-05 23:44
-Future<ResponseModel<List>> queryMusicFavoriteService(
+Future<ResponseModel<List>> queryMusicLikeService(
     int pageNum, int pageSize) async {
   try {
     Response response = await dio.get(
-        "${servicePath['queryMusicFavorite']}?pageNum=${pageNum}&pageSize=${pageSize}");
+        "${servicePath['queryMusicLike']}?pageNum=${pageNum}&pageSize=${pageSize}");
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -226,13 +239,79 @@ Future<ResponseModel> saveLikeService(CircleLikeModel circleLikeModel) async {
 ///@description: 点赞
 /// @date: 2024-3-28 22:10
 Future<ResponseModel<int>> deleteLikeService(
-    int relationId, String type) async {
+    int relationId, CommentEnum type) async {
   try {
     Response response = await dio.delete(
-        '${servicePath['deleteLike']}?relationId=${relationId.toString()}&type=${type.toString()}');
+        '${servicePath['deleteLike']}?relationId=${relationId.toString()}&type=${type.toString().split('.').last}');
     return ResponseModel<int>.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
     return ResponseModel();
+  }
+}
+
+///@author: wuwenqiang
+///@description: 点赞
+/// @date: 2024-3-28 22:10
+Future<ResponseModel<List>> getFavoriteDirectoryService(int musicId) async {
+  try {
+    Response response = await dio.get("${servicePath['getFavoriteDirectory']}?musicId=${musicId.toString()}");
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@description: 查询音乐是否已经收藏
+///@date: 2024-06-25 22:02
+///@author wuwenqiang
+Future<ResponseModel<int>> isMusicFavoriteService (int musicId) async {
+  try {
+    Response response = await dio.get(servicePath['isMusicFavorite'] + musicId.toString());
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+
+///@description: 添加音乐收藏
+///@date: 2024-06-29 11:26
+///@author wuwenqiang
+Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<int>favoriteList) async {
+  try {
+    Response response = await dio.post(servicePath['insertMusicFavorite'] + musicId.toString(),data: favoriteList.map((item) => {"favoriteId":item}).toList());
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@description: 添加音乐收藏
+///@date: 2024-06-29 11:26
+///@author wuwenqiang
+Future<ResponseModel<Map>> insertFavoriteDirectoryService (FavoriteDirectoryModel favoriteDirectory)async {
+  try {
+    Response response = await dio.post(servicePath['insertFavoriteDirectory'],data: favoriteDirectory.toMap());
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
+  }
+}
+
+///@description: 发表说说
+///@date: 2024-07-13 20:42
+///@author wuwenqiang
+Future<ResponseModel<int>> saveCircleService (CircleModel circleModel)async {
+  try {
+    Response response = await dio.post(servicePath['insertCircle'],data: circleModel.toMap());
+    return ResponseModel.fromJson(response.data);
+  } catch (e) {
+    print('ERROR:======>${e}');
+    return null;
   }
 }

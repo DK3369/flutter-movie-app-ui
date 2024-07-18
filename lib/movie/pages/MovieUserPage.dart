@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../provider/UserInfoProvider.dart';
 import 'LoginPage.dart';
 import 'EditPage.dart';
@@ -64,7 +64,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       ),
                                       SizedBox(width: ThemeSize.smallMargin),
                                       Image.asset(
-                                          "lib/assets/images/icon-arrow.png",
+                                          "lib/assets/images/icon_arrow.png",
                                           height: ThemeSize.miniIcon,
                                           width: ThemeSize.miniIcon,
                                           fit: BoxFit.cover),
@@ -96,7 +96,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                   Text(userInfo.username ?? ""),
                                   SizedBox(width: ThemeSize.smallMargin),
                                   Image.asset(
-                                      "lib/assets/images/icon-arrow.png",
+                                      "lib/assets/images/icon_arrow.png",
                                       height: ThemeSize.miniIcon,
                                       width: ThemeSize.miniIcon,
                                       fit: BoxFit.cover),
@@ -130,7 +130,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                       Text(userInfo.telephone ?? ""),
                                       SizedBox(width: ThemeSize.smallMargin),
                                       Image.asset(
-                                          "lib/assets/images/icon-arrow.png",
+                                          "lib/assets/images/icon_arrow.png",
                                           height: ThemeSize.miniIcon,
                                           width: ThemeSize.miniIcon,
                                           fit: BoxFit.cover),
@@ -162,7 +162,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                   Text(userInfo.email ?? ""),
                                   SizedBox(width: ThemeSize.smallMargin),
                                   Image.asset(
-                                      "lib/assets/images/icon-arrow.png",
+                                      "lib/assets/images/icon_arrow.png",
                                       height: ThemeSize.miniIcon,
                                       width: ThemeSize.miniIcon,
                                       fit: BoxFit.cover),
@@ -196,7 +196,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     Text(userInfo.birthday ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
-                                        "lib/assets/images/icon-arrow.png",
+                                        "lib/assets/images/icon_arrow.png",
                                         height: ThemeSize.miniIcon,
                                         width: ThemeSize.miniIcon,
                                         fit: BoxFit.cover),
@@ -229,7 +229,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     Text(userInfo.sex ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
-                                        "lib/assets/images/icon-arrow.png",
+                                        "lib/assets/images/icon_arrow.png",
                                         height: ThemeSize.miniIcon,
                                         width: ThemeSize.miniIcon,
                                         fit: BoxFit.cover),
@@ -262,7 +262,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     Text( userInfo.sign ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
-                                        "lib/assets/images/icon-arrow.png",
+                                        "lib/assets/images/icon_arrow.png",
                                         height: ThemeSize.miniIcon,
                                         width: ThemeSize.miniIcon,
                                         fit: BoxFit.cover),
@@ -297,7 +297,7 @@ class _MovieUserPageState extends State<MovieUserPage> {
                                     Text(userInfo.region ?? ""),
                                     SizedBox(width: ThemeSize.smallMargin),
                                     Image.asset(
-                                        "lib/assets/images/icon-arrow.png",
+                                        "lib/assets/images/icon_arrow.png",
                                         height: ThemeSize.miniIcon,
                                         width: ThemeSize.miniIcon,
                                         fit: BoxFit.cover),

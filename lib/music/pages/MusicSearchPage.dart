@@ -9,7 +9,7 @@ import '../model/MusicModel.dart';
 import "package:shared_preferences/shared_preferences.dart";
 import '../../movie/component/TitleComponent.dart';
 import '../service/serverMethod.dart';
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import 'package:provider/provider.dart';
 import '../provider/PlayerMusicProvider.dart';
 import 'package:movie/router/index.dart';
@@ -97,9 +97,9 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    currentPlayingMusicModel =
-        Provider.of<PlayerMusicProvider>(context).musicModel;
-    playing = Provider.of<PlayerMusicProvider>(context).playing;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context);
+    currentPlayingMusicModel = provider.musicModel;
+    playing = provider.playing;
     return Scaffold(
       backgroundColor: ThemeColors.colorBg,
       body: SafeArea(
@@ -184,7 +184,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                                 });
                               },
                               child: Image.asset(
-                                "lib/assets/images/icon-clear.png",
+                                "lib/assets/images/icon_clear.png",
                                 height: ThemeSize.smallIcon,
                                 width: ThemeSize.smallIcon,
                               ))
@@ -292,6 +292,7 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
 
   Widget buildMusicListWidget() {
     int index = -1;
+    PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
     return Container(
         decoration: ThemeStyle.boxDecoration,
         padding: ThemeStyle.padding,
@@ -341,43 +342,50 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                               playing &&
                                   musicItem.id ==
                                       currentPlayingMusicModel.id
-                                  ? "lib/assets/images/icon-music-playing-grey.png"
-                                  : "lib/assets/images/icon-music-play.png",
+                                  ? "lib/assets/images/icon_music_playing_grey.png"
+                                  : "lib/assets/images/icon_music_play.png",
                               width: ThemeSize.smallIcon,
                               height: ThemeSize.smallIcon),
                           onTap: () {
-                            Provider.of<PlayerMusicProvider>(context,
-                                listen: false)
-                                .setPlayMusic(
-                                searchResult, musicItem, index, true);
-                            Routes.router
-                                .navigateTo(context, '/MusicPlayerPage');
+                            provider.insertMusic(musicItem, provider.playIndex);
+                            Routes.router.navigateTo(context, '/MusicPlayerPage');
                           }),
                       SizedBox(width: ThemeSize.containerPadding),
                       InkWell(child: Image.asset(
-                          "lib/assets/images/icon-like${musicItem.isFavorite == 1 ? "-active" : ""}.png",
+                          "lib/assets/images/icon_like${musicItem.isLike == 1 ? "_active" : ""}.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),onTap: (){
+<<<<<<< HEAD
                         if(musicItem.isFavorite == 0){
                           insertMusicFavoriteService(musicItem).then((res) => {
                             if(res.data! > 0){
+=======
+                        if(musicItem.isLike == 0){
+                          insertMusicLikeService(musicItem.id).then((res) => {
+                            if(res.data > 0){
+>>>>>>> main
                               setState(() {
-                                musicItem.isFavorite = 1;
+                                musicItem.isLike = 1;
                               })
                             }
                           });
                         }else{
+<<<<<<< HEAD
                           deleteMusicFavoriteService(musicItem.id!).then((res) => {
                             if(res.data! > 0){
+=======
+                          deleteMusicLikeService(musicItem.id).then((res) => {
+                            if(res.data > 0){
+>>>>>>> main
                               setState(() {
-                                musicItem.isFavorite = 0;
+                                musicItem.isLike = 0;
                               })
                             }
                           });
                         }
                       }),
                       SizedBox(width: ThemeSize.containerPadding),
-                      Image.asset("lib/assets/images/icon-music-menu.png",
+                      Image.asset("lib/assets/images/icon_music_menu.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),
                     ]));

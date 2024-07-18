@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import "package:shared_preferences/shared_preferences.dart";
-import '../../config/common.dart';
+import '../../common/constant.dart';
 import '../component/TitleComponent.dart';
 import '../service/serverMethod.dart';
 import './MovieDetailPage.dart';
@@ -213,7 +213,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                                 });
                               },
                               child: Image.asset(
-                                "lib/assets/images/icon-clear.png",
+                                "lib/assets/images/icon_clear.png",
                                 height: ThemeSize.smallIcon,
                                 width: ThemeSize.smallIcon,
                               ))
