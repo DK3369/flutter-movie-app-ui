@@ -51,9 +51,6 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     "lib/assets/images/icon_user_active.png"
   ];
   List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
-<<<<<<< HEAD
-  MusicModel musicModel = MusicModel();
-=======
   MusicModel musicModel;
   StreamSubscription onPlayerStateChangedListener;
 
@@ -91,7 +88,6 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     onPlayerStateChangedListener.cancel();// 取消监听音乐播放进度
   }
 
->>>>>>> main
   @override
   void dispose() {
     super.dispose();

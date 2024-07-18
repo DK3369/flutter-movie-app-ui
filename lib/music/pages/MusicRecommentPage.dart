@@ -131,28 +131,18 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               "lib/assets/images/icon_like${musicModel.isLike == 1 ? "_active" : ""}.png",
               width: ThemeSize.smallIcon,
               height: ThemeSize.smallIcon),onTap: (){
-<<<<<<< HEAD
-            if(musicModel.isFavorite == 0){
-              insertMusicFavoriteService(musicModel).then((res) => {
-                if(res.data! > 0){
-=======
+
             if(musicModel.isLike == 0){
               insertMusicLikeService(musicModel.id).then((res) => {
                 if(res.data > 0){
->>>>>>> main
                   setState(() {
                     musicModel.isLike = 1;
                   })
                 }
               });
             }else{
-<<<<<<< HEAD
-              deleteMusicFavoriteService(musicModel.id!).then((res) => {
-                if(res.data! > 0){
-=======
               deleteMusicLikeService(musicModel.id).then((res) => {
                 if(res.data > 0){
->>>>>>> main
                   setState(() {
                     musicModel.isLike = 0;
                   })

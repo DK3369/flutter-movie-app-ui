@@ -35,12 +35,9 @@ class _EditPageState extends State<EditPage> {
 
   @override
   void initState() {
-<<<<<<< HEAD
-    checkValue = myController.text = widget.value ?? "";
-=======
     super.initState();
-    checkValue = myController.text = widget.value;
->>>>>>> main
+    checkValue = myController.text = widget.value ?? "";
+
     myController.addListener(() {
       setState(() {
         hasChange = myController.text != widget.value ? true : false;

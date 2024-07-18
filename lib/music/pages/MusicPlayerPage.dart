@@ -206,17 +206,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
                   child: ClipOval(
                       child: Image.network(
-<<<<<<< HEAD
-                    HOST + musicModel.cover!,
-                    height: playerWidth -
-                        ThemeSize.smallMargin -
-                        ThemeSize.containerPadding * 3,
-                    width: playerWidth -
-                        ThemeSize.smallMargin -
-                        ThemeSize.containerPadding * 3,
-                    fit: BoxFit.cover,
-                  )))),
-=======
                         HOST + musicModel.cover,
                         height: playerWidth -
                             ThemeSize.smallMargin -
@@ -226,7 +215,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                             ThemeSize.containerPadding * 3,
                         fit: BoxFit.cover,
                       )))),
->>>>>>> main
         ));
   }
 
@@ -237,23 +225,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       child: Center(
           child: musicModel.lyrics != null && musicModel.lyrics != ''
               ? InkWell(
-<<<<<<< HEAD
-                  child: LyricWidget(
-                    lyricStyle: TextStyle(
-                        color: ThemeColors.opcityWhiteColor,
-                        fontSize: ThemeSize.middleFontSize),
-                    currLyricStyle: TextStyle(
-                        color: ThemeColors.colorWhite,
-                        fontSize: ThemeSize.middleFontSize),
-                    size: Size(double.infinity, double.infinity),
-                    lyrics: LyricUtil.formatLyric(musicModel.lyrics!),
-                    controller: _lyricController,
-                  ),
-                  onTap: () {
-                    Routes.router.navigateTo(context, '/MusicLyricPage');
-                  },
-                )
-=======
             child: LyricWidget(
               lyricStyle: TextStyle(
                   color: ThemeColors.opcityWhiteColor,
@@ -269,7 +240,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               Routes.router.navigateTo(context, '/MusicLyricPage');
             },
           )
->>>>>>> main
               : Text('暂无歌词',
               style: TextStyle(
                   color: ThemeColors.opcityWhiteColor,
@@ -400,32 +370,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               onTap: () async {
                 print(musicModel);
                 ResponseModel<List> res = await getTopCommentListService(
-<<<<<<< HEAD
-                    musicModel.id!, CommentEnum.MUSIC, 1, 20);
-                commentTotal = (res.total != null ? res.total : 0)!;
-                showModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(ThemeSize.middleRadius),
-                            topRight: Radius.circular(ThemeSize.middleRadius))),
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          child: CommentComponent(
-                            type: CommentEnum.MUSIC,
-                            relationId: musicModel.id!,
-                          ));
-                    });
-=======
                     musicModel.id, CommentEnum.MUSIC, 1, 20);
                 commentTotal = res.total != null ? res.total : 0;
                 buildModalBottomSheet(CommentComponent(
                   type: CommentEnum.MUSIC,
                   relationId: musicModel.id,
                 ));
->>>>>>> main
               }),
           flex: 1,
         ),
@@ -625,32 +575,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   /// 播放音乐
   void usePlay(MusicModel musicModel) async {
-<<<<<<< HEAD
-    final result = await player.play((HOST + musicModel.localPlayUrl!) as Source);
-    // if (result == 1) {
-    //   setState(() {
-    //     // 默认开始播放
-    //     playState = true;
-    //   });
-    //   player.onDurationChanged.listen((event) {
-    //     if (totalSec == 0) {
-    //       setState(() {
-    //         totalSec = event.inSeconds;
-    //       });
-    //     }
-    //   });
-    //   player.onAudioPositionChanged.listen((event) {
-    //     _lyricController.progress = Duration(seconds: event.inSeconds);
-    //     setState(() {
-    //       duration = event.inSeconds;
-    //       sliderValue = (duration / totalSec) * 100;
-    //     });
-    //   });
-    //   player.onPlayerCompletion.listen((event) {
-    //     useNextMusic(); // 切换下一首
-    //   });
-    // }
-=======
     final result = await player.play(HOST + musicModel.localPlayUrl);
     if (result == 1) {
       setState(() {
@@ -676,7 +600,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         useNextMusic(); // 切换下一首
       });
     }
->>>>>>> main
+
   }
 
   ///@author: wuwenqiang

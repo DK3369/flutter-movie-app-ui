@@ -355,28 +355,17 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           "lib/assets/images/icon_like${musicItem.isLike == 1 ? "_active" : ""}.png",
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),onTap: (){
-<<<<<<< HEAD
-                        if(musicItem.isFavorite == 0){
-                          insertMusicFavoriteService(musicItem).then((res) => {
-                            if(res.data! > 0){
-=======
                         if(musicItem.isLike == 0){
                           insertMusicLikeService(musicItem.id).then((res) => {
                             if(res.data > 0){
->>>>>>> main
                               setState(() {
                                 musicItem.isLike = 1;
                               })
                             }
                           });
                         }else{
-<<<<<<< HEAD
-                          deleteMusicFavoriteService(musicItem.id!).then((res) => {
-                            if(res.data! > 0){
-=======
                           deleteMusicLikeService(musicItem.id).then((res) => {
                             if(res.data > 0){
->>>>>>> main
                               setState(() {
                                 musicItem.isLike = 0;
                               })

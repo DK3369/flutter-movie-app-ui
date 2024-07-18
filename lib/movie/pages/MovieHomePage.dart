@@ -133,35 +133,35 @@ class _MovieHomePageState extends State<MovieHomePage>
                   )))
         ]));
   }
-<<<<<<< HEAD
-
-  @override
-  Widget build(BuildContext context) {
-    UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
-    if (userInfo.userId == null) {
-      //如果用户不存在，先去获取用户信息
-      return FutureBuilder(
-          future: getUserDataService(),
-          builder: (context, snapshot) {
-            if (snapshot.data == null) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            var userInfo = snapshot.data?.data;
-            var token = snapshot.data?.token;
-            LocalStroageUtils.setToken(token ?? "");
-            Provider.of<UserInfoProvider>(context, listen: false)
-                .setUserInfo(UserInfoModel.fromJson(userInfo));
-            Provider.of<TokenProvider>(context).setToken(token ?? "");
-            return init(context);
-          });
-    } else {
-      //如果用户已经存在，初始化页面
-      return init(context);
-    }
-  }
-=======
->>>>>>> main
+// <<<<<<< HEAD
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     UserInfoModel userInfo = Provider.of<UserInfoProvider>(context).userInfo;
+//     if (userInfo.userId == null) {
+//       //如果用户不存在，先去获取用户信息
+//       return FutureBuilder(
+//           future: getUserDataService(),
+//           builder: (context, snapshot) {
+//             if (snapshot.data == null) {
+//               return Center(
+//                 child: CircularProgressIndicator(),
+//               );
+//             }
+//             var userInfo = snapshot.data?.data;
+//             var token = snapshot.data?.token;
+//             LocalStroageUtils.setToken(token ?? "");
+//             Provider.of<UserInfoProvider>(context, listen: false)
+//                 .setUserInfo(UserInfoModel.fromJson(userInfo));
+//             Provider.of<TokenProvider>(context).setToken(token ?? "");
+//             return init(context);
+//           });
+//     } else {
+//       //如果用户已经存在，初始化页面
+//       return init(context);
+//     }
+//   }
+// =======
+// >>>>>>> main
 }
 /*-----------------------首页------------------------*/

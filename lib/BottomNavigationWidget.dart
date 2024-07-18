@@ -17,9 +17,7 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentIndex = 0;
-<<<<<<< HEAD
-  List<Widget> pages = [MovieHomePage(),MoviePage(),VideoPage(),MovieMyPage()];
-=======
+//   List<Widget> pages = [MovieHomePage(),MoviePage(),VideoPage(),MovieMyPage()];
   List<Widget> pages = [null, null, null, null];
   bool isInit = false;
   @override
@@ -32,7 +30,6 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       });
     });
   }
->>>>>>> main
 
   @override
   void dispose() {

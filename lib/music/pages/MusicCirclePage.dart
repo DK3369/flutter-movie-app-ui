@@ -167,13 +167,12 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                     if(loading)return;
                     loading = true;
                     CommentModel mCommentModel = CommentModel(
-<<<<<<< HEAD
-                        type:"music_circle",
-                        relationId:circleModel.id!,
-=======
+// <<<<<<< HEAD
+//                         type:"music_circle",
+//                         relationId:circleModel.id!,
+// =======
                         type:CommentEnum.MUSIC_CIRCLE.toString().split('.').last,
                         relationId:circleModel.id,
->>>>>>> main
                         content: inputController.text,
                         topId:firstCommentModel!.id,
                         parentId:replyCommentModel!.id
@@ -273,11 +272,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 });
               } else {
                 // 如果已经赞过，点击之后取消点赞
-<<<<<<< HEAD
-                deleteLikeService(circleModel.id!, "music_circle").then((res) {
-=======
                 deleteLikeService(circleModel.id, CommentEnum.MUSIC_CIRCLE).then((res) {
->>>>>>> main
                   setState(() {
                     circleModel.circleLikes!.removeAt(circleIndex);
                   });
