@@ -30,7 +30,7 @@ class MusicModel extends ClassMusicParamsModel{
   String? updateTime = ""; // 更新时间
   String? label = ""; // 标签
   String? lyrics = ""; // 歌词
-  int? isFavorite = 0; // 是否喜欢
+  int? isLike = 0; // 是否喜欢
   int? times = 0; //  听过的次数，在获取播放记录的时候才有
 
   MusicModel(

@@ -188,7 +188,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                     return Container();
                   } else {
                     List<Widget> playMenuList = [];
-                    snapshot.data.data.forEach((item) {
+                    snapshot.data?.data?.forEach((item) {
                       FavoriteDirectoryModel favoriteDirectoryModel = FavoriteDirectoryModel.fromJson(item);
                       playMenuList.add(buildPlayMenuItem(favoriteDirectoryModel));
                     });
@@ -212,7 +212,7 @@ class _MusicUserPageState extends State<MusicUserPage>
           favoriteDirectoryModel.cover != null
               ? ClipOval(
                   child: Image.network(
-                  HOST + favoriteDirectoryModel.cover,
+                  HOST + favoriteDirectoryModel.cover!,
                   width: ThemeSize.bigAvater,
                   height: ThemeSize.bigAvater,
                 ))
@@ -227,7 +227,7 @@ class _MusicUserPageState extends State<MusicUserPage>
                   ),
                   child: Center(
                       child: Text(
-                        favoriteDirectoryModel.name.substring(0, 1),
+                        favoriteDirectoryModel.name!.substring(0, 1),
                     style: TextStyle(fontSize: ThemeSize.bigFontSize),
                   ))),
           SizedBox(width: ThemeSize.containerPadding),
@@ -235,7 +235,7 @@ class _MusicUserPageState extends State<MusicUserPage>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(favoriteDirectoryModel.name),
+                Text(favoriteDirectoryModel.name ?? ""),
                 SizedBox(height: ThemeSize.smallMargin),
                 Text(favoriteDirectoryModel.total.toString() + "首",
                     style: TextStyle(color: ThemeColors.subTitle))

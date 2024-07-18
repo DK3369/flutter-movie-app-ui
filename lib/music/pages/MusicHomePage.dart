@@ -354,7 +354,7 @@ class _MusicHomePageState extends State<MusicHomePage>
                           onTap: () {
                             getMusicListByClassifyIdService(classifyId, 1, 500, 1).then((value){
                               List<MusicModel> playMusicModelList = [] ;
-                              value.data.forEach((element) => playMusicModelList.add(MusicModel.fromJson(element)));
+                              value.data?.forEach((element) => playMusicModelList.add(MusicModel.fromJson(element)));
                               Provider.of<PlayerMusicProvider>(context,listen: false).setPlayMusicList(playMusicModelList);
                             });
                             LocalStroageUtils.setPlayMusic(musicItem);

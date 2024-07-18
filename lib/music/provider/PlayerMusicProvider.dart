@@ -97,7 +97,7 @@ class PlayerMusicProvider with ChangeNotifier {
       _musicModel = _musicList[playIndex];
       _playIndex = playIndex;
       insertMusicRecordService(_musicModel);
-      _player.play(HOST + _musicModel.localPlayUrl);
+      _player.play((HOST + _musicModel.localPlayUrl!) as Source);
       removeMusic();
       notifyListeners();
     }

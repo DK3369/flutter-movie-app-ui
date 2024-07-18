@@ -130,7 +130,7 @@ Future<ResponseModel<int>> insertMusicRecordService(
 /// @date: 2024-01-05 22:26
 Future<ResponseModel<int>> insertMusicLikeService(int musicId) async {
   try {
-    Response response = await dio.post(servicePath['insertMusicLike'] + musicId.toString());
+    Response response = await dio.post(servicePath['insertMusicLike']! + musicId.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -144,7 +144,7 @@ Future<ResponseModel<int>> insertMusicLikeService(int musicId) async {
 Future<ResponseModel<int>> deleteMusicLikeService(int musicId) async {
   try {
     Response response =
-        await dio.delete(servicePath['deleteMusicLike'] + musicId.toString());
+        await dio.delete(servicePath['deleteMusicLike']! + musicId.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -227,7 +227,7 @@ Future<ResponseModel<int>> deleteLikeService(
 ///@author: wuwenqiang
 ///@description: 点赞
 /// @date: 2024-3-28 22:10
-Future<ResponseModel<List>> getFavoriteDirectoryService(int musicId) async {
+Future<ResponseModel<List>?> getFavoriteDirectoryService(int musicId) async {
   try {
     Response response = await dio.get("${servicePath['getFavoriteDirectory']}?musicId=${musicId.toString()}");
     return ResponseModel.fromJson(response.data);
@@ -240,9 +240,9 @@ Future<ResponseModel<List>> getFavoriteDirectoryService(int musicId) async {
 ///@description: 查询音乐是否已经收藏
 ///@date: 2024-06-25 22:02
 ///@author wuwenqiang
-Future<ResponseModel<int>> isMusicFavoriteService (int musicId) async {
+Future<ResponseModel<int>?> isMusicFavoriteService (int musicId) async {
   try {
-    Response response = await dio.get(servicePath['isMusicFavorite'] + musicId.toString());
+    Response response = await dio.get(servicePath['isMusicFavorite']! + musicId.toString());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -254,9 +254,9 @@ Future<ResponseModel<int>> isMusicFavoriteService (int musicId) async {
 ///@description: 添加音乐收藏
 ///@date: 2024-06-29 11:26
 ///@author wuwenqiang
-Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<int>favoriteList) async {
+Future<ResponseModel<int>?> insertMusicFavoriteService (int musicId,List<int>favoriteList) async {
   try {
-    Response response = await dio.post(servicePath['insertMusicFavorite'] + musicId.toString(),data: favoriteList.map((item) => {"favoriteId":item}).toList());
+    Response response = await dio.post(servicePath['insertMusicFavorite']! + musicId.toString(),data: favoriteList.map((item) => {"favoriteId":item}).toList());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -267,9 +267,9 @@ Future<ResponseModel<int>> insertMusicFavoriteService (int musicId,List<int>favo
 ///@description: 添加音乐收藏
 ///@date: 2024-06-29 11:26
 ///@author wuwenqiang
-Future<ResponseModel<Map>> insertFavoriteDirectoryService (FavoriteDirectoryModel favoriteDirectory)async {
+Future<ResponseModel<Map>?> insertFavoriteDirectoryService (FavoriteDirectoryModel favoriteDirectory)async {
   try {
-    Response response = await dio.post(servicePath['insertFavoriteDirectory'],data: favoriteDirectory.toMap());
+    Response response = await dio.post(servicePath['insertFavoriteDirectory']!,data: favoriteDirectory.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
@@ -280,9 +280,9 @@ Future<ResponseModel<Map>> insertFavoriteDirectoryService (FavoriteDirectoryMode
 ///@description: 发表说说
 ///@date: 2024-07-13 20:42
 ///@author wuwenqiang
-Future<ResponseModel<int>> saveCircleService (CircleModel circleModel)async {
+Future<ResponseModel<int>?> saveCircleService (CircleModel circleModel)async {
   try {
-    Response response = await dio.post(servicePath['insertCircle'],data: circleModel.toMap());
+    Response response = await dio.post(servicePath['insertCircle']!,data: circleModel.toMap());
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');

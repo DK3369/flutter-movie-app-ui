@@ -18,38 +18,42 @@ import '../music/pages/MusicSharePage.dart';
 class Routes {
   static final FluroRouter router = FluroRouter();
   static void initRoutes() {
+
     /// 指定路由跳转错误返回页
     router.notFoundHandler = Handler(
-        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+        handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
           debugPrint('未找到目标页');
           return NotFoundPage();
         });
-    router.define('/MusicSearchPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MusicSearchPage(keyword:params['keyword'].first);
+    router.define('/MusicSearchPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return MusicSearchPage(keyword:params['keyword']!.first);
     }));
-    router.define('/MusicPlayerPage', handler: Handler(handlerFunc: (BuildContext context, params) {
+    router.define('/MusicPlayerPage', handler: Handler(handlerFunc: (BuildContext? context, params) {
       return MusicPlayerPage();
     }));
-    router.define('/MusicLyricPage', handler: Handler(handlerFunc: (BuildContext context, Map<String,List<String>> params) {
+    router.define('/MusicLyricPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String,List<String>> params) {
       return MusicLyricPage();
     }));
-    router.define('/MoviePlayerPage', handler: Handler(handlerFunc: (BuildContext context,Map<String, List<String>> params) {
-      return MoviePlayerPage(movieItem: MovieDetailModel.fromJson(json.decode(params["movieItem"].first)));
+    router.define('/MoviePlayerPage', handler: Handler(handlerFunc: (BuildContext? context,Map<String, List<String>> params) {
+      return MoviePlayerPage(movieItem: MovieDetailModel.fromJson(json.decode(params["movieItem"]!.first)));
     }));
-    router.define('/MovieUserPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    router.define('/MovieUserPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return MovieUserPage();
     }));
-    router.define('/NewMoviePage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>>params) {
-      return NewMoviePage();
+    router.define('/NewMoviePage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>>params) {
+      return NewMoviePage(movieItem: MovieDetailModel.fromJson(jsonDecode(params['movieItem']!.first)));
     }));
-    router.define('/MusicIndexPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    router.define('/MusicIndexPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return MusicIndexPage();
     }));
-    router.define('/MusicSingerPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    router.define('/MusicSingerPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return MusicSingerPage();
     }));
-    router.define('/MusicSharePage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MusicSharePage(musicModel:MusicModel.fromJson(jsonDecode(params['musicItem'].first)));
+    router.define('/MusicSharePage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return MusicSharePage(musicModel:MusicModel.fromJson(jsonDecode(params['musicItem']!.first)));
     }));
   }
+
+
+
 }

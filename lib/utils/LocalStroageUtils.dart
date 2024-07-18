@@ -30,8 +30,9 @@ class LocalStroageUtils {
     String? playMusic = prefs.getString('playMusic') ?? null;
     if (playMusic != null) {
       return MusicModel.fromJson(json.decode(playMusic));
-    } else {
-      return null;
+    }
+    else {
+      return MusicModel();
     }
   }
 
@@ -44,7 +45,7 @@ class LocalStroageUtils {
     if (classMusicParams != null) {
       return ClassMusicParamsModel.fromJson(json.decode(classMusicParams));
     } else {
-      return null;
+      return MusicModel();
     }
   }
 

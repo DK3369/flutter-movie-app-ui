@@ -9,11 +9,10 @@ import '../model/FavoriteDirectoryModel.dart';
 
 class FavoriteComponent extends StatefulWidget {
   final int musicId;
-  final bool isFavorite;
-  final Function onFavorite;
+  final bool? isFavorite;
+  final Function? onFavorite;
 
-  FavoriteComponent({Key key, this.musicId, this.isFavorite, this.onFavorite})
-      : super(key: key);
+  FavoriteComponent({super.key,  required this.musicId, this.isFavorite, this.onFavorite});
 
   @override
   _FavoriteComponentState createState() => _FavoriteComponentState();
@@ -31,12 +30,12 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
     super.initState();
     getFavoriteDirectoryService(widget.musicId).then((value) {
       setState(() {
-        value.data.forEach((item) {
+        value?.data?.forEach((item) {
           FavoriteDirectoryModel favoriteDirectoryModel =
               FavoriteDirectoryModel.fromJson(item);
           favoriteDirectory.add(favoriteDirectoryModel);
           if (favoriteDirectoryModel.checked == 1)
-            selectedValues.add(favoriteDirectoryModel.id);
+            selectedValues.add(favoriteDirectoryModel.id!);
         });
       });
     });
@@ -97,7 +96,7 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
                       : ClipRRect(
                           borderRadius:
                               BorderRadius.circular(ThemeSize.middleRadius),
-                          child: Image.network(HOST + item.cover,
+                          child: Image.network(HOST + item.cover!,
                               width: ThemeSize.bigAvater,
                               height: ThemeSize.bigAvater)),
                   SizedBox(width: ThemeSize.containerPadding),
@@ -105,7 +104,7 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(item.name),
+                          Text(item.name!),
                           SizedBox(height: ThemeSize.smallMargin),
                           Text(
                             item.total.toString() + "首",
@@ -118,11 +117,15 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
                       value: item.checked == 1,
                       onChanged: (value) {
                         setState(() {
-                          item.checked = value ? 1 : 0;
+                          if (value ==1) {
+                            item.checked = 1;
+                          } else {
+                            item.checked = 0;
+                          }
                           this.selectedValues.clear();
                           this.favoriteDirectory.forEach((item) {
                             if (item.checked == 1)
-                              this.selectedValues.add(item.id);
+                              this.selectedValues.add(item.id!);
                           });
                         });
                       })
@@ -213,25 +216,26 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
           child: InkWell(
               onTap: () {
                 if(favoriteNameController.text == ''){
-                  return Fluttertoast.showToast(
+                  // return
+                    Fluttertoast.showToast(
                       msg: "请输入收藏夹名称",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
+                      // timeInSecForIos: 1,
                       textColor: Colors.white,
                       fontSize: ThemeSize.middleFontSize);
                 }
-                insertFavoriteDirectoryService(FavoriteDirectoryModel(name:favoriteNameController.text,cover:null)).then((value){
+                insertFavoriteDirectoryService(FavoriteDirectoryModel(name:favoriteNameController.text,cover: "")).then((value){
                   Fluttertoast.showToast(
                       msg: "创建收藏夹成功",
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
+                      // timeInSecForIos: 1,
                       textColor: Colors.white,
                       fontSize: ThemeSize.middleFontSize);
                   favoriteNameController.text = '';
                   setState(() {
-                    favoriteDirectory.insert(0, FavoriteDirectoryModel.fromJson(value.data));
+                    favoriteDirectory.insert(0, FavoriteDirectoryModel.fromJson(value!.data!));
                     isCreateFavoriteDirectory = false;
                   });
                 });
@@ -275,26 +279,26 @@ class _FavoriteComponentState extends State<FavoriteComponent> {
       width: double.infinity,
       height: ThemeSize.buttonHeight,
       child: InkWell(
-          onTap: !widget.isFavorite && selectedValues.length == 0
+          onTap: widget.isFavorite== true  && selectedValues.length == 0
               ? null
               : () {
                   insertMusicFavoriteService(widget.musicId, selectedValues)
                       .then((value) {
-                    if (value.data > 0) {
+                    if (value!.data! > 0) {
                       Fluttertoast.showToast(
                           msg: selectedValues.length > 0 ? "收藏成功" : "取消收藏成功",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
-                          timeInSecForIos: 1,
+                          // timeInSecForIos: 1,
                           textColor: Colors.white,
                           fontSize: ThemeSize.middleFontSize);
-                      widget.onFavorite(selectedValues.length > 0);
+                      widget.onFavorite!(selectedValues.length > 0);
                     }
                   });
                 },
           child: Center(
               child: Text(
-            widget.isFavorite && selectedValues.length == 0
+            widget.isFavorite == true && selectedValues.length == 0
                 ? '取消收藏'
                 : '添加${selectedValues.length > 0 ? '（已选${selectedValues.length}个）' : ''}',
             style: TextStyle(color: ThemeColors.colorWhite),

@@ -51,14 +51,14 @@ class _MusicIndexPageState extends State<MusicIndexPage>
     "lib/assets/images/icon_user_active.png"
   ];
   List<String> titles = ["首页", "推荐", "音乐圈", "我的"];
-  MusicModel musicModel;
-  StreamSubscription onPlayerStateChangedListener;
+  MusicModel? musicModel;
+  StreamSubscription? onPlayerStateChangedListener;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // 添加监听订阅
-    MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
+    // MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
   }
 
   ///@author: wuwenqiang
@@ -85,7 +85,7 @@ class _MusicIndexPageState extends State<MusicIndexPage>
   @override
   void didPop() {
     super.didPop();
-    onPlayerStateChangedListener.cancel();// 取消监听音乐播放进度
+    onPlayerStateChangedListener?.cancel();// 取消监听音乐播放进度
   }
 
   @override

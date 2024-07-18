@@ -13,9 +13,9 @@ import '../../theme/ThemeColors.dart';
 import '../../theme/ThemeSize.dart';
 
 class MovieSearchPage extends StatefulWidget {
-  final String keyword;
+  final String? keyword;
 
-  MovieSearchPage({super.key, required this.keyword});
+  MovieSearchPage({super.key, this.keyword});
 
   @override
   _MovieSearchPageState createState() => _MovieSearchPageState();
@@ -229,7 +229,7 @@ class _MovieSearchPageState extends State<MovieSearchPage> {
                 // color: Theme.of(context).accentColor,
                 onPressed: () async {
                   if (keywordController.text == "")
-                    keywordController.text = widget.keyword;
+                    keywordController.text = widget.keyword ?? "";
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   int index =

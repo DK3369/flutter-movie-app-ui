@@ -356,16 +356,16 @@ class _SearchMusicPageState extends State<MusicSearchPage> {
                           width: ThemeSize.smallIcon,
                           height: ThemeSize.smallIcon),onTap: (){
                         if(musicItem.isLike == 0){
-                          insertMusicLikeService(musicItem.id).then((res) => {
-                            if(res.data > 0){
+                          insertMusicLikeService(musicItem.id!).then((res) => {
+                            if(res.data! > 0){
                               setState(() {
                                 musicItem.isLike = 1;
                               })
                             }
                           });
                         }else{
-                          deleteMusicLikeService(musicItem.id).then((res) => {
-                            if(res.data > 0){
+                          deleteMusicLikeService(musicItem.id!).then((res) => {
+                            if(res.data! > 0){
                               setState(() {
                                 musicItem.isLike = 0;
                               })

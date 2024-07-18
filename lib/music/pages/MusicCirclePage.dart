@@ -272,7 +272,7 @@ class _MusicCirclePageState extends State<MusicCirclePage>
                 });
               } else {
                 // 如果已经赞过，点击之后取消点赞
-                deleteLikeService(circleModel.id, CommentEnum.MUSIC_CIRCLE).then((res) {
+                deleteLikeService(circleModel.id!, CommentEnum.MUSIC_CIRCLE).then((res) {
                   setState(() {
                     circleModel.circleLikes!.removeAt(circleIndex);
                   });

@@ -51,10 +51,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     LoopModeEnum.REPEAT: "lib/assets/images/icon_music_loop.png",
     LoopModeEnum.RANDOM: "lib/assets/images/icon_music_random.png"
   };
-  LoopModeEnum loopModeEnum;
-  StreamSubscription onDurationChangedListener;// 监听总时长
-  StreamSubscription onAudioPositionChangedListener;// 监听播放进度
-  StreamSubscription onPlayerCompletionListener;// 监听播放完成
+  LoopModeEnum? loopModeEnum;
+  StreamSubscription? onDurationChangedListener;// 监听总时长
+  StreamSubscription? onAudioPositionChangedListener;// 监听播放进度
+  StreamSubscription? onPlayerCompletionListener;// 监听播放完成
   bool loading = false;
   bool isFavorite = false;// 是否已经收藏
 
@@ -87,7 +87,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   void didChangeDependencies() {
     super.didChangeDependencies();
     // 添加监听订阅
-    MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
+    // MyApp.routeObserver.subscribe(this, ModalRoute.of(context));
   }
 
   ///@author: wuwenqiang
@@ -96,16 +96,16 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   @override
   void didPop() {
     super.didPop();
-    onDurationChangedListener.cancel();// 取消监听音乐播放时长
-    onAudioPositionChangedListener.cancel();// 取消监听音乐播放进度
+    onDurationChangedListener?.cancel();// 取消监听音乐播放时长
+    onAudioPositionChangedListener?.cancel();// 取消监听音乐播放进度
   }
 
   @override
   void dispose() {
     super.dispose();
     // 移除监听订阅
-    onDurationChangedListener.cancel();// 取消监听音乐播放时长
-    onAudioPositionChangedListener.cancel();// 取消监听音乐播放进度
+    onDurationChangedListener?.cancel();// 取消监听音乐播放时长
+    onAudioPositionChangedListener?.cancel();// 取消监听音乐播放进度
     MyApp.routeObserver.unsubscribe(this);
     _repeatController.dispose();
   }
@@ -206,7 +206,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   padding: EdgeInsets.all(ThemeSize.containerPadding * 4),
                   child: ClipOval(
                       child: Image.network(
-                        HOST + musicModel.cover,
+                        HOST + musicModel.cover!,
                         height: playerWidth -
                             ThemeSize.smallMargin -
                             ThemeSize.containerPadding * 3,
@@ -233,7 +233,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   color: ThemeColors.colorWhite,
                   fontSize: ThemeSize.middleFontSize),
               size: Size(double.infinity, double.infinity),
-              lyrics: LyricUtil.formatLyric(musicModel.lyrics),
+              lyrics: LyricUtil.formatLyric(musicModel.lyrics!),
               controller: _lyricController,
             ),
             onTap: () {
@@ -319,9 +319,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               loading = true;
               PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
               if (musicModel.isLike == 0) {
-                insertMusicLikeService(musicModel.id).then((res) {
+                insertMusicLikeService(musicModel.id!).then((res) {
                   loading = false;
-                  if (res.data > 0) {
+                  if (res.data! > 0) {
                     provider.setFavorite(1);
                     setState(() {
                       musicModel.isLike = 1;
@@ -331,9 +331,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   loading = false;
                 });
               } else {
-                deleteMusicLikeService(musicModel.id).then((res) {
+                deleteMusicLikeService(musicModel.id!).then((res) {
                   loading = false;
-                  if (res.data > 0) {
+                  if (res.data! > 0) {
                     provider.setFavorite(0);
                     setState(() {
                       musicModel.isLike = 0;
@@ -370,11 +370,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               onTap: () async {
                 print(musicModel);
                 ResponseModel<List> res = await getTopCommentListService(
-                    musicModel.id, CommentEnum.MUSIC, 1, 20);
-                commentTotal = res.total != null ? res.total : 0;
+                    musicModel.id!, CommentEnum.MUSIC, 1, 20);
+                commentTotal = (res.total != null ? res.total : 0)!;
                 buildModalBottomSheet(CommentComponent(
                   type: CommentEnum.MUSIC,
-                  relationId: musicModel.id,
+                  relationId: musicModel.id!,
                 ));
               }),
           flex: 1,
@@ -387,7 +387,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               height: ThemeSize.playIcon,
             ),
             onTap: (){
-              buildModalBottomSheet(FavoriteComponent(musicId: musicModel.id,isFavorite:isFavorite,onFavorite: (bool isMusicFavorite){
+              buildModalBottomSheet(FavoriteComponent(musicId: musicModel.id!,isFavorite:isFavorite,onFavorite: (bool isMusicFavorite){
                 Navigator.pop(context);
                 setState(() {
                   isFavorite = isMusicFavorite;
@@ -446,7 +446,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               color: ThemeColors.popupMenuColor,
               initialValue: loopModeEnum,
               child: Image.asset(
-                loopMode[loopModeEnum],
+                loopMode[loopModeEnum]!,
                 width: ThemeSize.playIcon,
                 height: ThemeSize.playIcon,
               ),
@@ -575,8 +575,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   /// 播放音乐
   void usePlay(MusicModel musicModel) async {
-    final result = await player.play(HOST + musicModel.localPlayUrl);
-    if (result == 1) {
+    final result = await player.play((HOST + musicModel!.localPlayUrl!) as Source);
+    // if (result == 1) {
       setState(() {
         // 默认开始播放
         playState = true;
@@ -588,18 +588,18 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           totalSec = event.inSeconds;
         });
       });
-      onAudioPositionChangedListener = player.onAudioPositionChanged.listen((event) {
-        _lyricController.progress = Duration(seconds: event.inSeconds);
-        setState(() {
-          duration = event.inSeconds;
-          sliderValue = (duration / totalSec) * 100;
-        });
-      });
+      // onAudioPositionChangedListener = player.onAudioPositionChanged.listen((event) {
+      //   _lyricController.progress = Duration(seconds: event.inSeconds);
+      //   setState(() {
+      //     duration = event.inSeconds;
+      //     sliderValue = (duration / totalSec) * 100;
+      //   });
+      // });
       onPlayerCompletionListener?.cancel();
-      onPlayerCompletionListener = player.onPlayerCompletion.listen((event) {
-        useNextMusic(); // 切换下一首
-      });
-    }
+      // onPlayerCompletionListener = player.onPlayerCompletion.listen((event) {
+      //   useNextMusic(); // 切换下一首
+      // });
+    // }
 
   }
 
@@ -635,7 +635,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   void useIsMusicFavorite(musicId){
     isMusicFavoriteService(musicId).then((value){
       setState(() {
-        isFavorite = value.data > 0;
+        isFavorite = value!.data! > 0;
       });
     });
   }

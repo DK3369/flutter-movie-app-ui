@@ -11,8 +11,8 @@ import '../../utils/common.dart';
 import '../../common/config.dart';
 
 class MusicSharePage extends StatefulWidget {
-  final MusicModel musicModel;
-  MusicSharePage({Key key,this.musicModel}) : super(key: key);
+  final MusicModel? musicModel;
+  MusicSharePage({super.key,  this.musicModel});
 
   @override
   _MusicSharePageState createState() => _MusicSharePageState();
@@ -72,8 +72,8 @@ class _MusicSharePageState extends State<MusicSharePage>
             children: [
               Container(
                   height: ThemeSize.buttonHeight,
-                  child: RaisedButton(
-                    color: ThemeColors.colorWhite,
+                  child: TextButton(
+                    // color: ThemeColors.colorWhite,
                     onPressed: (){
                       Navigator.pop(context);
                     },
@@ -82,20 +82,21 @@ class _MusicSharePageState extends State<MusicSharePage>
                       style: TextStyle(
                           fontSize: ThemeSize.middleFontSize),
                     ),
-                    elevation: 0.0,
+                    // elevation: 0.0,
 
                     ///圆角
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                            color: ThemeColors.disableColor),
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(
-                                ThemeSize.middleRadius))),
+                    // shape: RoundedRectangleBorder(
+                    //     side: BorderSide(
+                    //         color: ThemeColors.disableColor),
+                    //     borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //             ThemeSize.middleRadius))
+                    // ),
                   )),
               Container(
                   height: ThemeSize.buttonHeight,
-                  child: RaisedButton(
-                    color: Theme.of(context).accentColor,
+                  child: TextButton(
+                    // color: Theme.of(context).accentColor,
                     onPressed: useSave,
                     child: Text(
                       '发布',
@@ -103,14 +104,14 @@ class _MusicSharePageState extends State<MusicSharePage>
                           color: ThemeColors.colorWhite,
                           fontSize: ThemeSize.middleFontSize),
                     ),
-                    elevation: 0.0,
+                    // elevation: 0.0,
 
                     ///圆角
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide.none,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(
-                                ThemeSize.middleRadius))),
+                    // shape: RoundedRectangleBorder(
+                    //     side: BorderSide.none,
+                    //     borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //             ThemeSize.middleRadius))),
                   ))
             ]));
   }
@@ -150,14 +151,14 @@ class _MusicSharePageState extends State<MusicSharePage>
         ClipOval(
           child: Image.network(
             //从全局的provider中获取用户信息
-            getMusicCover(widget.musicModel.cover),
+            getMusicCover(widget.musicModel!.cover!),
             height: ThemeSize.middleAvater,
             width: ThemeSize.middleAvater,
             fit: BoxFit.cover,
           ),
         ),
         SizedBox(width: ThemeSize.containerPadding),
-        Text('${widget.musicModel.authorName} - ${widget.musicModel.songName}')
+        Text('${widget.musicModel!.authorName!} - ${widget.musicModel!.songName!}')
       ],),
     );
   }
@@ -178,7 +179,7 @@ class _MusicSharePageState extends State<MusicSharePage>
         ),
         SizedBox(width: ThemeSize.containerPadding),
         Expanded(child: Text('谁可以看'),flex: 1),
-        Text(PermissionMap[circleModel.permission]),
+        Text(PermissionMap[circleModel.permission]!),
         SizedBox(width: ThemeSize.smallMargin),
         Image.asset(
           'lib/assets/images/icon_arrow.png',
@@ -196,14 +197,14 @@ class _MusicSharePageState extends State<MusicSharePage>
   useSave(){
     if(loading)return;
     loading = true;
-    circleModel.relationId = widget.musicModel.id;
+    circleModel.relationId = widget.musicModel!.id!;
     circleModel.type = CircleEnum.MUSIC.toString().split('.').last;
     saveCircleService(circleModel).then((value){
       Fluttertoast.showToast(
           msg: "发布成功",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
-          timeInSecForIos: 1,
+          // timeInSecForIos: 1,
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: ThemeSize.middleFontSize);

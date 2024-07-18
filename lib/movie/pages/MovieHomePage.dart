@@ -63,9 +63,9 @@ class _MovieHomePageState extends State<MovieHomePage>
     super.initState();
   }
 
-  Widget init(BuildContext context) {
-
-  }
+  // Widget init(BuildContext context) {
+  //
+  // }
 
   @override
   Widget build(BuildContext context) {

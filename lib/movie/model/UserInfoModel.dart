@@ -31,7 +31,8 @@ class UserInfoModel{
   });
   //工厂模式-用这种模式可以省略New关键字
   factory UserInfoModel.fromJson(dynamic json){
-    return UserInfoModel(
+    return
+      UserInfoModel(
       avater: json["avater"],
       birthday: json["birthday"],
       createDate: json["createDate"],

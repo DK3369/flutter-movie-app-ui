@@ -133,16 +133,16 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
               height: ThemeSize.smallIcon),onTap: (){
 
             if(musicModel.isLike == 0){
-              insertMusicLikeService(musicModel.id).then((res) => {
-                if(res.data > 0){
+              insertMusicLikeService(musicModel.id!).then((res) => {
+                if(res.data! > 0){
                   setState(() {
                     musicModel.isLike = 1;
                   })
                 }
               });
             }else{
-              deleteMusicLikeService(musicModel.id).then((res) => {
-                if(res.data > 0){
+              deleteMusicLikeService(musicModel.id!).then((res) => {
+                if(res.data! > 0){
                   setState(() {
                     musicModel.isLike = 0;
                   })

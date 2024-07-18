@@ -17,8 +17,8 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int _currentIndex = 0;
-//   List<Widget> pages = [MovieHomePage(),MoviePage(),VideoPage(),MovieMyPage()];
-  List<Widget> pages = [null, null, null, null];
+  List<Widget> pages = [MovieHomePage(),MoviePage(),VideoPage(),MovieMyPage()];
+  // List<Widget> pages = [null, null, null, null];
   bool isInit = false;
   @override
   void initState(){

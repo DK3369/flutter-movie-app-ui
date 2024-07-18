@@ -1,12 +1,12 @@
 class FavoriteDirectoryModel{
-  int id;
-  String name;// 收藏夹名称
-  String userId;// 用户id
-  int total;// 收藏夹总歌曲数
-  String cover;
-  int checked;
-  String createTime;// 创建时间
-  String updateTime;// 更新时间
+  int? id;
+  String? name;// 收藏夹名称
+  String? userId;// 用户id
+  int? total;// 收藏夹总歌曲数
+  String? cover;
+  int? checked;
+  String? createTime;// 创建时间
+  String? updateTime;// 更新时间
 
   FavoriteDirectoryModel({
     this.id,
