@@ -3,7 +3,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:movie/router/index.dart';
+import '../../router/index.dart';
 import '../model/MusicModel.dart';
 import 'package:provider/provider.dart';
 import '../provider/PlayerMusicProvider.dart';
@@ -121,9 +121,15 @@ class _MusicRecommentPageState extends State<MusicRecommentPage>
                       : "lib/assets/images/icon_music_play.png",
                   width: ThemeSize.smallIcon,
                   height: ThemeSize.smallIcon),
-              onTap: () {
-                Provider.of<PlayerMusicProvider>(context, listen: false)
-                    .setPlayMusic(musicModelList, musicModel, index, true);
+              onTap: () async {
+                PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
+                if(provider.classifyName != '推荐歌曲'){
+                  await getMusicListByClassifyIdService(1, 1, MAX_FAVORITE_NUMBER, 1).then((value){
+                    provider.setClassifyMusic(value.data.map((element) => MusicModel.fromJson(element)).toList(),index,'推荐歌曲');
+                  });
+                }else if(musicModel.id != provider.musicModel?.id){
+                  provider.setPlayMusic(musicModel, true);
+                }
                 Routes.router.navigateTo(context, '/MusicPlayerPage');
               }),
           SizedBox(width: ThemeSize.containerPadding),
