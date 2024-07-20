@@ -6,6 +6,7 @@ import './movie/provider/TokenProvider.dart';
 import './music/provider/PlayerMusicProvider.dart';
 import './movie/model/UserInfoModel.dart';
 import './router/index.dart';
+import 'music/model/MusicModel.dart';
 
 void main() {
   runApp(
@@ -13,7 +14,7 @@ void main() {
       providers: [
         ChangeNotifierProvider.value(value: TokenProvider("")), //初始化默认值
         ChangeNotifierProvider.value(value: UserInfoProvider(UserInfoModel.fromJson({}))), //初始化默认值
-        // ChangeNotifierProvider.value(value: PlayerMusicProvider()), //初始化默认值
+        ChangeNotifierProvider.value(value: PlayerMusicProvider(MusicModel())), //初始化默认值
       ],
       child: MyApp(),
     ),
