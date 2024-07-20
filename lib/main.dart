@@ -13,12 +13,15 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: TokenProvider("")), //初始化默认值
-        ChangeNotifierProvider.value(value: UserInfoProvider(UserInfoModel.fromJson({}))), //初始化默认值
+        // ChangeNotifierProvider.value(value: UserInfoProvider(UserInfoModel.fromJson({}))), //初始化默认值
+        ChangeNotifierProvider.value(value: UserInfoProvider(UserInfoModel())), //初始化默认值
+
         ChangeNotifierProvider.value(value: PlayerMusicProvider(MusicModel())), //初始化默认值
       ],
       child: MyApp(),
     ),
   );
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

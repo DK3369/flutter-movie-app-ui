@@ -54,8 +54,8 @@ class Routes {
     router.define('/MusicSharePage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       return MusicSharePage(musicModel:MusicModel.fromJson(jsonDecode(params['musicItem']!.first)));
     }));
-    router.define('/MusicFavoriteListPage', handler: Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MusicFavoriteListPage(favoriteDirectoryModel:FavoriteDirectoryModel.fromJson(jsonDecode(params['favoriteDirectoryModel'].first)));
+    router.define('/MusicFavoriteListPage', handler: Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+      return MusicFavoriteListPage(favoriteDirectoryModel:FavoriteDirectoryModel.fromJson(jsonDecode(params['favoriteDirectoryModel']!.first)));
     }));
   }
 

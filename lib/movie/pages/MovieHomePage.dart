@@ -52,13 +52,16 @@ class _MovieHomePageState extends State<MovieHomePage>
         allCategoryLists.add(CategoryModel.fromJson(element));
       }); // 顶部轮播组件数
       setState(() {
+        if (allCategoryLists.length > 0) {
         allCategoryLists.sublist(0, 2).forEach((CategoryModel item) {
           categoryList.add(CategoryComponent(
             category: item.category ?? "",
             classify: item.classify ?? "",
           ));
         });
-      });
+      }
+      }
+        );
     });
     super.initState();
   }

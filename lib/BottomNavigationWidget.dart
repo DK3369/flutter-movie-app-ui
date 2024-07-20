@@ -24,7 +24,9 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   void initState(){
     super.initState();
     getUserDataService().then((value){
-      Provider.of<UserInfoProvider>(context,listen: false).setUserInfo(UserInfoModel.fromJson(value.data));
+      // Provider.of<UserInfoProvider>(context,listen: false).setUserInfo(UserInfoModel.fromJson(value.data));
+      Provider.of<UserInfoProvider>(context,listen: false).setUserInfo(UserInfoModel());
+
       setState(() {
         isInit = true;
       });

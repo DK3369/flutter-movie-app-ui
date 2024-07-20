@@ -271,7 +271,7 @@ class _MusicHomePageState extends State<MusicHomePage>
   Widget buildMusicListByClassifyId(MusicClassifyModel classifyModel) {
     PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
     return FutureBuilder(
-        future: getMusicListByClassifyIdService(classifyModel.id, 1, 3, 1),
+        future: getMusicListByClassifyIdService(classifyModel.id!, 1, 3, 1),
         builder: (context, snapshot) {
           if (snapshot.data == null) {
             return Container();

@@ -16,7 +16,7 @@ import '../../utils/common.dart';
 class MusicFavoriteListPage extends StatefulWidget {
   final FavoriteDirectoryModel favoriteDirectoryModel;
 
-  MusicFavoriteListPage({Key key, this.favoriteDirectoryModel})
+  MusicFavoriteListPage({Key? key, required this.favoriteDirectoryModel})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
   int pageNum = 1;
   int total = 0;
   final int pageSize = 20;
-  PlayerMusicProvider provider;
+  late PlayerMusicProvider provider;
 
   @override
   void initState() {
@@ -44,12 +44,12 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
   /// @date: 2024-07-20 00:27
   useMusicListByFavoriteId() {
     getMusicListByFavoriteIdService(
-            widget.favoriteDirectoryModel.id, pageNum, pageSize)
+            widget.favoriteDirectoryModel.id!, pageNum, pageSize)
         .then((value) {
       setState(() {
-        total = value.total;
+        total = value.total!;
         musicList
-            .addAll(value.data.map((e) => MusicModel.fromJson(e)).toList());
+            .addAll(value.data!.map((e) => MusicModel.fromJson(e)).toList());
       });
     });
   }
@@ -129,7 +129,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
         children: [
           ClipRRect(
               child: Image.network(
-                getMusicCover(widget.favoriteDirectoryModel.cover),
+                getMusicCover(widget.favoriteDirectoryModel.cover!),
                 width: ThemeSize.bigAvater,
                 height: ThemeSize.bigAvater,
               ),
@@ -140,7 +140,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.favoriteDirectoryModel.name),
+                    Text(widget.favoriteDirectoryModel.name!),
                     SizedBox(height: ThemeSize.containerPadding),
                     Text(
                       '${widget.favoriteDirectoryModel.total.toString()}首',
@@ -158,8 +158,8 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
 
   void useLike(MusicModel musicModel) {
     if (musicModel.isLike == 0) {
-      insertMusicLikeService(musicModel.id).then((res) => {
-            if (res.data > 0)
+      insertMusicLikeService(musicModel.id!).then((res) => {
+            if (res.data! > 0)
               {
                 setState(() {
                   musicModel.isLike = 1;
@@ -167,8 +167,8 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
               }
           });
     } else {
-      deleteMusicLikeService(musicModel.id).then((res) => {
-            if (res.data > 0)
+      deleteMusicLikeService(musicModel.id!).then((res) => {
+            if (res.data! > 0)
               {
                 setState(() {
                   musicModel.isLike = 0;
@@ -196,7 +196,7 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
                 ClipOval(
                   child: Image.network(
                     //从全局的provider中获取用户信息
-                    getMusicCover(musicModel.cover),
+                    getMusicCover(musicModel.cover!),
                     height: ThemeSize.middleAvater,
                     width: ThemeSize.middleAvater,
                     fit: BoxFit.cover,
@@ -251,10 +251,10 @@ class _MusicFavoriteListPageState extends State<MusicFavoriteListPage>
   /// @date: 2024-07-20 04:13
   usePlayRouter(MusicModel musicModel,int index)async{
     PlayerMusicProvider provider = Provider.of<PlayerMusicProvider>(context, listen: false);
-    String classifyName = MUSIC_FAVORITE_NAME_STORAGE_KEY + widget.favoriteDirectoryModel.name;
+    String classifyName = MUSIC_FAVORITE_NAME_STORAGE_KEY + widget.favoriteDirectoryModel.name!;
     if(provider.classifyName != classifyName){
-      await getMusicListByFavoriteIdService(widget.favoriteDirectoryModel.id, 1, MAX_FAVORITE_NUMBER).then((value) {
-        provider.setClassifyMusic(value.data.map((e) => MusicModel.fromJson(e)).toList(),index,classifyName);
+      await getMusicListByFavoriteIdService(widget.favoriteDirectoryModel.id!, 1, MAX_FAVORITE_NUMBER).then((value) {
+        provider.setClassifyMusic(value.data!.map((e) => MusicModel.fromJson(e)).toList(),index,classifyName);
       });
     }else{
       provider.setPlayMusic(musicModel, true);

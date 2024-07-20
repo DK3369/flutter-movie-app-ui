@@ -299,6 +299,6 @@ Future<ResponseModel<List>> getMusicListByFavoriteIdService (int favoriteId,int 
     return ResponseModel.fromJson(response.data);
   } catch (e) {
     print('ERROR:======>${e}');
-    return null;
+    return ResponseModel();
   }
 }

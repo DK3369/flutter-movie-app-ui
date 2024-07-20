@@ -144,7 +144,7 @@ class LoginPage extends StatelessWidget {
 
                                   // await LocalStroageUtils.setToken(res.token!);
 
-                                  await LocalStorageUtils.setToken(res.token);
+                                  await LocalStorageUtils.setToken(res.token!);
 
                                   await Fluttertoast.showToast(
                                       msg: "登录成功",

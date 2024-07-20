@@ -25,8 +25,7 @@ class AvaterComponent extends StatelessWidget {
           child: ClipOval(
             child: Image.network(
               //从全局的provider中获取用户信息
-              HOST +
-                  Provider.of<UserInfoProvider>(context).userInfo.avater,
+              HOST + Provider.of<UserInfoProvider>(context).userInfo.avater,
               height: size,
               width: size,
               fit: BoxFit.cover,

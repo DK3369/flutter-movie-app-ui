@@ -37,39 +37,23 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   double sliderValue = 0;
   int duration = 0; // 已经播放额时间
   int totalSec = 0; // 总时间
-// <<<<<<< HEAD
-//   bool playState = false;
-//   MusicModel musicModel = MusicModel();
-//   AudioPlayer player = AudioPlayer();
-//   int currentPlayIndex = -1; // 当前播放音乐的下标
-//   late List<MusicModel> playMusicModelList; // 播放的列表
-//   late LyricController _lyricController; //歌词控制器
-//   late AnimationController _repeatController; // 会重复播放的控制器
-//   late Animation<double> _curveAnimation; // 非线性动画
-// =======
   AudioPlayer player = AudioPlayer();
   int currentPlayIndex = -1; // 当前播放音乐的下标
   late LyricController _lyricController; //歌词控制器
   late AnimationController _repeatController; // 会重复播放的控制器
-  Animation<double>? _curveAnimation; // 非线性动画
-// >>>>>>> main
+  late Animation<double> _curveAnimation; // 非线性动画
   int commentTotal = 0;
   Map<LoopModeEnum, String> loopMode = {
     LoopModeEnum.ORDER: "lib/assets/images/icon_music_order.png",
     LoopModeEnum.REPEAT: "lib/assets/images/icon_music_loop.png",
     LoopModeEnum.RANDOM: "lib/assets/images/icon_music_random.png"
   };
-// <<<<<<< HEAD
-//   LoopModeEnum? loopModeEnum;
-//   StreamSubscription? onDurationChangedListener;// 监听总时长
-//   StreamSubscription? onAudioPositionChangedListener;// 监听播放进度
-//   StreamSubscription? onPlayerCompletionListener;// 监听播放完成
-// =======
+
   StreamSubscription? onDurationChangedListener;// 监听总时长
   StreamSubscription? onAudioPositionChangedListener;// 监听播放进度
   StreamSubscription? onPlayerCompletionListener;// 监听播放完成
   late PlayerMusicProvider? provider;
-// >>>>>>> main
+
   bool loading = false;
   bool isFavorite = false;// 是否已经收藏
 

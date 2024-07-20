@@ -1,14 +1,14 @@
 class UserInfoModel{
-  String? avater = "";
-  String? birthday = "";
-  String? createDate = "";
+  String? avater = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbejdwN7r51AW5hGnU8IX1vlGi5NOm9CQcye9N4P27xQ&s";
+  String? birthday = "1999";
+  String? createDate = "1999";
   String? email = "";
   String? role = "";
   String? sex = "";
   String? telephone = "";
   String? updateDate = "";
-  String? userId = "";
-  String? username = "";
+  String? userId = "33";
+  String? username = "22";
   String? sign = "";
   String? region = "";
   int? disabled = 0;

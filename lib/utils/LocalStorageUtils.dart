@@ -30,11 +30,11 @@ class LocalStorageUtils {
 
   static Future<MusicModel> getPlayMusic() async {
     final SharedPreferences prefs = await _prefs;
-    String playMusic = prefs.getString(MUSIC_STORAGE_KEY) ?? null;
+    String playMusic = prefs.getString(MUSIC_STORAGE_KEY) ?? "";
     if (playMusic != null) {
       return MusicModel.fromJson(json.decode(playMusic));
     } else {
-      return null;
+      return MusicModel();
     }
   }
 
@@ -43,7 +43,7 @@ class LocalStorageUtils {
   ///  @author wuwenqiang
   static Future<List<MusicModel>> getMusicList() async {
     final SharedPreferences prefs = await _prefs;
-    String playMusic = prefs.getString(MUSIC_LIST_STORAGE_KEY) ?? null;
+    String playMusic = prefs.getString(MUSIC_LIST_STORAGE_KEY) ?? "";
     if (playMusic != null) {
       List<dynamic> musicList = json.decode(playMusic).toList();
       return musicList.map((e) => MusicModel.fromJson(e)).toList();
@@ -91,6 +91,6 @@ class LocalStorageUtils {
   ///  @author wuwenqiang
   static Future<String> getClassifyName() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.getString(MUSIC_CLASSIFY_NAME_STORAGE_KEY) ?? null;
+    return prefs.getString(MUSIC_CLASSIFY_NAME_STORAGE_KEY) ?? "";
   }
 }
